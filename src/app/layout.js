@@ -1,5 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackClientApp } from "../stack/client";
 import "./globals.css";
+import Navbar from "@/shadcn-components/Navbar(comp-584)";
+import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,13 +21,24 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      ><StackProvider app={stackClientApp}><StackTheme>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="bg-white relative w-full">
+            {/* {!noNavbarRoutes.includes(pathname) && <Navbar />} */}
+          </div>
+          {children}
+        </ThemeProvider>
+      </StackTheme></StackProvider></body>
     </html>
   );
 }
