@@ -9,7 +9,6 @@ import {
     CardTitle,
 } from "@/shadcn-components/ui/card"
 import { FieldGroup } from "@/shadcn-components/ui/field";
-import { cn } from "@/lib/utils";
 
 const SignUp = () => {
     return (

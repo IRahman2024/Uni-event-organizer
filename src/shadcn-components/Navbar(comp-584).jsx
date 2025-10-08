@@ -90,7 +90,7 @@ export default async function Navbar() {
             <a href="/" className="text-primary hover:text-primary/90">
               <Logo />
             </a>
-            <p className="text-sm font-black font-sans">A Uni Project</p>
+            <p className="text-sm font-black font-sans" style={{ fontFamily: '"Aclonica", sans-serif' }}>A Uni Project</p>
           </div>
         </div>
         {/* Middle area */}
