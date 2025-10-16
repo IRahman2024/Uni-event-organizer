@@ -41,7 +41,6 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <div className="bg-white relative w-full">
-            {/* {!noNavbarRoutes.includes(pathname) && <Navbar />} */}
           </div>
           {children}
         </ThemeProvider>

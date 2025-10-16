@@ -21,6 +21,7 @@ import ModeToggle from "@/components/ThemeProvider/ModeToggle"
 import { stackServerApp } from "@/stack/server"
 import { UserButton } from "@stackframe/stack"
 import Link from "next/link"
+import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -117,7 +118,8 @@ export default async function Navbar() {
         </div>
         {/* Right side */}
         <div className="flex flex-1 items-center justify-end gap-2">
-          <ModeToggle></ModeToggle>
+          {/* <ModeToggle></ModeToggle> */}
+          <AnimatedThemeToggler></AnimatedThemeToggler>
           {/* Notification */}
           <NotificationMenu />
           {/* User menu */}

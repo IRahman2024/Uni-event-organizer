@@ -4,6 +4,7 @@ import {
   Layers2Icon,
   LogInIcon,
   LogOutIcon,
+  PanelsTopLeftIcon,
   PinIcon,
   UserPenIcon,
   UserPlus,
@@ -32,7 +33,7 @@ export default async function UserMenu() {
   const user = await stackServerApp.getUser();
   const app = stackServerApp.urls;
 
-  console.log(user);
+  // console.log(user);
 
 
   return (
@@ -58,8 +59,11 @@ export default async function UserMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-              <span>Option 1</span>
+              <Link href="/dashboard" className="flex gap-2">
+                <PanelsTopLeftIcon size={16} className="opacity-60" aria-hidden="true" />
+                <span>Dashboard</span>
+
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
