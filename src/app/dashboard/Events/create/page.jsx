@@ -9,9 +9,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/shadcn-components/ui/select"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import FormBuilder from '@/components/Form Builder/FormBuilder';
+import DemoForm from '@/components/Form Demo/DemoForm';
+
 
 const CreateEvent = () => {
     // const {
@@ -26,9 +28,15 @@ const CreateEvent = () => {
     const handleFormData = (data) => {
         setFields([...fields, data]);
     };
-    
-    console.log(fields);
-    // const fieldType = watch('fieldType');
+
+    const deleteField = (index) => {
+        const updatedFields = fields.filter((_, i) => i !== index);
+        setFields(updatedFields);
+    }
+
+
+    // {fieldName: 'Name', label: 'saa', fieldType: 'text', isRequired: false, options: ''}
+    // {fieldName: 'Size', label: 'Size', fieldType: 'option', isRequired: true, options: 'xl, xxl, sm, md'}
 
     return (
         <div>
@@ -138,6 +146,68 @@ const CreateEvent = () => {
                 </form>
             </div> */}
             <FormBuilder onData={handleFormData}></FormBuilder>
+            {/* <div className='w-full'>
+                <div className='text-3xl font-sans font-bold text-center'>Demo Form</div>
+                <p>Total number of fields: {fields.length}</p>
+
+                <div className='mx-auto w-1/2 border border-border rounded-lg shadow-sm p-5 flex flex-wrap gap-4 mt-2'>
+                    {fields.map((field, index) => (
+                        <div key={index} className='w-full'>
+                            {field?.fieldType != 'option' && 
+                            <div className="grid w-full max-w-full items-center gap-3">
+                                <Label htmlFor={field?.label}>{field?.label}</Label>
+                                <Controller
+                                    name={field?.fieldName}
+                                    control={control}
+                                    rules={{ required: `${field?.label} is required` }}
+                                    render={({ field }) => (
+                                        <Input
+                                            {...field}
+                                            id={field?.fieldName}
+                                            placeholder={field?.label}
+                                            type={field?.fieldType}
+                                        />
+                                    )}
+                                />
+                                {errors.fieldName && <span className="text-red-500">{errors.fieldName.message}</span>}
+                            </div>}
+                            {field?.fieldType === 'option' && (
+                                <div className="grid w-full items-center gap-3">
+                                    <Label htmlFor={field.label}>{field.label}</Label>
+                                    <Controller
+                                        name={field.fieldName}
+                                        control={control}
+                                        rules={{ required: `${field?.label} is required` }}
+                                        render={({ field: selectField }) => {
+                                            const optionArray = field.options.split(',').map(o => o.trim()); // Convert options string to array
+                                            return (
+                                                <Select
+                                                    onValueChange={selectField.onChange}
+                                                    value={selectField.value}
+                                                >
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder={`Select ${field.label}`} />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {optionArray.map((option, idx) => (
+                                                            <SelectItem key={idx} value={option}>{option}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
+                                    />
+                                    {errors[field.fieldName] && (
+                                        <span className="text-red-500">{errors[field.fieldName].message}</span>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+
+                </div>
+            </div> */}
+            <DemoForm fields={fields} handleDelete={deleteField}></DemoForm>
         </div>
     );
 };

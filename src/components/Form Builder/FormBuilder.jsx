@@ -74,7 +74,7 @@ const FormBuilder = ({ onData }) => {
                                 />
                             )}
                         />
-                        {errors.fieldName && <span className="text-red-500">{errors.fieldName.message}</span>}
+                        {errors.label && <span className="text-red-500">{errors.label.message}</span>}
                     </div>
                     <div className="grid w-1/2 max-w-sm items-center gap-3">
                         <Label htmlFor="fieldType">Field Type</Label>

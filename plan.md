@@ -24,3 +24,8 @@ Core Functions (Features)
 	•	Event Capacity Check: Stop registration if venue is full
 	•	Feedback/Ratings: Students can give feedback after event
 	•	Reports & Stats: Admin can see most popular events, total participants etc.
+
+form page dbms schemes:
+Database Schema:
+
+Store form questions in a table (e.g., event_forms) with fields: event_id, question_id, question_text, question_type, options, is_required, conditional_logic.
