@@ -10,6 +10,8 @@ import {
 } from "@/shadcn-components/ui/select"
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { Button } from '@/shadcn-components/ui/button';
+import { CircleX } from 'lucide-react';
 
 const DemoForm = ({ fields, deleteField }) => {
 
@@ -30,13 +32,14 @@ const DemoForm = ({ fields, deleteField }) => {
     });
 
     const handleDelete = (index) => {
+        // console.log(index); ok here
+
         if (deleteField) {
             deleteField(index);
         }
     }
 
     // console.log(fields);
-
 
     return (
         <div className='w-full'>
@@ -46,7 +49,12 @@ const DemoForm = ({ fields, deleteField }) => {
             <div className='mx-auto w-1/2 border border-border rounded-lg shadow-sm p-5 flex flex-wrap gap-4 mt-2'>
                 {fields.map((field, index) => (
                     <div key={index} className='w-full'>
-                        {field?.fieldType != 'option' &&
+                        {field?.fieldType != 'option' && <div className='flex items-end gap-2'>
+                            <Button
+                                onClick={() => handleDelete(field?.fieldId)}
+                                variant="outline" size="icon" aria-label="Submit">
+                                <CircleX color="#ff0000" />
+                            </Button>
                             <div className="grid w-full max-w-full items-center gap-3">
                                 <Label htmlFor={field?.label}>{field?.label}</Label>
                                 <Controller
@@ -63,8 +71,15 @@ const DemoForm = ({ fields, deleteField }) => {
                                     )}
                                 />
                                 {errors.fieldName && <span className="text-red-500">{errors.fieldName.message}</span>}
-                            </div>}
-                        {field?.fieldType === 'option' && (
+                            </div>
+                        </div>
+                        }
+                        {field?.fieldType === 'option' && (<div className='flex items-end gap-2'>
+                            <Button
+                                onClick={() => handleDelete(field?.fieldId)}
+                                variant="outline" size="icon" aria-label="Submit">
+                                <CircleX color="#ff0000" />
+                            </Button>
                             <div className="grid w-full items-center gap-3">
                                 <Label htmlFor={field.label}>{field.label}</Label>
                                 <Controller
@@ -94,6 +109,7 @@ const DemoForm = ({ fields, deleteField }) => {
                                     <span className="text-red-500">{errors[field.fieldName].message}</span>
                                 )}
                             </div>
+                        </div>
                         )}
                     </div>
                 ))}

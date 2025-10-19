@@ -29,10 +29,15 @@ const CreateEvent = () => {
         setFields([...fields, data]);
     };
 
-    const deleteField = (index) => {
-        const updatedFields = fields.filter((_, i) => i !== index);
+    const deleteField = (id) => {
+        console.log(id);
+        
+        const updatedFields = fields.filter(item => item.fieldId !== id);
         setFields(updatedFields);
-    }
+    };
+
+    console.log(fields);
+    
 
 
     // {fieldName: 'Name', label: 'saa', fieldType: 'text', isRequired: false, options: ''}
@@ -207,7 +212,7 @@ const CreateEvent = () => {
 
                 </div>
             </div> */}
-            <DemoForm fields={fields} handleDelete={deleteField}></DemoForm>
+            <DemoForm fields={fields} deleteField={deleteField}></DemoForm>
         </div>
     );
 };

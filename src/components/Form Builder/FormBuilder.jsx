@@ -11,6 +11,7 @@ import {
 } from "@/shadcn-components/ui/select"
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { randomUUID } from "crypto";
 
 const FormBuilder = ({ onData }) => {
 
@@ -31,6 +32,7 @@ const FormBuilder = ({ onData }) => {
     });
 
     const onSubmit = (data) => {
+        data.fieldId = crypto.randomUUID().split('-')[0]; // simple unique id        
         onData(data);
         reset();
     };
