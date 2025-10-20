@@ -13,16 +13,43 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import FormBuilder from '@/components/Form Builder/FormBuilder';
 import DemoForm from '@/components/Form Demo/DemoForm';
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '@/shadcn-components/ui/field';
+import { Textarea } from '@/shadcn-components/ui/textarea';
+
+import { ChevronDownIcon } from "lucide-react"
+import { Button } from "@/shadcn-components/ui/button"
+import { Calendar } from "@/shadcn-components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/shadcn-components/ui/popover"
 
 
 const CreateEvent = () => {
-    // const {
-    //     control,
-    //     handleSubmit,
-    //     formState: { errors },
-    //     watch
-    // } = useForm();
+    const {
+        control,
+        handleSubmit,
+        register,
+        formState: { errors },
+        reset
+    } = useForm({
+        defaultValues: {
+            eventTitle: '',
+            description: '',
+            location: '',
+            eventType: '',
+            capacity: '',
+            price: '',
+        },
+    })
 
+    const [openEventDate, setOpenEventDate] = useState(false);
+    const [openDeadline, setOpenDeadline] = useState(false);
+    const [date, setDate] = useState(undefined);
+    const [deadline, setDeadline] = useState(null)
+
+    const [eventData, setEventData] = useState([]);
     const [fields, setFields] = useState([]);
 
     const handleFormData = (data) => {
@@ -31,13 +58,39 @@ const CreateEvent = () => {
 
     const deleteField = (id) => {
         console.log(id);
-        
+
         const updatedFields = fields.filter(item => item.fieldId !== id);
         setFields(updatedFields);
     };
 
+    const onSubmit = (data) => {
+        const newEvent = {
+            ...data,
+            eventDate: date,
+            eventDeadline: deadline,
+            // fields,
+        }
+        setEventData([...eventData, newEvent])
+        // reset()
+        // setFields([])
+        // setDate(null)
+        // setDeadline(null)
+        console.log('Event details saved:', newEvent)
+    }
+
+    const saveEvent = () => {
+        const event = { eventData, fields };
+        reset();
+        setDate(null)
+        setDeadline(null)
+        setFields([])
+
+        console.log('Event Data: ', event);
+
+    }
+
     console.log(fields);
-    
+
 
 
     // {fieldName: 'Name', label: 'saa', fieldType: 'text', isRequired: false, options: ''}
@@ -45,8 +98,159 @@ const CreateEvent = () => {
 
     return (
         <div>
-            <div className='font-sans text-3xl font-bold text-center'>Registration Form Builder</div>
-            {/* <div className='my-5 border rounded-md p-5 shadow-md'>
+            <div>
+                <p className="text-3xl font-sans text-center">Event Form</p>
+                <form onSubmit={handleSubmit(onSubmit)} className='mx-auto w-2/3 border border-border rounded-lg shadow-sm p-5 flex flex-wrap gap-4 my-4'>
+                    <FieldSet className='w-full'>
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="EventTitle">Event Title</FieldLabel>
+                                <Input {...register('eventTitle', { required: true })} id="eventTitle" type="text" placeholder="Event Title Goes Here" />
+                                {errors.eventTitle && <span className="text-red-500">Title required</span>}
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="description">Description</FieldLabel>
+                                <Textarea
+                                    {...register('description', { required: true })}
+                                    id="description"
+                                    placeholder="Please insert event description here..."
+                                    rows={3}
+                                />
+                                {errors.description && <span className="text-red-500">Description required</span>}
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="location">Location of the event venue</FieldLabel>
+                                <Input
+                                    {...register('location', { required: true })}
+                                    id="location" type="text" placeholder="Add venue location or online link for zoom/meet...." />
+                                {errors.location && <span className="text-red-500">Location required</span>}
+                            </Field>
+                            {/* calender */}
+                            <div>
+                                <FieldLabel>Date and time For the Event</FieldLabel>
+                                <div className="flex gap-4 mt-2">
+                                    <div className="flex flex-col gap-3">
+                                        {/* Event Date */}
+                                        <Popover open={openEventDate} onOpenChange={setOpenEventDate}>
+                                            <PopoverTrigger asChild>
+                                                <Button variant="outline" id="date-picker" className="w-full justify-between font-normal">
+                                                    {date ? date.toLocaleDateString() : "Select date"}
+                                                    <ChevronDownIcon />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={date}
+                                                    captionLayout="dropdown"
+                                                    onSelect={(date) => {
+                                                        setDate(date);
+                                                        setOpenEventDate(false);
+                                                    }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <Input
+                                            type="time"
+                                            id="time-picker"
+                                            step="1"
+                                            defaultValue="10:30:00"
+                                            className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                                        />
+                                        <Label htmlFor="time-picker" className="px-1">
+                                            Time
+                                        </Label>
+                                    </div>
+                                </div>
+                            </div>
+                            <Field>
+                                <FieldLabel>Event Type</FieldLabel>
+                                <Controller
+                                    name="eventType"
+                                    control={control}
+                                    rules={{ required: 'Event Type is required' }}
+                                    render={({ field }) => (
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select event type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="conference">Conference</SelectItem>
+                                                <SelectItem value="workshop">Workshop</SelectItem>
+                                                <SelectItem value="meetup">Meetup and Networking</SelectItem>
+                                                <SelectItem value="competition">Competition</SelectItem>
+                                                <SelectItem value="hackathon">Hackathon</SelectItem>
+                                                <SelectItem value="competitive programming">Competitive Programming</SelectItem>
+                                                <SelectItem value="cultural">Cultural</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="capacity">Event Capacity</FieldLabel>
+                                <Input {...register('capacity', { required: true })} id="capacity" type="number" placeholder="Add maximum event capacity here..." />
+                                {errors.capacity && <span className="text-red-500">Capacity required</span>}
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="price">Pricing (taka)</FieldLabel>
+                                <Input {...register('price', { required: true })} id="price" type="number" placeholder="Insert price for individual entry..." />
+                                {errors.price && <span className="text-red-500">Price required</span>}
+                            </Field>
+                            <div>
+                                <FieldLabel>Event Deadline</FieldLabel>
+                                <div className="flex gap-4 mt-2">
+                                    <div className="flex flex-col gap-3">
+                                        <Popover open={openDeadline} onOpenChange={setOpenDeadline}>
+                                            <PopoverTrigger asChild>
+                                                <Button variant="outline" id="date-picker" className="w-full justify-between font-normal">
+                                                    {deadline ? deadline.toLocaleDateString() : "Select date"}
+                                                    <ChevronDownIcon />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={deadline}
+                                                    captionLayout="dropdown"
+                                                    onSelect={(date) => {
+                                                        setDeadline(date);
+                                                        setOpenDeadline(false);
+                                                    }}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <Input
+                                            type="time"
+                                            id="time-picker"
+                                            step="1"
+                                            defaultValue="10:30:00"
+                                            className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                                        />
+                                        <Label htmlFor="time-picker" className="px-1">
+                                            Time
+                                        </Label>
+                                    </div>
+                                </div>
+                            </div>
+                        </FieldGroup>
+                    </FieldSet>
+                    <button
+                        type="submit"
+                        className='bg-primary p-3 rounded-2xl mt-5 hover:bg-secondary hover:text-secondary-foreground text-sm'
+                    >
+                        Save Event Details
+                    </button>
+                </form>
+            </div>
+
+            <div>
+                <p className='font-sans text-3xl font-bold text-center'>Registration Form Builder</p>
+                {/* <div className='my-5 border rounded-md p-5 shadow-md'>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex gap-2 items-center'>
                         <div className="grid w-full max-w-sm items-center gap-3">
@@ -150,8 +354,8 @@ const CreateEvent = () => {
                     </button>
                 </form>
             </div> */}
-            <FormBuilder onData={handleFormData}></FormBuilder>
-            {/* <div className='w-full'>
+                <FormBuilder onData={handleFormData}></FormBuilder>
+                {/* <div className='w-full'>
                 <div className='text-3xl font-sans font-bold text-center'>Demo Form</div>
                 <p>Total number of fields: {fields.length}</p>
 
@@ -212,7 +416,16 @@ const CreateEvent = () => {
 
                 </div>
             </div> */}
-            <DemoForm fields={fields} deleteField={deleteField}></DemoForm>
+                <DemoForm fields={fields} deleteField={deleteField}></DemoForm>
+            </div>
+            <div className='flex w-full justify-center'>
+                <button
+                    onClick={saveEvent}
+                    className='bg-emerald-500 w-1/2 ml-2 p-2 rounded-2xl mt-5 hover:bg-secondary hover:text-emerald-500'
+                >
+                    Save Event
+                </button>
+            </div>
         </div>
     );
 };
