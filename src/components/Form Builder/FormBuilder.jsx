@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { randomUUID } from "crypto";
 
-const FormBuilder = ({ onData }) => {
+const FormBuilder = ({ onData, eventData }) => {
 
     const {
         control,
@@ -137,12 +137,15 @@ const FormBuilder = ({ onData }) => {
                         />
                     </div>
                 </div>
-                <button
+                {eventData.length > 0 ? <button
                     type="submit"
                     className='bg-primary p-2 rounded-2xl mt-5 hover:bg-secondary hover:text-secondary-foreground'
                 >
                     Add Field
-                </button>
+                </button> : <button className='p-2 rounded-2xl mt-5 bg-gray-300 text-gray-600 cursor-not-allowed' disabled>
+                    Please save event first
+                </button> }
+
             </form>
         </div>
     );

@@ -24,6 +24,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/shadcn-components/ui/popover"
+import ImageUploader from '@/components/uploadThings/ImageUploader';
 
 
 const CreateEvent = () => {
@@ -52,6 +53,8 @@ const CreateEvent = () => {
     const [eventData, setEventData] = useState([]);
     const [fields, setFields] = useState([]);
 
+    const [imageUrl, setImageUrl] = useState('');
+
     const handleFormData = (data) => {
         setFields([...fields, data]);
     };
@@ -68,6 +71,7 @@ const CreateEvent = () => {
             ...data,
             eventDate: date,
             eventDeadline: deadline,
+            eventImage: imageUrl,
             // fields,
         }
         setEventData([...eventData, newEvent])
@@ -84,12 +88,16 @@ const CreateEvent = () => {
         setDate(null)
         setDeadline(null)
         setFields([])
+        setImageUrl(null)
+        setEventData([]);
 
         console.log('Event Data: ', event);
 
     }
 
-    console.log(fields);
+    console.log('event data: ', eventData);
+    console.log('fields data: ', fields);
+    console.log('image url: ', imageUrl);
 
 
 
@@ -237,6 +245,16 @@ const CreateEvent = () => {
                                     </div>
                                 </div>
                             </div>
+                            <p className="text-2xl font-bold">Add Event Poster</p>
+                            <div className='flex justify-center my-2'>
+                                <ImageUploader
+                                    endpoint={'imageUploader'}
+                                    value={imageUrl}
+                                    onChange={(url) => {
+                                        setImageUrl(url)
+                                    }}
+                                ></ImageUploader>
+                            </div>
                         </FieldGroup>
                     </FieldSet>
                     <button
@@ -354,7 +372,7 @@ const CreateEvent = () => {
                     </button>
                 </form>
             </div> */}
-                <FormBuilder onData={handleFormData}></FormBuilder>
+                <FormBuilder onData={handleFormData} eventData={eventData}></FormBuilder>
                 {/* <div className='w-full'>
                 <div className='text-3xl font-sans font-bold text-center'>Demo Form</div>
                 <p>Total number of fields: {fields.length}</p>
@@ -419,12 +437,16 @@ const CreateEvent = () => {
                 <DemoForm fields={fields} deleteField={deleteField}></DemoForm>
             </div>
             <div className='flex w-full justify-center'>
-                <button
-                    onClick={saveEvent}
-                    className='bg-emerald-500 w-1/2 ml-2 p-2 rounded-2xl mt-5 hover:bg-secondary hover:text-emerald-500'
-                >
-                    Save Event
-                </button>
+                {
+                    fields.length > 0 ? <button
+                        onClick={saveEvent}
+                        className='bg-emerald-500 w-1/2 ml-2 p-2 rounded-2xl mt-5 hover:bg-secondary hover:text-emerald-500'
+                    >
+                        Save Event
+                    </button> : <button className='p-2 rounded-2xl mt-5 bg-gray-300 text-gray-600 cursor-not-allowed' disabled>
+                        Please Add Fields in form first
+                    </button>
+                }
             </div>
         </div>
     );

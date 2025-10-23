@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import Navbar from "@/shadcn-components/Navbar(comp-584)";
-import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+// import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { stackClientApp } from "@/stack/client";
 
 const geistSans = Geist({

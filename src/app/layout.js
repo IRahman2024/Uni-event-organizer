@@ -4,6 +4,7 @@ import { stackClientApp } from "../stack/client";
 import "./globals.css";
 import Navbar from "@/shadcn-components/Navbar(comp-584)";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+// import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
