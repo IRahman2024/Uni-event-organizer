@@ -25,6 +25,8 @@ import {
     PopoverTrigger,
 } from "@/shadcn-components/ui/popover"
 import ImageUploader from '@/components/uploadThings/ImageUploader';
+import axios from 'axios';
+import { Form } from 'radix-ui';
 
 
 const CreateEvent = () => {
@@ -84,14 +86,31 @@ const CreateEvent = () => {
 
     const saveEvent = () => {
         const event = { eventData, fields };
-        reset();
-        setDate(null)
-        setDeadline(null)
-        setFields([])
-        setImageUrl(null)
-        setEventData([]);
+        // reset();
+        // setDate(null)
+        // setDeadline(null)
+        // setFields([])
+        // setImageUrl(null)
+        // setEventData([]);
+
+        const data = {
+            ...eventData[0],
+            FormFields: {
+                createMany:{
+                    data: fields
+                },
+            },
+        }
 
         console.log('Event Data: ', event);
+
+        axios.post('/api/events/createEvent', event)
+            .then(response => {
+                console.log('Event saved successfully:', response.data);
+            })
+            .catch(error => {
+                console.error('Error saving event:', error);
+            });
 
     }
 

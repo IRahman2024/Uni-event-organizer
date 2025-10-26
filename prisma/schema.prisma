@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  eventTitle    String
+  description   String
+  location      String
+  eventType     String // Consider making this an enum
+  capacity      Int
+  price         Decimal  @db.Decimal(10, 2)
+  eventDate     DateTime
+  eventDeadline DateTime
+  eventImage    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  formFields    FormField[]
+  registrations Registration[]
+}
+
+model FormField {
+  id         String  @id @default(cuid())
+  fieldName  String
+  label      String
+  fieldType  String // text, email, select, radio, checkbox, etc.
+  isRequired Boolean @default(false)
+  options    String? // Store as JSON string for select/radio/checkbox options
+  // fieldId    String  @unique
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventId])
+}
+
+model Student {
+  id         String @id @default(cuid()) // student ID
+  name       String
+  email      String @unique
+  batch      Int
+  department String
+  studentId  String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  registrations Registration[]
+}
+
+model Registration {
+  id String @id @default(cuid())
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  formData Json // Store all form responses as JSON
+
+  registeredAt DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([studentId, eventId]) // A student can only register once per event
+  @@index([studentId])
+  @@index([eventId])
+}

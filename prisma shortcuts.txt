@@ -1,0 +1,81 @@
+npx prisma init
+npm i @prisma/client
+npm i prisma --save -dev (not useful)
+npx prisma migrate dev --name <migration_name> (to update the schemas)
+npx prisma generate(to update types in prima client after migration)
+npx prisma db push
+
+
+model Event {
+  id              String   @id @default(cuid())
+  eventTitle      String
+  description     String
+  location        String
+  eventType       String   // Consider making this an enum
+  capacity        Int
+  price           Decimal  @db.Decimal(10, 2)
+  eventDate       DateTime
+  eventDeadline   DateTime
+  eventImage      String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  formFields      FormField[]
+  registrations   Registration[]
+}
+
+model FormField {
+  id          String   @id @default(cuid())
+  fieldName   String
+  label       String
+  fieldType   String   // text, email, select, radio, checkbox, etc.
+  isRequired  Boolean  @default(false)
+  options     String?  // Store as JSON string for select/radio/checkbox options
+  fieldId     String   @unique
+  order       Int      @default(0) // To maintain field order in the form
+  
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([eventId])
+}
+
+model Student {
+  id            String   @id @default(cuid())
+  name          String
+  studentId     String   @unique
+  email         String   @unique
+  batch         String
+  department    String
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  registrations Registration[]
+}
+
+model Registration {
+  id              String   @id @default(cuid())
+  
+  studentId       String
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  eventId         String
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  formData        Json     // Store all form responses as JSON
+  paymentStatus   String   @default("pending") // pending, completed, failed
+  
+  registeredAt    DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([studentId, eventId]) // A student can only register once per event
+  @@index([studentId])
+  @@index([eventId])
+}
