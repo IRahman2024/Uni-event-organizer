@@ -27,6 +27,7 @@ import {
 import ImageUploader from '@/components/uploadThings/ImageUploader';
 import axios from 'axios';
 import { Form } from 'radix-ui';
+import Loading from '@/app/loading';
 
 
 const CreateEvent = () => {
@@ -57,6 +58,8 @@ const CreateEvent = () => {
 
     const [imageUrl, setImageUrl] = useState('');
 
+    const [loading, setLoading] = useState(false);
+
     const handleFormData = (data) => {
         setFields([...fields, data]);
     };
@@ -86,17 +89,17 @@ const CreateEvent = () => {
 
     const saveEvent = () => {
         const event = { eventData, fields };
-        // reset();
-        // setDate(null)
-        // setDeadline(null)
-        // setFields([])
-        // setImageUrl(null)
-        // setEventData([]);
+        reset();
+        setDate(null)
+        setDeadline(null)
+        setFields([])
+        setImageUrl(null)
+        setEventData([]);
 
         const data = {
             ...eventData[0],
             FormFields: {
-                createMany:{
+                createMany: {
                     data: fields
                 },
             },
@@ -104,12 +107,16 @@ const CreateEvent = () => {
 
         console.log('Event Data: ', event);
 
+        setLoading(true);
+
         axios.post('/api/events/createEvent', event)
             .then(response => {
                 console.log('Event saved successfully:', response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error saving event:', error);
+                setLoading(false);
             });
 
     }
@@ -122,6 +129,14 @@ const CreateEvent = () => {
 
     // {fieldName: 'Name', label: 'saa', fieldType: 'text', isRequired: false, options: ''}
     // {fieldName: 'Size', label: 'Size', fieldType: 'option', isRequired: true, options: 'xl, xxl, sm, md'}
+
+    if (loading) {
+        return (
+            <div className='flex items-center justify-center'>
+                <Loading text={'Updating Database. Please wait...'}></Loading>
+            </div>
+        )
+    }
 
     return (
         <div>

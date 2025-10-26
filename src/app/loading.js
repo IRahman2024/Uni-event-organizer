@@ -3,13 +3,13 @@ import 'ldrs/react/Reuleaux.css'
 
 // Default values shown
 
-export default function Loading() {
+export default function Loading({text}) {
 
   // Stack uses React Suspense, which will render this page while user data is being fetched.
   // See: https://nextjs.org/docs/app/api-reference/file-conventions/loading
   return <>
 
-    <div className='flex items-center justify-center min-h-screen'>
+    <div className='flex flex-col items-center justify-center min-h-screen'>
       <Reuleaux
         size="80"
         stroke="10"
@@ -18,6 +18,7 @@ export default function Loading() {
         speed="1.5"
         color="#fb3904ff"
       />
+      <p className='mt-5'>{text}</p>
     </div>
   </>;
 }

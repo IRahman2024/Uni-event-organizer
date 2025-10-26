@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
 
     try {
-        
+
         await prisma.$connect();
         console.log("✅ Database connected successfully");
 
@@ -40,7 +40,7 @@ export async function POST(request) {
             }
         }
 
-        console.log('Transformed Data: ', transformedData);
+        // console.log('Transformed Data: ', transformedData);
 
         const event = await prisma.event.create({
             data: transformedData,
@@ -49,14 +49,18 @@ export async function POST(request) {
             }
         });
 
-        console.log(event);
-
+        // console.log(event);
+        
+        await prisma.$disconnect();
         return NextResponse.json({
+            success: true,
             message: "Event and fields created successfully via nested create",
             data: event
         });
+        
     } catch (error) {
         console.error("Error creating event:", error);
+        await prisma.$disconnect();
         return NextResponse.json(
             {
                 success: false,
@@ -65,7 +69,6 @@ export async function POST(request) {
             },
             { status: 500 }
         );
-
     }
 
 }
