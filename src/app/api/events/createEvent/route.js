@@ -50,14 +50,14 @@ export async function POST(request) {
         });
 
         // console.log(event);
-        
+
         await prisma.$disconnect();
         return NextResponse.json({
             success: true,
             message: "Event and fields created successfully via nested create",
             data: event
         });
-        
+
     } catch (error) {
         console.error("Error creating event:", error);
         await prisma.$disconnect();

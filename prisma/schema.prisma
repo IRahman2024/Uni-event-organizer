@@ -24,6 +24,8 @@ model Event {
   eventDate     DateTime
   eventDeadline DateTime
   eventImage    String?
+  audience      Int?
+  status        String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
