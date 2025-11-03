@@ -226,6 +226,7 @@ const CreateEvent = () => {
                                                 <SelectItem value="hackathon">Hackathon</SelectItem>
                                                 <SelectItem value="competitive programming">Competitive Programming</SelectItem>
                                                 <SelectItem value="cultural">Cultural</SelectItem>
+                                                <SelectItem value="others">Others</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     )}

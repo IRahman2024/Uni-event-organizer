@@ -103,7 +103,8 @@ const EVENT_TYPES = [
     "competition",
     "hackathon",
     "competitive programming",
-    "cultural"
+    "cultural",
+    "others"
 ]
 
 // Event status types
@@ -334,7 +335,9 @@ export default function EventTable({
     onView,
     onAddEvent,
     onStatusChange,
-    isLoading = false
+    isLoading = false,
+    isUpdating = false,
+    isDeleting = false
 }) {
     const id = useId()
     const [columnFilters, setColumnFilters] = useState([])
@@ -356,9 +359,30 @@ export default function EventTable({
     const [openDeadlineDate, setOpenDeadlineDate] = useState(false)
     const [eventDateRange, setEventDateRange] = useState({ from: null, to: null })
     const [deadlineDateRange, setDeadlineDateRange] = useState({ from: null, to: null })
-    const [isDeleting, setIsDeleting] = useState(false)
+    // const [isDeleting, setIsDeleting] = useState(false)
+    // const [isUpdating, setIsUpdating] = useState(false)
 
-    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, onStatusChange), [onEdit, onDelete, onView, onStatusChange])
+
+    const handleStatusChangeInternal = async (eventId, newStatus) => {
+
+        // console.log(eventId, newStatus);
+
+        // setIsUpdating(true);
+
+        try {
+            const statUpdate = await onStatusChange?.(eventId, newStatus);
+            console.log('statUpdate: ', statUpdate);
+            
+        }
+        catch (error) {
+            console.error("Status update failed:", error)
+        }
+        finally {
+            // setIsUpdating(false);
+        }
+    }
+
+    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, handleStatusChangeInternal), [onEdit, onDelete, onView, onStatusChange])
 
     const table = useReactTable({
         data,
@@ -410,14 +434,14 @@ export default function EventTable({
         const selectedIds = selectedRows.map(row => row.original.id)
 
         if (onDelete) {
-            setIsDeleting(true)  // Show loading dialog
+            // setIsDeleting(true)  // Show loading dialog
             try {
                 await onDelete(selectedIds)  // Wait for delete to complete
                 table.resetRowSelection()
             } catch (error) {
                 console.error("Delete failed:", error)
             } finally {
-                setIsDeleting(false)  // Hide loading dialog
+                // setIsDeleting(false)  // Hide loading dialog
             }
         }
     }
@@ -742,7 +766,7 @@ export default function EventTable({
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-
+                {/* delete dialogs */}
                 <div className="flex items-center gap-3">
                     {/* Delete button */}
                     {table.getSelectedRowModel().rows.length > 0 && (
@@ -802,6 +826,26 @@ export default function EventTable({
                                     </AlertDialogTitle>
                                     <AlertDialogDescription className="text-center">
                                         Please wait while we delete the selected events.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                            </div>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
+                    <AlertDialog open={isUpdating}>
+                        <AlertDialogContent>
+                            <div className="flex flex-col gap-4 items-center justify-center py-4">
+                                <l-helix
+                                    size="79"
+                                    speed="3.7"
+                                    color='#0df22cff'
+                                ></l-helix>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle className="text-center">
+                                        Updating...
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription className="text-center">
+                                        Please wait while updating.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                             </div>
@@ -1075,25 +1119,16 @@ function RowActions({ row, onEdit, onDelete, onView, onStatusChange }) {
                         <DropdownMenuSubTrigger>Change Status</DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem onClick={() => {
-                                    // Add your status change API call here
-                                    console.log("Change status to Active", event.id)
-                                }}>
+                                <DropdownMenuItem onClick={() => onStatusChange?.(event.id, "active")}>
                                     <Badge className="bg-green-500 text-white text-xs">Active</Badge>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {
-                                    console.log("Change status to Completed", event.id)
-                                }}>
+                                <DropdownMenuItem onClick={() => onStatusChange?.(event.id, "completed")}>
                                     <Badge className="bg-blue-500 text-white text-xs">Completed</Badge>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {
-                                    console.log("Change status to Canceled", event.id)
-                                }}>
+                                <DropdownMenuItem onClick={() => onStatusChange?.(event.id, "canceled")}>
                                     <Badge className="bg-red-500 text-white text-xs">Canceled</Badge>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {
-                                    console.log("Change status to Postponed", event.id)
-                                }}>
+                                <DropdownMenuItem onClick={() => onStatusChange?.(event.id, "postponed")}>
                                     <Badge className="bg-yellow-500 text-white text-xs">Postponed</Badge>
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>

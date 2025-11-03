@@ -28,7 +28,6 @@ export async function DELETE(request) {
             { status: 200 })
 
     } catch (error) {
-        // prisma.$disconnect();
         console.log('error detected in api: ', error);
         return NextResponse.json({
             success: false,

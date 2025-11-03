@@ -9,12 +9,22 @@ const Delete = () => {
 
     const [events, setEvents] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [isUpdating, setUpdating] = useState(false);
+    const [isDeleting, setDeleting] = useState(false);
 
     const fetchEvents = useCallback(async () => {
         setLoading(true);
-        axios.get('/api/events')
-            .then((res) => setEvents(res.data.data))
-            .finally(() => setLoading(false));
+
+        try {
+            const res = await axios.get('/api/events')
+            setEvents(res.data.data)
+        } catch (error) {
+            console.log('error while fetching: ', error);
+        }
+        finally {
+            setLoading(false)
+        };
+
     }, [])
 
 
@@ -22,12 +32,12 @@ const Delete = () => {
         fetchEvents();
     }, [fetchEvents]);
 
-    console.log(events);
+    // console.log(events);
     console.log(events.length);
 
     const handleDelete = async (eventIds) => {  // eventIds is an array like ["id1", "id2", "id3"]
         setLoading(true);
-
+        setDeleting(true);
         try {
             // Join array of IDs into comma-separated string
             const idsString = eventIds.join(',');
@@ -44,8 +54,39 @@ const Delete = () => {
             // Optionally show error toast/notification
         } finally {
             setLoading(false);
+            setDeleting(false);
         }
     }
+
+    // const handleStatusChange = async (eventId, newStatus) => {
+    //     // console.log('got edit request on eventId: ', eventId, 'status: ', newStatus);
+    //     setUpdating(true);
+    //     console.log(eventId, newStatus);
+
+    //     axios.patch(`/api/events/updateEvent/${eventId}`, {
+    //         status: newStatus
+    //     })
+    //         .then((res) => {
+    //             console.log(res);
+    //             await fetchEvents();
+    //         })
+    //         .finally(() => setUpdating(false))
+    // }
+
+    const handleStatusChange = async (eventId, newStatus) => {
+        setUpdating(true);
+        try {
+            await axios.patch(`/api/events/updateEvent/${eventId}`, {
+                status: newStatus
+            });
+            await fetchEvents(); // Ensure this is async/await
+        } catch (error) {
+            console.error("Update failed:", error);
+            // Optional: toast.error("Failed to update status")
+        } finally {
+            setUpdating(false);
+        }
+    };
 
 
     return (
@@ -58,9 +99,11 @@ const Delete = () => {
                     data={events}
                     isLoading={isLoading}
                     // onAddEvent={handleAddEvent}
-                    // onEdit={handleEdit}
+                    onStatusChange={handleStatusChange}
                     // onView={handleView}
                     onDelete={handleDelete}
+                    isUpdating={isUpdating}
+                    isDeleting={isDeleting}
                 ></EventTable>
             </div>
         </div>
