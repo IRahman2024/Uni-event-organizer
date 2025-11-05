@@ -1,9 +1,39 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { success } from "zod";
 
-export async function GET() {
+export async function GET(req) {
     try {
+
+        const { searchParams } = new URL(req.url);
+        const eventId = searchParams.get('eventId');
+
+        if (eventId) {
+            await prisma.$connect();
+
+            const events = await prisma.event.findUnique({
+                where: {
+                    id: eventId
+                },
+                include: {
+                    formFields: true
+                }
+            })
+
+            await prisma.$disconnect();
+
+            return NextResponse.json({
+                success: true,
+                data: events,
+                message: "All Events fetched successfully"
+            });
+        }
+
+        // return NextResponse.json({
+        //     success: true,
+        //     data: `got eventId: ${eventId}`
+        // })
+
         await prisma.$connect();
 
         const events = await prisma.event.findMany({

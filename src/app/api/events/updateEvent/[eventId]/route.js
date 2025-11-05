@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { success } from "zod";
 
@@ -16,7 +17,7 @@ export async function PATCH(request, { params }) {
         prisma.$connect();
 
         const response = await prisma.event.update({
-            where:{
+            where: {
                 id: eventId
             },
             data: {
@@ -38,5 +39,83 @@ export async function PATCH(request, { params }) {
             message: error
         })
 
+    }
+}
+
+export async function PUT(request, { params }) {
+    try {
+        // 1. Await dynamic params (Next.js 15+)
+        const { eventId } = await params;
+
+        // 2. Parse body
+        const body = await request.json();
+
+        console.log(body);
+
+
+        const {
+            eventTitle,
+            description,
+            location,
+            eventType,
+            capacity,
+            price,
+            eventDate,
+            eventDeadline,
+            eventImage,
+            fields = [],
+        } = body;
+
+        // 3. Transform data (same as your create logic)
+        const transformedData = {
+            eventTitle,
+            description,
+            location,
+            eventType,
+            capacity: parseInt(capacity, 10),
+            price: new Prisma.Decimal(price), // Decimal from string
+            eventDate: new Date(eventDate),
+            eventDeadline: new Date(eventDeadline),
+            eventImage: eventImage || null,
+
+            formFields: {
+                deleteMany: { eventId }, // Delete all old fields for this event
+                create: fields.map((field) => ({
+                    // Generate new CUID automatically
+                    fieldName: field.fieldName,
+                    label: field.label,
+                    fieldType: field.fieldType,
+                    isRequired: field.isRequired,
+                    options: field.options || null,
+                })),
+            },
+        };
+
+        // 4. Update event with nested upserts
+        const event = await prisma.event.update({
+            where: { id: eventId },
+            data: transformedData,
+            include: {
+                formFields: true,
+            },
+        });
+
+        // 5. Success
+        return NextResponse.json({
+            message: 'Event updated successfully',
+            data: event,
+        });
+
+    } catch (error) {
+        console.error('Update error:', error);
+
+        if (error.code === 'P2025') {
+            return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+        }
+
+        return NextResponse.json(
+            { error: 'Failed to update event', details: error.message },
+            { status: 500 }
+        );
     }
 }

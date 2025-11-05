@@ -68,7 +68,7 @@ const rawSeedData = [
             price: "1500",
             eventDate: "2025-12-05T10:00:00.000Z",
             eventDeadline: "2025-11-30T23:59:59.000Z",
-            eventImage: "summit_image_url"
+            eventImage: ""
         }],
         fields: [
             { fieldName: "Email", label: "Contact Email", fieldType: "email", isRequired: true, options: "" },

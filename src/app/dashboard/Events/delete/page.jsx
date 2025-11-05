@@ -2,10 +2,11 @@
 import EventTable from '@/components/EventTable/EventTable';
 import TableDetailed from '@/shadcn-components/comp-485';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { set } from 'zod';
 
-const Delete = () => {
+const ManageEvents = () => {
 
     const [events, setEvents] = useState([]);
     const [isLoading, setLoading] = useState(false);
@@ -34,6 +35,15 @@ const Delete = () => {
 
     // console.log(events);
     console.log(events.length);
+
+    const router = useRouter();
+
+    const toEditPage = (id) =>{
+        console.log('edit eventId: ', id);
+        // console.log(`/dashboard/Events/edit/${id}`);
+        router.push(`/dashboard/Events/edit/${id}`);
+        
+    }
 
     const handleDelete = async (eventIds) => {  // eventIds is an array like ["id1", "id2", "id3"]
         setLoading(true);
@@ -91,7 +101,6 @@ const Delete = () => {
 
     return (
         <div>
-            This is event delete page.
             <p>total events: {events.length}</p>
             <div className='mt-10'>
                 {/* <TableDetailed></TableDetailed> */}
@@ -99,6 +108,7 @@ const Delete = () => {
                     data={events}
                     isLoading={isLoading}
                     // onAddEvent={handleAddEvent}
+                    onEdit={toEditPage}
                     onStatusChange={handleStatusChange}
                     // onView={handleView}
                     onDelete={handleDelete}
@@ -110,4 +120,4 @@ const Delete = () => {
     );
 };
 
-export default Delete;
+export default ManageEvents;

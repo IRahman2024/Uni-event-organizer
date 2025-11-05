@@ -92,8 +92,9 @@ import Link from "next/link";
 
 import { Trefoil } from 'ldrs/react'
 import 'ldrs/react/Trefoil.css'
+
 import { helix } from 'ldrs'
-helix.register()
+helix.register();
 
 // Event types as defined
 const EVENT_TYPES = [
@@ -362,7 +363,6 @@ export default function EventTable({
     // const [isDeleting, setIsDeleting] = useState(false)
     // const [isUpdating, setIsUpdating] = useState(false)
 
-
     const handleStatusChangeInternal = async (eventId, newStatus) => {
 
         // console.log(eventId, newStatus);
@@ -382,7 +382,7 @@ export default function EventTable({
         }
     }
 
-    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, handleStatusChangeInternal), [onEdit, onDelete, onView, onStatusChange])
+    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, handleStatusChangeInternal ), [onEdit, onDelete, onView, onStatusChange ])
 
     const table = useReactTable({
         data,

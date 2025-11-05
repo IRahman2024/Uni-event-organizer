@@ -74,11 +74,7 @@ const data = {
           url: "/dashboard/Events/create",
         },
         {
-          title: "Edit An Event",
-          url: "/dashboard/Events/edit",
-        },
-        {
-          title: "Delete An Event",
+          title: "Update or Delete Events",
           url: "/dashboard/Events/delete",
         },
       ],
