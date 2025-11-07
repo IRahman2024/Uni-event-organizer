@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "seed": "node ./seed.js"
+    "seed": "node ./seed.js",
+    "studentSeed": "node ./studentSeed.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

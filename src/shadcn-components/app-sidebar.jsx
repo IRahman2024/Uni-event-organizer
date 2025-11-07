@@ -13,7 +13,8 @@ import {
   Settings2,
   CalendarDays,
   Users,
-  House
+  House,
+  User
 } from "lucide-react"
 
 
@@ -37,31 +38,32 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/shadcn-components/ui/collapsible"
+import { useUser } from "@stackframe/stack"
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
+const adminData = {
+  // user: {
+  //   name: "shadcn",
+  //   email: "m@example.com",
+  //   avatar: "/avatars/shadcn.jpg",
+  // },
+  // teams: [
+  //   {
+  //     name: "Acme Inc",
+  //     logo: GalleryVerticalEnd,
+  //     plan: "Enterprise",
+  //   },
+  //   {
+  //     name: "Acme Corp.",
+  //     logo: AudioWaveform,
+  //     plan: "Startup",
+  //   },
+  //   {
+  //     name: "Evil Corp.",
+  //     logo: Command,
+  //     plan: "Free",
+  //   },
+  // ],
   navMain: [
     {
       title: "Event Management",
@@ -80,13 +82,13 @@ const data = {
       ],
     },
     {
-      title: "Participants",
+      title: "Students",
       url: "#",
       icon: Users,
       items: [
         {
-          title: "List Of All Participants",
-          url: "#",
+          title: "List Of All Students",
+          url: "/dashboard/Students",
         },
         // {
         //   title: "Explorer",
@@ -164,9 +166,138 @@ const data = {
   // ],
 }
 
+const studentData = {
+  // user: {
+  //   name: "shadcn",
+  //   email: "m@example.com",
+  //   avatar: "/avatars/shadcn.jpg",
+  // },
+  // teams: [
+  //   {
+  //     name: "Acme Inc",
+  //     logo: GalleryVerticalEnd,
+  //     plan: "Enterprise",
+  //   },
+  //   {
+  //     name: "Acme Corp.",
+  //     logo: AudioWaveform,
+  //     plan: "Startup",
+  //   },
+  //   {
+  //     name: "Evil Corp.",
+  //     logo: Command,
+  //     plan: "Free",
+  //   },
+  // ],
+  navMain: [
+    {
+      title: "Event Management",
+      url: "#",
+      icon: CalendarDays,
+      isActive: true,
+      items: [
+        {
+          title: "My Events",
+          url: "/dashboard/Events/create",
+        }
+      ],
+    },
+    {
+      title: "Profile",
+      url: "#",
+      icon: User,
+      items: [
+        {
+          title: "My Profile",
+          url: "/dashboard",
+        }
+        // {
+        //   title: "Explorer",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Quantum",
+        //   url: "#",
+        // },
+      ],
+    },
+    // {
+    //   title: "Documentation",
+    //   url: "#",
+    //   icon: BookOpen,
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Get Started",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Tutorials",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Changelog",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
+  ],
+  // projects: [
+  //   {
+  //     name: "Design Engineering",
+  //     url: "#",
+  //     icon: Frame,
+  //   },
+  //   {
+  //     name: "Sales & Marketing",
+  //     url: "#",
+  //     icon: PieChart,
+  //   },
+  //   {
+  //     name: "Travel",
+  //     url: "#",
+  //     icon: Map,
+  //   },
+  // ],
+}
+
 export function AppSidebar({
   ...props
 }) {
+
+  const user = useUser();
+
+  console.log('user data: ', user);
+
+  // admin@admin.com
+
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -190,11 +321,13 @@ export function AppSidebar({
         </Collapsible>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        {
+          user.primaryEmail == "admin@admin.com" ? <NavMain items={adminData.navMain} /> : <NavMain items={studentData.navMain} />
+        }
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

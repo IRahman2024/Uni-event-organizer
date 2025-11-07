@@ -192,7 +192,7 @@ const createColumns = (onEdit, onDelete, onView, onStatusChange, isLoading) => [
         header: "Event Title",
         accessorKey: "eventTitle",
         cell: ({ row }) => (
-            <div className="font-medium">{row.getValue("eventTitle")}</div>
+            <div className="break-all">{row.getValue("eventTitle")}</div>
         ),
         size: 200,
         filterFn: "includesString",
@@ -1110,7 +1110,7 @@ function RowActions({ row, onEdit, onDelete, onView, onStatusChange }) {
                         <span>Edit Event</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                        <span>Duplicate</span>
+                        <span>Check Event Stats</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

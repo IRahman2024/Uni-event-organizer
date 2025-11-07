@@ -54,12 +54,14 @@ model FormField {
 }
 
 model Student {
-  id         String @id @default(cuid()) // student ID
+  id         String  @id @default(cuid()) // student ID
   name       String
-  email      String @unique
+  email      String  @unique
   batch      Int
   department String
-  studentId  String @unique
+  studentId  String  @unique
+  image      String?
+  status     String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
