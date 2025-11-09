@@ -39,10 +39,10 @@ export default async function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="border-border h-auto p-0 hover:bg-base">
+        <Button variant="outline" className="h-auto p-0 hover:bg-base">
           <Avatar>
             <AvatarImage src={user?.profileImageUrl || "./avatar.jpg"} alt="Profile image" />
-            <AvatarFallback>KK</AvatarFallback>
+            <AvatarFallback className='bg-background text-foreground'>KK</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

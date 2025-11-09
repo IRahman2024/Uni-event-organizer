@@ -5,6 +5,10 @@ npx prisma migrate dev --name <migration_name> (to update the schemas)
 npx prisma generate(to update types in prima client after migration)
 npx prisma db push
 
+admin access:
+email: admin@admin.com
+pass: 12345678
+
 
 model Event {
   id              String   @id @default(cuid())

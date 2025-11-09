@@ -87,9 +87,8 @@ import {
 import { Trefoil } from 'ldrs/react'
 import 'ldrs/react/Trefoil.css'
 import { Badge } from "@/shadcn-components/ui/badge"
-import { Helix } from 'ldrs/react'
-import 'ldrs/react/Helix.css'
-
+import { helix } from 'ldrs'
+helix.register();
 
 // Custom filter function for multi-column searching (name and email)
 const multiColumnFilterFn = (row, columnId, filterValue) => {
@@ -910,11 +909,11 @@ export default function StudentTable({
             {isUpdating && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                     <div className="flex flex-col items-center gap-4 rounded-lg bg-background p-6 shadow-lg">
-                        <Helix
+                        <l-helix
                             size="79"
                             speed="3.7"
                             color='#0df22cff'
-                        ></Helix>
+                        ></l-helix>
                         <p className="text-lg font-medium text-center">Please wait... <br /> Updating student status…</p>
                     </div>
                 </div>
