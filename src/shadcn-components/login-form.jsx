@@ -22,7 +22,7 @@ export function LoginForm({
 }) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="bg-card text-card-foreground shadow-sm font-sans">
+      <Card className="bg-transparent text-white shadow-sm font-sans">
         <CardHeader className="text-center">
           <CardTitle>Login to your account</CardTitle>
           <CardDescription>
@@ -46,7 +46,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
               </Field> */}
-              <CredentialSignIn></CredentialSignIn>
+              <CredentialSignIn className='text-white'></CredentialSignIn>
               <Field>
                 {/* <OAuthButtonGroup type='sign-in' /> */}
                 <OAuthButton provider="google" type="sign-in"></OAuthButton>

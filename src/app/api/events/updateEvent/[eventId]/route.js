@@ -7,12 +7,11 @@ import { success } from "zod";
 export async function PATCH(request, { params }) {
 
     try {
-        const url = new URL(request.url);
-        const eventId = url.pathname.split('/').pop();
+        const eventId = params.eventId;
 
         const { status } = await request.json();
 
-        console.log('eventId: ', eventId, 'status: ', status);
+        // console.log('eventId: ', eventId, 'status: ', status);
 
         prisma.$connect();
 

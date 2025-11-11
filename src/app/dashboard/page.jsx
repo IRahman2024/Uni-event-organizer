@@ -1,30 +1,30 @@
+// app/dashboard/page.jsx
+"use client"
+
+import { useUser } from "@stackframe/stack";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { getUserRole, ROLES } from "@/lib/roles";
+
 export default function DashboardPage() {
+    const user = useUser();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (user) {
+            const role = getUserRole(user);
+
+            if (role === ROLES.ADMIN) {
+                router.replace('/dashboard/admin');
+            } else {
+                router.replace('/dashboard/student/my-profile');
+            }
+        }
+    }, [user, router]);
+
     return (
-        <div className="flex flex-col gap-4">
-            <div>
-                <h1 className="font-sans text-2xl font-bold text-foreground">Dashboard</h1>
-                <p className="text-muted-foreground">Welcome to your dashboard</p>
-            </div>
-
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div className="aspect-video rounded-xl bg-card border border-border p-4">
-                    <h3 className="font-sans text-sm font-semibold text-card-foreground">Total Events</h3>
-                    <p className="text-2xl font-bold text-primary mt-2">24</p>
-                </div>
-                <div className="aspect-video rounded-xl bg-card border border-border p-4">
-                    <h3 className="font-sans text-sm font-semibold text-card-foreground">Participants</h3>
-                    <p className="text-2xl font-bold text-primary mt-2">156</p>
-                </div>
-                <div className="aspect-video rounded-xl bg-card border border-border p-4">
-                    <h3 className="font-sans text-sm font-semibold text-card-foreground">Active</h3>
-                    <p className="text-2xl font-bold text-primary mt-2">12</p>
-                </div>
-            </div>
-
-            <div className="min-h-[50vh] rounded-xl bg-card border border-border p-6">
-                <h2 className="font-sans text-lg font-semibold text-card-foreground mb-4">Recent Activity</h2>
-                <p className="text-muted-foreground">Your main content goes here...</p>
-            </div>
+        <div className="flex items-center justify-center h-screen">
+            <p>Redirecting...</p>
         </div>
-    )
+    );
 }

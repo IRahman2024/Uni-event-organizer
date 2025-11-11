@@ -4,6 +4,7 @@ import { UploadDropzone } from "@uploadthing/react";
 import Image from 'next/image';
 import { Button } from '@/shadcn-components/ui/button';
 import { XIcon } from 'lucide-react';
+import { useSnackbar } from 'notistack';
 
 interface imageUploadProps {
     onChange: (url: string) => void;
@@ -12,6 +13,9 @@ interface imageUploadProps {
 }
 
 const ImageUploader = ({ endpoint, onChange, value }: imageUploadProps) => {
+
+
+    const { enqueueSnackbar } = useSnackbar();
 
     if (value) {
         return (
@@ -37,14 +41,19 @@ const ImageUploader = ({ endpoint, onChange, value }: imageUploadProps) => {
     }
 
     return (
-        <div className="w-1/2 mx-auto p-10">
+        <div className="mx-auto p-2">
             <UploadDropzone<OurFileRouter, "postImage">
                 endpoint={endpoint} // The name of the FileRouter you defined in your core.ts
                 onClientUploadComplete={(res) => {
                     // Do something with the response
                     console.log("Files: ", res);
-                    alert("Upload Completed");
-                     if(res && res[0]?.url){
+                    enqueueSnackbar('Image uploaded successfully! Now save the profile to apply changes.',
+                        {
+                            variant: 'success',
+                            autoHideDuration: 5000
+                        }
+                    )
+                    if (res && res[0]?.url) {
                         onChange(res[0].url);
                     }
                 }}

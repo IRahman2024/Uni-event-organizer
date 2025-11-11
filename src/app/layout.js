@@ -4,6 +4,8 @@ import { stackClientApp } from "../stack/client";
 import "./globals.css";
 import Navbar from "@/shadcn-components/Navbar(comp-584)";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+// import { SnackbarProvider } from "notistack";
+import SnackbarClientProvider from "@/components/SnackbarClientProvider/SnackbarClientProvider";
 // import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 const geistSans = Geist({
@@ -33,19 +35,23 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${aclone.variable} antialiased`}
-      ><StackProvider app={stackClientApp}><StackTheme>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="bg-white relative w-full">
-          </div>
-          {children}
-        </ThemeProvider>
-      </StackTheme></StackProvider></body>
+        className={`${geistSans.variable} ${geistMono.variable} ${aclone.variable} antialiased`}>
+        <StackProvider app={stackClientApp}><StackTheme>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* <div className="bg-white relative w-full">
+              </div> */}
+            <SnackbarClientProvider>
+              {children}
+            </SnackbarClientProvider>
+          </ThemeProvider>
+        </StackTheme>
+        </StackProvider>
+      </body>
     </html>
   );
 }

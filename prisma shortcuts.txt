@@ -1,7 +1,7 @@
 npx prisma init
 npm i @prisma/client
 npm i prisma --save -dev (not useful)
-npx prisma migrate dev --name <migration_name> (to update the schemas)
+npx prisma migrate dev --name <migration_name> (to update the schemas) ex.- npx prisma migrate dev --name set default value of student status
 npx prisma generate(to update types in prima client after migration)
 npx prisma db push
 
