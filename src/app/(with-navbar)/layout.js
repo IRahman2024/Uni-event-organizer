@@ -3,6 +3,8 @@ import { StackProvider, StackTheme } from "@stackframe/stack";
 import Navbar from "@/shadcn-components/Navbar(comp-584)";
 // import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { stackClientApp } from "@/stack/client";
+import Image from "next/image";
+import { Footerdemo } from "@/shadcn-components/ui/footer-section";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +31,9 @@ export default function RootLayout({ children }) {
         <Navbar />
       </div>
       {children}
+      <div>
+        <Footerdemo></Footerdemo>
+      </div>
     </StackTheme></StackProvider>
   );
 }

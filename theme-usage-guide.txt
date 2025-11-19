@@ -1,0 +1,108 @@
+🎨 THEME USAGE GUIDE FOR YOUR CUSTOM SHADCN + TAILWIND THEME
+============================================================
+
+This guide explains how to use your theme variables in Tailwind CSS classes and when to apply them.
+
+------------------------------------------------------------
+📦 GENERAL STRUCTURE
+------------------------------------------------------------
+All your colors are mapped to CSS variables like:
+  --color-primary → bg-primary, text-primary, border-primary
+You can use them directly in Tailwind with classes like:
+  bg-background, text-foreground, border-border, ring-ring, etc.
+
+------------------------------------------------------------
+🌞 LIGHT MODE / 🌚 DARK MODE
+------------------------------------------------------------
+You already have `.dark` variant defined:
+  @custom-variant dark (&:is(.dark *));
+
+So you can use dark: classes like:
+  bg-background dark:bg-background
+  text-foreground dark:text-foreground
+  bg-card dark:bg-card
+  border-border dark:border-border
+
+------------------------------------------------------------
+🎯 COLOR CLASSES
+------------------------------------------------------------
+- Background:   bg-background, bg-card, bg-popover, bg-sidebar
+- Foreground:   text-foreground, text-card-foreground, text-popover-foreground
+- Primary:      bg-primary, text-primary-foreground, hover:bg-primary/90
+- Secondary:    bg-secondary, text-secondary-foreground
+- Accent:       bg-accent, text-accent-foreground
+- Muted:        bg-muted, text-muted-foreground
+- Destructive:  bg-destructive, text-destructive-foreground
+- Border:       border-border
+- Input:        bg-input, focus:ring-ring
+- Ring:         ring-ring
+
+------------------------------------------------------------
+📊 CHART COLORS
+------------------------------------------------------------
+Use for charts, graphs, or progress bars:
+  bg-chart-1, bg-chart-2, bg-chart-3, bg-chart-4, bg-chart-5
+
+------------------------------------------------------------
+🧭 SIDEBAR THEME
+------------------------------------------------------------
+- Background:     bg-sidebar
+- Text:           text-sidebar-foreground
+- Primary:        bg-sidebar-primary text-sidebar-primary-foreground
+- Accent:         bg-sidebar-accent text-sidebar-accent-foreground
+- Border:         border-sidebar-border
+- Ring:           ring-sidebar-ring
+
+------------------------------------------------------------
+🧱 RADIUS & SHADOW CLASSES
+------------------------------------------------------------
+Radius (use Tailwind's rounded utilities):
+  rounded-sm → var(--radius-sm)
+  rounded-md → var(--radius-md)
+  rounded-lg → var(--radius-lg)
+  rounded-xl → var(--radius-xl)
+
+Shadow (use Tailwind’s shadow utilities):
+  shadow-2xs, shadow-xs, shadow-sm, shadow, shadow-md, shadow-lg, shadow-xl, shadow-2xl
+
+------------------------------------------------------------
+🔤 FONTS
+------------------------------------------------------------
+Use your font families:
+  font-sans  → Aclonica
+  font-serif → Source Serif 4
+  font-mono  → Azeret Mono
+
+------------------------------------------------------------
+📏 LETTER SPACING
+------------------------------------------------------------
+Custom tracking values available:
+  tracking-tighter, tracking-tight, tracking-wide, tracking-wider, tracking-widest
+
+------------------------------------------------------------
+📘 EXAMPLES
+------------------------------------------------------------
+BUTTON:
+  <button class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md shadow-sm">
+    Click me
+  </button>
+
+CARD:
+  <div class="bg-card text-card-foreground border border-border rounded-lg shadow-md p-4">
+    <h2 class="font-sans text-lg">Card Title</h2>
+    <p class="text-muted-foreground">Card description...</p>
+  </div>
+
+SIDEBAR:
+  <aside class="bg-sidebar text-sidebar-foreground border-r border-sidebar-border w-64 p-4">
+    <a class="block bg-sidebar-accent text-sidebar-accent-foreground p-2 rounded-md">
+      Dashboard
+    </a>
+  </aside>
+
+------------------------------------------------------------
+💡 NOTES
+------------------------------------------------------------
+- Always prefer Tailwind’s variant classes like hover:, focus:, dark:, active:
+- To make a component theme-aware, use `bg-background text-foreground` at minimum.
+- Use dark mode toggle (`.dark` class on <html>) to preview dark colors.

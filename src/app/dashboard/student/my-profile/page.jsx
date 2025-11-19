@@ -46,7 +46,7 @@ const page = () => {
                     outerVignette={false}
                     centerVignette={false} />
 
-                <div className="absolute inset-0 bg-white/50 dark:bg-black/50 pointer-events-none" />
+                <div className="absolute inset-0 bg-white/35 dark:bg-black/35 pointer-events-none" />
             </div>
 
             {/* page content */}

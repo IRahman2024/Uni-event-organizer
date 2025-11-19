@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { success } from "zod";
 
@@ -25,6 +26,7 @@ export async function PATCH(request, { params }) {
         })
 
         prisma.$disconnect();
+        revalidateTag('events');
 
         return NextResponse.json({
             success: true,
@@ -98,6 +100,9 @@ export async function PUT(request, { params }) {
                 formFields: true,
             },
         });
+
+        prisma.$disconnect();
+        revalidateTag('events');
 
         // 5. Success
         return NextResponse.json({

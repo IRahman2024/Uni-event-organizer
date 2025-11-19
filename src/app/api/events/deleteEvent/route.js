@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request) {
@@ -16,9 +17,10 @@ export async function DELETE(request) {
         })
 
         prisma.$disconnect();
+        revalidateTag('events');
 
         // const eventId = searchParams.get('eventId');
-        console.log('response: ', response);
+        // console.log('response: ', response);
 
         return NextResponse.json({
             success: true,

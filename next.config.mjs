@@ -4,9 +4,17 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
+                // hostname: 'ufs.sh',
                 hostname: 'utfs.io',
                 port: '',
-                pathname: '/**',
+                // pathname: '/**',
+                pathname: '/f/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.ufs.sh', // Wildcard for any subdomain
+                port: '',
+                pathname: '/f/**',
             },
         ],
     },

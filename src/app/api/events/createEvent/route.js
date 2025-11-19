@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { FormField } from "@/shadcn-components/ui/form";
 import { create } from "domain";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
 
     try {
-
         await prisma.$connect();
         console.log("✅ Database connected successfully");
 
@@ -52,6 +52,7 @@ export async function POST(request) {
         // console.log(event);
 
         await prisma.$disconnect();
+        revalidateTag('events');
         return NextResponse.json({
             success: true,
             message: "Event and fields created successfully via nested create",
