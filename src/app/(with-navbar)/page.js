@@ -1,7 +1,11 @@
 import CarouselComponent from "@/components/Carousel/Carousel";
 import CarouselServer from "@/components/Carousel/CarouselServer";
+import CurvedText from "@/components/CurvedText/CurvedText";
 import Hero from "@/components/Hero/hero";
+import IndividualTestimonial from "@/components/Testimonial/IndividualTestimonial";
+import MovingMarquee from "@/components/Testimonial/MovingMarquee";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import CurvedLoop from "@/shadcn-components/CurvedLoop";
 import SplitText from "@/shadcn-components/SplitText";
 import Image from "next/image";
 
@@ -20,7 +24,7 @@ export default function Home() {
               text="Campus is buzzing"
               className="font-sans text-5xl font-bold"
               delay={100}
-              duration={0.1}
+              duration={0.07}
               ease="power3.out"
               splitType="chars"
               from={{ opacity: 0, y: 40 }}
@@ -48,12 +52,19 @@ export default function Home() {
           </div>
           <div>
             {/* <CarouselComponent></CarouselComponent> */}
-            <CarouselServer></CarouselServer>
+            <div>
+              <CarouselServer></CarouselServer>
+              <CurvedText></CurvedText>
+            </div>
           </div>
-          <div className="flex p-4">
-              <TextGenerateEffect
-                words={'Real-time RSVPs, live head-counts, and one-tap “I’m in.” No login needed to peek.'}
-              ></TextGenerateEffect>
+          <div className="container mx-auto gap-x-10">
+              <MovingMarquee></MovingMarquee>
+              <IndividualTestimonial></IndividualTestimonial>
+          </div>
+          <div className="flex">
+            <TextGenerateEffect
+              words={'Real-time RSVPs, live head-counts, and one-tap “I’m in.” No login needed to peek.'}
+            ></TextGenerateEffect>
           </div>
         </section>
       </main>

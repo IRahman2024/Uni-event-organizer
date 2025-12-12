@@ -6,7 +6,7 @@ const CarouselServer = async () => {
     const slides = await getCarouselSlides();
     
     return (
-        <div className='py-20 relative overflow-hidden w-full h-full'>
+        <div className='py-14 relative overflow-hidden w-full '>
             <Carousel slides={slides}></Carousel>        
         </div>
     );

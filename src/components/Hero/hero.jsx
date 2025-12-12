@@ -58,7 +58,7 @@ const Hero = () => {
             horizontalSizing: 1.31,
             flowStrength: 0.5,
             fogFallSpeed: 0.9,
-            fogScale: 0.4,                       // INCREASED for more fog coverage
+            fogScale: 0.5,                       // INCREASED for more fog coverage
             wispSpeed: 12.0,
             mouseTiltStrength: 0.4,
             decay: 2.0,
@@ -70,7 +70,7 @@ const Hero = () => {
         dark: '#060010',     // Keep your original dark background
         // light: '#c6c2dcba'     // NEW: Light background for bright mode
         // Other light options:
-        light: '#FFFBF7'  // Warm cream
+        light: '#609097ff'  // Warm cream
     };
 
     const currentBackground = isDark ? backgroundColors.dark : backgroundColors.light;
@@ -120,14 +120,14 @@ const Hero = () => {
                         {/* Left Side - Welcome/Emotional */}
                         <div className="text-left">
                             <div className="">
-                                <p className={`text-lg font-medium ${isDark ? 'text-purple-300' : 'text-blue-600'} mb-2`}>
+                                <p className={`text-lg font-medium ${isDark ? 'text-purple-300' : 'text-[#23c633]'} mb-2`}>
                                     Welcome to Campus Life! 🎉
                                 </p>
-                                <h1 className={`text-4xl md:text-5xl font-bold leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                <h1 className={`text-4xl md:text-5xl font-bold leading-tight ${isDark ? 'text-white' : 'text-white'}`}>
                                     Your Campus Events Hub
                                 </h1>
                                 <div className={`w-24 h-1 ${isDark ? 'bg-purple-500' : 'bg-blue-500'} rounded-full`}></div>
-                                <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-white'}`}>
                                     Discover events that spark your interests, connect with students who share your passion,
                                     and create memories that last a lifetime.
                                 </p>
@@ -137,10 +137,10 @@ const Hero = () => {
                         {/* Right Side - Action/Value */}
                         <div className="text-left">
                             <div className="">
-                                <h2 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                <h2 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-white'}`}>
                                     Ready to dive in?
                                 </h2>
-                                <p className={`text-base ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                                <p className={`text-base ${isDark ? 'text-gray-300' : 'text-white'}`}>
                                     From study groups to parties, workshops to concerts -
                                     find what's happening on campus and never miss out again.
                                 </p>
@@ -162,7 +162,7 @@ const Hero = () => {
                                 </div>
 
                                 {/* Trust indicators */}
-                                <div className={`pt-6 text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                                <div className={`pt-6 text-sm ${isDark ? 'text-gray-400' : 'text-white'}`}>
                                     <div className="flex flex-wrap gap-4">
                                         <span>✓ 2,500+ students</span>
                                         <span>• 350+ events</span>
