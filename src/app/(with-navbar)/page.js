@@ -1,13 +1,18 @@
 import CarouselComponent from "@/components/Carousel/Carousel";
 import CarouselServer from "@/components/Carousel/CarouselServer";
 import CurvedText from "@/components/CurvedText/CurvedText";
+import { Features } from "@/components/Features/Features";
 import Hero from "@/components/Hero/hero";
+import Steps from "@/components/Steps/Steps";
 import IndividualTestimonial from "@/components/Testimonial/IndividualTestimonial";
 import MovingMarquee from "@/components/Testimonial/MovingMarquee";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import CurvedLoop from "@/shadcn-components/CurvedLoop";
 import SplitText from "@/shadcn-components/SplitText";
+import { Button } from "@/shadcn-components/ui/button";
+import { MoveRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -52,14 +57,35 @@ export default function Home() {
           </div>
           <div>
             {/* <CarouselComponent></CarouselComponent> */}
-            <div>
-              <CarouselServer></CarouselServer>
-              <CurvedText></CurvedText>
+            <CarouselServer></CarouselServer>
+            <div className="flex items-center justify-center my-10">
+              <Button
+                asChild
+                variant="default"  // or create a custom orange variant (see below)
+                className="bg-transparent border-2 border-orange-700 hover:bg-orange-700 text-foreground hover:text-white rounded-full px-10 py-5"
+              >
+                <Link href="/events" className="flex items-center gap-3">
+                  Show All Events
+                  <MoveRight className="h-5 w-5" />
+                </Link>
+              </Button>
             </div>
+            <CurvedText></CurvedText>
           </div>
-          <div className="container mx-auto gap-x-10">
-              <MovingMarquee></MovingMarquee>
-              <IndividualTestimonial></IndividualTestimonial>
+          <section className="h-screen">
+            <p className="text-6xl text-center font-bold mb-5">Our Features</p>
+            <Features></Features>
+          </section>
+          <section className="min-h-screen">
+            <Steps></Steps>
+          </section>
+          <div className="container mx-auto gap-x-10 my-16">
+            <div>
+              <p className="text-6xl font-bold text-foreground text-center">They’re Joining…and Loving It</p>
+            </div>
+            <MovingMarquee></MovingMarquee>
+            <p className="text-4xl font-bold  text-foreground text-center my-5">Stories from the insiders</p>
+            <IndividualTestimonial></IndividualTestimonial>
           </div>
           <div className="flex">
             <TextGenerateEffect

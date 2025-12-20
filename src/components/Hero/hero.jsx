@@ -49,10 +49,11 @@ const Hero = () => {
             mouseTiltStrength: 0.01,
         },
         light: {
-            color: "#CB4D4D",
+            // color: "#CB4D4D",
+            color: "#3f5f5fff",
             fogIntensity: 0.68,
-            wispIntensity: 5.5,                  // INCREASED for better visibility
-            wispDensity: 0.9,                    // More wisps
+            wispIntensity: 3.0,                  // INCREASED for better visibility
+            wispDensity: 4.0,                    // More wisps
             flowSpeed: 0.35,
             verticalSizing: 1.2,
             horizontalSizing: 1.31,
@@ -70,7 +71,8 @@ const Hero = () => {
         dark: '#060010',     // Keep your original dark background
         // light: '#c6c2dcba'     // NEW: Light background for bright mode
         // Other light options:
-        light: '#609097ff'  // Warm cream
+        // light: '#609097ff'  // Warm cream
+        light: '#cfaeaeff'  // Warm cream
     };
 
     const currentBackground = isDark ? backgroundColors.dark : backgroundColors.light;
@@ -120,14 +122,14 @@ const Hero = () => {
                         {/* Left Side - Welcome/Emotional */}
                         <div className="text-left">
                             <div className="">
-                                <p className={`text-lg font-medium ${isDark ? 'text-purple-300' : 'text-[#23c633]'} mb-2`}>
+                                <p className={`text-lg font-medium ${isDark ? 'text-purple-300' : 'text-[#394dcd]'} mb-2`}>
                                     Welcome to Campus Life! 🎉
                                 </p>
-                                <h1 className={`text-4xl md:text-5xl font-bold leading-tight ${isDark ? 'text-white' : 'text-white'}`}>
+                                <h1 className={`text-4xl md:text-5xl font-bold leading-tight ${isDark ? 'text-white' : 'text-black'}`}>
                                     Your Campus Events Hub
                                 </h1>
                                 <div className={`w-24 h-1 ${isDark ? 'bg-purple-500' : 'bg-blue-500'} rounded-full`}></div>
-                                <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-white'}`}>
+                                <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-black'}`}>
                                     Discover events that spark your interests, connect with students who share your passion,
                                     and create memories that last a lifetime.
                                 </p>
@@ -137,10 +139,10 @@ const Hero = () => {
                         {/* Right Side - Action/Value */}
                         <div className="text-left">
                             <div className="">
-                                <h2 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-white'}`}>
+                                <h2 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-black'}`}>
                                     Ready to dive in?
                                 </h2>
-                                <p className={`text-base ${isDark ? 'text-gray-300' : 'text-white'}`}>
+                                <p className={`text-base ${isDark ? 'text-gray-300' : 'text-black'}`}>
                                     From study groups to parties, workshops to concerts -
                                     find what's happening on campus and never miss out again.
                                 </p>
@@ -162,7 +164,7 @@ const Hero = () => {
                                 </div>
 
                                 {/* Trust indicators */}
-                                <div className={`pt-6 text-sm ${isDark ? 'text-gray-400' : 'text-white'}`}>
+                                <div className={`pt-6 text-sm ${isDark ? 'text-gray-400' : 'text-foreground'}`}>
                                     <div className="flex flex-wrap gap-4">
                                         <span>✓ 2,500+ students</span>
                                         <span>• 350+ events</span>

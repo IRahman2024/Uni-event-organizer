@@ -222,9 +222,9 @@ const CreateEvent = () => {
                                                 <SelectItem value="conference">Conference</SelectItem>
                                                 <SelectItem value="workshop">Workshop</SelectItem>
                                                 <SelectItem value="meetup">Meetup and Networking</SelectItem>
-                                                <SelectItem value="competition">Competition</SelectItem>
+                                                <SelectItem value="contests and competition">Contests and Competition</SelectItem>
                                                 <SelectItem value="hackathon">Hackathon</SelectItem>
-                                                <SelectItem value="competitive programming">Competitive Programming</SelectItem>
+                                                <SelectItem value="tech fests">Tech Fests</SelectItem>
                                                 <SelectItem value="cultural">Cultural</SelectItem>
                                                 <SelectItem value="others">Others</SelectItem>
                                             </SelectContent>

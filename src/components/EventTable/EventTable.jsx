@@ -101,9 +101,9 @@ const EVENT_TYPES = [
     "conference",
     "workshop",
     "meetup",
-    "competition",
+    "contests and competition",
     "hackathon",
-    "competitive programming",
+    "tech fests",
     "cultural",
     "others"
 ]

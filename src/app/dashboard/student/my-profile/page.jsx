@@ -50,6 +50,7 @@ const page = () => {
             </div>
 
             {/* page content */}
+
             <div className="relative z-0 flex flex-col items-center pt-12">
                 {
                     student ? <BlurText
