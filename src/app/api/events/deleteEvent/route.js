@@ -1,10 +1,11 @@
+export const runtime = 'nodejs';
 import { prisma } from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request) {
     try {
-        prisma.$connect();
+        // prisma.$connect();
         const { searchParams } = new URL(request.url);
         const eventId = searchParams.get('eventId').split(',');
 
@@ -16,7 +17,7 @@ export async function DELETE(request) {
             }
         })
 
-        prisma.$disconnect();
+        // prisma.$disconnect();
         revalidateTag('events');
 
         // const eventId = searchParams.get('eventId');

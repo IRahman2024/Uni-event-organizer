@@ -1,115 +1,106 @@
+'use client';
 import { EventCarousel } from '@/components/EventCarosuel/EventCarousel';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const sampleOffers = [
-        {
-            id: 1,
-            imageSrc: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1966&auto=format&fit=crop",
-            imageAlt: "International travel landmarks collage",
-            tag: "Discount", // type of event
-            title: "Up to ₹3000 OFF", // event name
-            description: "On International Flights.", // event description
-            brandLogoSrc: "https://static.twidpay.com/co/mobile_app_images/brand_logos/square/easemytripsquare.png?size=40",
-            brandName: "Ease My Trip",
-            promoCode: "EMTWID",
-            href: "#",
-        },
-        {
-            id: 2,
-            imageSrc: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1998&auto=format&fit=crop",
-            imageAlt: "A delicious looking burger",
-            tag: "Discount",
-            title: "Snack more. Save more.",
-            description: "Get ₹75 OFF on purchases of ₹299 or more.",
-            brandLogoSrc: "https://static.twidpay.com/co/mobile_app_images/brand_logos/square/mcdonaldssquare.png?size=40",
-            brandName: "McD",
-            promoCode: "TWID75",
-            href: "#",
-        },
-        {
-            id: 3,
-            imageSrc: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1974&auto=format&fit=crop",
-            imageAlt: "Logos of popular streaming services",
-            tag: "Discount",
-            title: "Flat ₹550 OFF on Timesprime",
-            description: "Exclusive offer on Times Prime Membership.",
-            brandLogoSrc: "https://static.twidpay.com/co/mobile_app_images/brand_logos/square/timesprimesquare.png?size=40",
-            brandName: "Timesprime",
-            promoCode: "TWID550",
-            href: "#",
-        },
-        {
-            id: 4,
-            imageSrc: "https://plus.unsplash.com/premium_photo-1728889749470-97eb0a2e2028?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzaGJhY2t8ZW58MHx8MHx8fDA%3D?q=80&w=2070&auto=format&fit=crop",
-            imageAlt: "A person holding a phone with a payment app",
-            tag: "Cashback",
-            title: "10% Instant Cashback",
-            description: "On RuPay Credit Card transactions.",
-            brandLogoSrc: "https://static.twidpay.com/co/mobile_app_images/icons/rupay_rcc.png?size=40",
-            brandName: "Rupay CC",
-            promoCode: "RCC10",
-            href: "#",
-        },
-        {
-            id: 5,
-            imageSrc: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop",
-            imageAlt: "Gourmet food on a plate",
-            tag: "Offer",
-            title: "Flat 20% OFF",
-            description: "On dining at partner restaurants.",
-            brandLogoSrc: "https://twidpay.com/assets/new-square-logos/swiggysquare.webp?size=40",
-            brandName: "Dineout",
-            promoCode: "DINE20",
-            href: "#",
-        },
-    ];
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                setLoading(true);
+                const res = await axios.get('http://localhost:3000/api/events');
+                setEvents(res.data.data || []);
+                setError(null);
+            } catch (err) {
+                console.error('Error fetching events:', err);
+                setError('Failed to load events. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    // Filter events by type
+    const conferenceEvents = events.filter(event => event.eventType === 'conference');
+    const competitionEvents = events.filter(event => event.eventType === 'contest and competitions');
+    const culturalEvents = events.filter(event => event.eventType === 'cultural');
+    const hackathonEvents = events.filter(event => event.eventType === 'hackathon');
+    const meetupEvents = events.filter(event => event.eventType === 'meetup');
+    const othersEvents = events.filter(event => event.eventType === 'others');
+    const festEvents = events.filter(event => event.eventType === 'tech fest');
+    const workshopEvents = events.filter(event => event.eventType === 'workshop');
+
+    console.log(conferenceEvents);
+    
+
+    // Loading state
+    if (loading) {
+        return (
+            <div className="w-full min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    <p className="mt-4 text-muted-foreground">Loading events...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="w-full min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-destructive text-lg">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    // Helper function to render carousel section only if events exist
+    const renderCarouselSection = (title, eventData) => {
+        if (eventData.length === 0) return null;
+
+        return (
+            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
+                <div className="w-full max-w-6xl">
+                    <h2 className="text-3xl font-bold mb-6 text-foreground">{title}</h2>
+                    <EventCarousel eventDatas={eventData} />
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div>
-            {/* conference */}
-            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold mb-6 text-foreground">Conference</h2>
-                    <EventCarousel offers={sampleOffers} />
+            {renderCarouselSection("Conference", conferenceEvents)}
+            {renderCarouselSection("Competition and Contests", competitionEvents)}
+            {renderCarouselSection("Cultural", culturalEvents)}
+            {renderCarouselSection("Hackathons", hackathonEvents)}
+            {renderCarouselSection("Meetups", meetupEvents)}
+            {renderCarouselSection("Others", othersEvents)}
+            {renderCarouselSection("Tech Fest", festEvents)}
+            {renderCarouselSection("Workshops", workshopEvents)}
+
+            {/* Show message if no events at all */}
+            {events.length === 0 && (
+                <div className="w-full min-h-screen bg-background flex items-center justify-center">
+                    <p className="text-muted-foreground text-lg">No events available at the moment.</p>
                 </div>
-            </div>
-            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold mb-6 text-foreground">Conference</h2>
-                    <EventCarousel offers={sampleOffers} />
-                </div>
-            </div>
-            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold mb-6 text-foreground">Conference</h2>
-                    <EventCarousel offers={sampleOffers} />
-                </div>
-            </div>
-            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold mb-6 text-foreground">Conference</h2>
-                    <EventCarousel offers={sampleOffers} />
-                </div>
-            </div>
-            <div className="w-full min-h-48 bg-background flex flex-col items-center justify-center p-4 md:p-10">
-                <div className="w-full max-w-6xl">
-                    <h2 className="text-3xl font-bold mb-6 text-foreground">Conference</h2>
-                    <EventCarousel offers={sampleOffers} />
-                </div>
-            </div>
+            )}
         </div>
     );
 };
 
-export default page;
-
-// "conference",
-// "workshop",
-// "meetup",
-// "competition",
-// "hackathon",
-// "competitive programming",
-// "cultural",
-// "others"
+export default Page;

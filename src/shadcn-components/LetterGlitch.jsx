@@ -39,10 +39,10 @@ const LetterGlitch = ({
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result
       ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-        }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
       : null;
   };
 
@@ -157,6 +157,7 @@ const LetterGlitch = ({
 
   const animate = () => {
     const now = Date.now();
+
     if (now - lastGlitchTime.current >= glitchSpeed) {
       updateLetters();
       drawLetters();
@@ -169,6 +170,7 @@ const LetterGlitch = ({
 
     animationRef.current = requestAnimationFrame(animate);
   };
+
 
   useEffect(() => {
     const canvas = canvasRef.current;

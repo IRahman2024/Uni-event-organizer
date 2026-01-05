@@ -37,18 +37,19 @@ export default async function Navbar() {
   const user = await stackServerApp.getUser();
   const app = stackServerApp.urls;
 
-  console.log(user ? 'true' : 'false');
+  // console.log(user ? 'true' : 'false');
+  // console.log('navbar userid: ', id);
 
 
   return (
     <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
+      <div className="flex h-16 items-center justify-between gap-4 w-full">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button className="group size-8 md:hidden" variant="ghost" size="icon">
+              <Button className="group size-2 md:size-8 md:hidden" variant="ghost" size="icon">
                 <svg
                   className="pointer-events-none"
                   width={16}
@@ -88,14 +89,14 @@ export default async function Navbar() {
           </Popover>
           {/* Logo */}
           <div className="flex items-center gap-6">
-            <a href="/" className="text-primary hover:text-primary/90">
+            <a href="/" className="md:size-8 text-primary hover:text-primary/90">
               <Logo />
             </a>
-            <p className="text-sm font-black font-sans" style={{ fontFamily: '"Aclonica", sans-serif' }}>A Uni Project</p>
+            <p className="text-xs md:text-sm font-black font-sans" style={{ fontFamily: '"Aclonica", sans-serif' }}>A Uni Project</p>
           </div>
         </div>
         {/* Middle area */}
-        <div className="grow">
+        <div className="grow hidden md:block">
           {/* Search form */}
           <div className="relative mx-auto w-full max-w-xs">
             <Input

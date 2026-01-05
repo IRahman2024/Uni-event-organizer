@@ -17,7 +17,7 @@ export const getCarouselSlides = cache(async () => {
 
     const json = await res.json();
 
-    console.log(json);
+    // json.map((slide) => console.log(slide.eventImage));
     
 
     return json.data.map((slide) => ({

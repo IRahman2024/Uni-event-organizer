@@ -12,7 +12,7 @@ const CarouselComponent = () => {
             .then((res) => setSlides(res.data.data))
     }, [])
 
-    // console.log(slides);
+    // slides.map((slide) => console.log(slide.eventImage));    
 
     const newSlides = slides.map((slide) => ({
         src: slide.eventImage,

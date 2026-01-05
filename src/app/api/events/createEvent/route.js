@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
 
     try {
-        await prisma.$connect();
+        // await prisma.$connect();
         console.log("✅ Database connected successfully");
 
         const data = await request.json();
@@ -51,7 +51,7 @@ export async function POST(request) {
 
         // console.log(event);
 
-        await prisma.$disconnect();
+        // await prisma.$disconnect();
         revalidateTag('events');
         return NextResponse.json({
             success: true,
@@ -61,7 +61,7 @@ export async function POST(request) {
 
     } catch (error) {
         console.error("Error creating event:", error);
-        await prisma.$disconnect();
+        // await prisma.$disconnect();
         return NextResponse.json(
             {
                 success: false,

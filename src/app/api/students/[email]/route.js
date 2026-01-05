@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { success } from "zod";
@@ -10,7 +12,7 @@ export async function GET(request, { params }) {
         // console.log('params: ', params);
         console.log('student Id: ', email);
 
-        prisma.$connect();
+        // prisma.$connect();
 
         const student = await prisma.student.findUnique({
             where: {
@@ -18,7 +20,7 @@ export async function GET(request, { params }) {
             }
         });
 
-        prisma.$disconnect();
+        // prisma.$disconnect();
 
         return NextResponse.json({
             success: true,
@@ -62,7 +64,7 @@ export async function PATCH(request, { params }) {
         // console.log('data on server: ', data);
 
 
-        prisma.$connect();
+        // prisma.$connect();
 
         const updatedStudent = await prisma.student.upsert({
             where: {

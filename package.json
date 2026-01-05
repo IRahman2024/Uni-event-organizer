@@ -12,6 +12,7 @@
     "studentSeed": "node ./studentSeed.js"
   },
   "dependencies": {
+    "@base-ui/react": "^1.0.0",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.18.0",

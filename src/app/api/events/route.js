@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { success } from "zod";
@@ -9,7 +10,7 @@ export async function GET(req) {
         const eventId = searchParams.get('eventId');
 
         if (eventId) {
-            await prisma.$connect();
+            // await prisma.$connect();
 
             const events = await prisma.event.findUnique({
                 where: {
@@ -20,7 +21,7 @@ export async function GET(req) {
                 }
             })
 
-            await prisma.$disconnect();
+            // await prisma.$disconnect();
 
             return NextResponse.json({
                 success: true,
@@ -34,7 +35,7 @@ export async function GET(req) {
         //     data: `got eventId: ${eventId}`
         // })
 
-        await prisma.$connect();
+        // await prisma.$connect();
 
         const events = await prisma.event.findMany({
             include: {
@@ -42,7 +43,7 @@ export async function GET(req) {
             }
         })
 
-        await prisma.$disconnect();
+        // await prisma.$disconnect();
 
         return NextResponse.json({
             success: true,
@@ -50,7 +51,7 @@ export async function GET(req) {
             message: "All Events fetched successfully"
         });
     } catch (error) {
-        await prisma.$disconnect();
+        // await prisma.$disconnect();
         console.error("Error fetching events:", error);
         return NextResponse.json(
             {

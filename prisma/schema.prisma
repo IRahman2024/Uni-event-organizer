@@ -70,7 +70,7 @@ model Student {
   registrations Registration[]
 }
 
-model Registration {
+model Registration {  
   id String @id @default(cuid())
 
   studentId String

@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { revalidateTag } from "next/cache";
@@ -14,7 +15,7 @@ export async function PATCH(request, { params }) {
 
         // console.log('eventId: ', eventId, 'status: ', status);
 
-        prisma.$connect();
+        // prisma.$connect();
 
         const response = await prisma.event.update({
             where: {
@@ -25,7 +26,7 @@ export async function PATCH(request, { params }) {
             }
         })
 
-        prisma.$disconnect();
+        // prisma.$disconnect();
         revalidateTag('events');
 
         return NextResponse.json({
@@ -101,7 +102,7 @@ export async function PUT(request, { params }) {
             },
         });
 
-        prisma.$disconnect();
+        // prisma.$disconnect();
         revalidateTag('events');
 
         // 5. Success

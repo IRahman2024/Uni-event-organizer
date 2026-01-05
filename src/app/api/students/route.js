@@ -1,13 +1,15 @@
+export const runtime = 'nodejs';
+
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { success } from "zod";
 
 export async function GET(request) {
-    prisma.$connect();
+    // prisma.$connect();
 
     const students = await prisma.student.findMany([]);
 
-    prisma.$disconnect();
+    // prisma.$disconnect();
     return NextResponse.json({
         success: true,
         data: students
@@ -26,7 +28,7 @@ export async function PATCH(request) {
         // console.log('id: ', id);
         console.log('stat: ', status);
 
-        prisma.$connect();
+        // prisma.$connect();
 
         const res = await prisma.student.update({
             where: {
@@ -36,7 +38,7 @@ export async function PATCH(request) {
                 status: status
             }
         })
-        prisma.$disconnect();
+        // prisma.$disconnect();
 
         return NextResponse.json({
             success: true,
