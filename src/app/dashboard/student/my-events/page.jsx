@@ -3,6 +3,7 @@ import { useUser } from '@stackframe/stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MyEventsTable from './MyEventsTable';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
 
@@ -11,6 +12,7 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const user = useUser();
+    const router = useRouter();
 
     // console.log('loading from page:', loading);
     // console.log('studentData:', studentData);
@@ -21,7 +23,20 @@ const page = () => {
     }
 
     const handleCancelRegistration = async (eventId) => {
-        await onCancelRegistration(eventId)
+        console.log('hit canceled: ', eventId);
+        try {
+            const response = await axios.delete(`/api/events/registration?registrationId=${eventId}`);
+            if (response.status === 200) {
+                alert('Registration cancelled successfully.');
+                setEvents(events => events.filter(event => event.id !== eventId));
+            }
+            // console.log('response from cancel: ', response);
+        } catch (error) {
+            console.log('error while canceling: ', error);
+        }
+        finally {
+            setEvents(events => events.filter(event => event.id !== eventId));
+        }
     }
 
 

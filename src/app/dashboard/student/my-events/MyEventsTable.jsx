@@ -149,7 +149,7 @@ export default function MyEventsTable({
                     <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => setSelectedEventId(row.original.event.id)}
+                        onClick={() => setSelectedEventId(row.original.id)}
                     >
                         Cancel
                     </Button>

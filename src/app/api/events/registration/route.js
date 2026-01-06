@@ -1,5 +1,6 @@
 export const runtime = 'nodejs';
 import { prisma } from "@/lib/prisma";
+import next from "next";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -14,9 +15,9 @@ export async function GET(request) {
 
     // await prisma.$connect();
 
-    if (studentId && eventsAll=='true') {
+    if (studentId && eventsAll == 'true') {
         console.log('hit on first elif');
-        
+
         const response = await prisma.registration.findMany({
             where: {
                 studentId: studentId
@@ -29,7 +30,7 @@ export async function GET(request) {
     }
 
     else if (studentId && eventId && !eventsAll) {
-                console.log('hit on second elif');
+        console.log('hit on second elif');
         const response = await prisma.registration.findUnique({
             where: { // <--- You were missing this wrapper
                 studentId_eventId: {
@@ -143,4 +144,26 @@ export async function POST(request) {
             { status: 500 }
         );
     }
+}
+
+export async function DELETE(request) {
+    const query = new URL(request.url).searchParams;
+    const studentId = query.get('studentId');
+    const id = query.get('registrationId');
+
+    // console.log('delete request of: ');
+    console.log('studentId: ', studentId);
+    console.log('id: ', id);
+    // console.log('query: ', query);
+
+    const deleteUser = await prisma.registration.delete({
+        where: {
+            id: id,
+        },
+    })
+
+    return NextResponse.json({ message: "Delete endpoint hit",
+        data: deleteUser,
+        code: 202
+     });
 }
