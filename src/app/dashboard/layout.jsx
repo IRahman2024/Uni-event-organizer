@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }) {
     }, [user, router]);
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div className="min-h-screen w-full flex items-center justify-center">Loading...</div>;
     }
 
     return <>{children}</>;

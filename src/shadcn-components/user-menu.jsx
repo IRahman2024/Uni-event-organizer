@@ -65,21 +65,21 @@ export default async function UserMenu() {
 
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
               <span>Option 2</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
               <span>Option 3</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <PinIcon size={16} className="opacity-60" aria-hidden="true" />
               <span>Option 4</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem>
               <Link className="flex gap-2 items-center" href="/MyAccountSettings">
                 <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />

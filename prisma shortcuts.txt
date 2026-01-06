@@ -9,6 +9,15 @@ admin access:
 email: admin@admin.com
 pass: 12345678
 
+"conference",
+"workshop",
+"meetup",
+"contests and competition",
+"hackathon",
+"tech fests",
+"cultural",
+"others"
+
 
 model Event {
   id              String   @id @default(cuid())

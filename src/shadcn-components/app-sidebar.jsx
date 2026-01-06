@@ -7,6 +7,7 @@ import {
   House,
   User,
   Settings2,
+  LayoutDashboard,
 } from "lucide-react"
 
 import { NavMain } from "@/shadcn-components/nav-main"
@@ -28,6 +29,18 @@ import {
 import { useUser } from "@stackframe/stack"
 
 const adminNavigation = [
+  {
+    title: "Admin Home",
+    url: "#",
+    icon: LayoutDashboard,
+    isActive: true,
+    items: [
+      {
+        title: "Dashboard",
+        url: "/dashboard",
+      }
+    ],
+  },
   {
     title: "Event Management",
     url: "#",

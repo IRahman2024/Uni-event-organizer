@@ -87,12 +87,12 @@
   --destructive: oklch(0.6368 0.2078 25.3313);
   --border: oklch(0.5158 0.0541 257.2868);
   --input: oklch(1.0000 0 0);
-  --ring: oklch(0.6397 0.1720 36.4421);
-  --chart-1: oklch(0.7156 0.0605 248.6845);
-  --chart-2: oklch(0.6814 0.1710 279.3687);
-  --chart-3: oklch(0.5778 0.0759 254.1573);
-  --chart-4: oklch(0.5016 0.0849 259.4902);
-  --chart-5: oklch(0.4241 0.0952 264.0306);
+  --ring: #e05d38ff;
+  --chart-1: #86a7c8;
+  --chart-2: #8589ff;
+  --chart-3: #5a7ca6;
+  --chart-4: #466494;
+  --chart-5: #334c82;
   --sidebar: oklch(0.9319 0.0167 259.4187);
   --sidebar-foreground: oklch(0.3211 0 0);
   --sidebar-primary: oklch(0.6397 0.1720 36.4421);

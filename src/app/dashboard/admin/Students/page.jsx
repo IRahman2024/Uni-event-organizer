@@ -10,7 +10,7 @@ const page = () => {
 
     const fetchStudents = () => {
         setIsLoading(true);
-        axios.get(`http://localhost:3000/api/students`)
+        axios.get(`/api/students`)
             .then((res) => setStudents(res.data.data))
             .finally(() => {
                 setIsLoading(false)
@@ -30,7 +30,7 @@ const page = () => {
         // console.log('stat id: ', id);
         // console.log('newStat: ', newStat);
         setIsUpdating(true);
-        axios.patch(`http://localhost:3000/api/students?id=${id}`, {
+        axios.patch(`/api/students?id=${id}`, {
             stat: newStat
         })
             .then((res) => {
