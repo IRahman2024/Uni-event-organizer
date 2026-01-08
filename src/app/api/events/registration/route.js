@@ -1,5 +1,6 @@
 export const runtime = 'nodejs';
 import { prisma } from "@/lib/prisma";
+import { RegistrationEmailHelper } from "@/lib/RegistrationEmailHelper";
 import next from "next";
 import { NextResponse } from "next/server";
 
@@ -71,8 +72,8 @@ export async function POST(request) {
 
         // console.log("from server: ", formResponses);
         console.log("eventId: ", eventId);
-        console.log("studentId: ", studentId);
-        console.log("user verification: ", userVerification);
+        // console.log("studentId: ", studentId);
+        // console.log("user verification: ", userVerification);
 
 
         // 1. Verify user status
@@ -87,7 +88,7 @@ export async function POST(request) {
 
         const student = await prisma.student.findUnique({
             where: { studentId: studentId }
-        });
+        });       
 
         if (!student) {
             return Response.json(
@@ -97,42 +98,72 @@ export async function POST(request) {
         }
 
         // 2. Check for duplicate registration
-        const existingRegistration = await prisma.registration.findFirst({
-            where: {
-                eventId: eventId,
-                studentId: studentId
-            }
-        });
+        // const existingRegistration = await prisma.registration.findFirst({
+        //     where: {
+        //         eventId: eventId,
+        //         studentId: studentId
+        //     }
+        // });
 
-        if (existingRegistration) {
-            return Response.json(
-                { error: 'Already registered for this event' },
-                { status: 409 }
-            );
-        }
+        // if (existingRegistration) {
+        //     return Response.json(
+        //         { error: 'Already registered for this event' },
+        //         { status: 409 }
+        //     );
+        // }
 
         // 3. Create registration with form responses
-        const registration = await prisma.registration.create({
-            data: {
-                eventId: eventId,
-                studentId: studentId,
-                formData: formResponses // Store everything as JSON
-            }
-        });
+        // const registration = await prisma.registration.create({
+        //     data: {
+        //         eventId: eventId,
+        //         studentId: studentId,
+        //         formData: formResponses // Store everything as JSON
+        //     }
+        // });
 
-        const increment = await prisma.event.update({
-            where: { id: eventId },
-            data: {
-                audience: {
-                    increment: 1
-                }
-            }
+        // const increment = await prisma.event.update({
+        //     where: { id: eventId },
+        //     data: {
+        //         audience: {
+        //             increment: 1
+        //         }
+        //     }
+        // })
+
+        const event = await prisma.event.findUnique({
+            where: { id: eventId }
         })
+
+        // console.log('eventData: ', event);
+        // console.log('event: ', event.eventTitle);
+        // console.log('event: ', event.location);
+        // console.log('event: ', event.eventType);
+        // console.log('eventDate: ', event.eventDate);
+        // console.log('eventImage: ', event.eventImage);
+
+        const eventTitle = event.eventTitle;
+        const location = event.location;
+        const eventType = event.eventType;
+        const eventImage = event.eventImage;
+        const name = student.name;
+        const email = student.email;
+
+        const eventDate = event.eventDate.toLocaleString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        })
+
+        RegistrationEmailHelper( name, email, eventTitle, eventType, location, eventDate, eventImage )
+
 
         // 4. Return success response
         return Response.json({
             success: true,
-            registrationId: registration.id,
+            // registrationId: registration.id,
             message: 'Registration successful'
         });
 
@@ -162,8 +193,9 @@ export async function DELETE(request) {
         },
     })
 
-    return NextResponse.json({ message: "Delete endpoint hit",
+    return NextResponse.json({
+        message: "Delete endpoint hit",
         data: deleteUser,
         code: 202
-     });
+    });
 }
