@@ -98,37 +98,37 @@ export async function POST(request) {
         }
 
         // 2. Check for duplicate registration
-        // const existingRegistration = await prisma.registration.findFirst({
-        //     where: {
-        //         eventId: eventId,
-        //         studentId: studentId
-        //     }
-        // });
+        const existingRegistration = await prisma.registration.findFirst({
+            where: {
+                eventId: eventId,
+                studentId: studentId
+            }
+        });
 
-        // if (existingRegistration) {
-        //     return Response.json(
-        //         { error: 'Already registered for this event' },
-        //         { status: 409 }
-        //     );
-        // }
+        if (existingRegistration) {
+            return Response.json(
+                { error: 'Already registered for this event' },
+                { status: 409 }
+            );
+        }
 
         // 3. Create registration with form responses
-        // const registration = await prisma.registration.create({
-        //     data: {
-        //         eventId: eventId,
-        //         studentId: studentId,
-        //         formData: formResponses // Store everything as JSON
-        //     }
-        // });
+        const registration = await prisma.registration.create({
+            data: {
+                eventId: eventId,
+                studentId: studentId,
+                formData: formResponses // Store everything as JSON
+            }
+        });
 
-        // const increment = await prisma.event.update({
-        //     where: { id: eventId },
-        //     data: {
-        //         audience: {
-        //             increment: 1
-        //         }
-        //     }
-        // })
+        const increment = await prisma.event.update({
+            where: { id: eventId },
+            data: {
+                audience: {
+                    increment: 1
+                }
+            }
+        })
 
         const event = await prisma.event.findUnique({
             where: { id: eventId }

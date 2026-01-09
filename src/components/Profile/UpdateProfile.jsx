@@ -81,6 +81,11 @@ const UpdateProfile = ({ status }) => {
         axios.patch(`/api/students/${user.primaryEmail}`, newData)
             .then((res) => {
                 // alert('Profile updated successfully', res.data);
+                toastManager.add({
+                    title: "Profile updated successful",
+                    // description: "Check email for event details and ticket.",
+                    type: "success"
+                })
                 setLoading(false);
                 enqueueSnackbar('Profile updated successfully',
                     {

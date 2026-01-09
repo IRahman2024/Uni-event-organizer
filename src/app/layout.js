@@ -6,6 +6,7 @@ import Navbar from "@/shadcn-components/Navbar(comp-584)";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 // import { SnackbarProvider } from "notistack";
 import SnackbarClientProvider from "@/components/SnackbarClientProvider/SnackbarClientProvider";
+import { AnchoredToastProvider, ToastProvider } from "@/shadcn-components/ui/toast";
 // import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 const geistSans = Geist({
@@ -46,7 +47,11 @@ export default function RootLayout({ children }) {
             {/* <div className="bg-white relative w-full">
               </div> */}
             <SnackbarClientProvider>
-              {children}
+              <ToastProvider>
+                <AnchoredToastProvider>
+                  {children}
+                </AnchoredToastProvider>
+              </ToastProvider>
             </SnackbarClientProvider>
           </ThemeProvider>
         </StackTheme>

@@ -27,7 +27,13 @@ const page = () => {
         try {
             const response = await axios.delete(`/api/events/registration?registrationId=${eventId}`);
             if (response.status === 200) {
-                alert('Registration cancelled successfully.');
+                // alert('Registration cancelled successfully.');
+                toastManager.add({
+                title: "Registration canceled!",
+                description: "Registration has been canceled",
+                type: "success"
+            })
+
                 setEvents(events => events.filter(event => event.id !== eventId));
             }
             // console.log('response from cancel: ', response);

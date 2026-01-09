@@ -155,7 +155,12 @@ const DynamicForm = ({
 
         if (!userData) {
             console.error('No user data available');
-            alert('User session expired. Please log in again.');
+            // alert('User session expired. Please log in again.');
+            toastManager.add({
+                title: "User session expired.",
+                description: "Please log in again.",
+                type: "error"
+            })
             return;
         }
 

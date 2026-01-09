@@ -8,6 +8,8 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import DynamicForms from './DynamicForms';
 import { useUser } from '@stackframe/stack';
+import { toastManager } from '@/shadcn-components/ui/toast';
+import { Button } from '@/shadcn-components/ui/button';
 
 const Page = () => {
     const { eventId } = useParams();
@@ -84,16 +86,38 @@ const Page = () => {
             const response = await axios.post('/api/events/registration', registrationData);
 
             console.log('Response:', response.data);
-            alert('Registration successful!');
+            toastManager.add({
+                title: "Registration successful!",
+                description: "Check email for event details and ticket.",
+                type: "success"
+            })
+            // alert('Registration successful!');
+            toastManager.add({
+                title: "Registration successful!",
+                description: "Check your email for further instructions.",
+                type: "success"
+            })
 
             // You can redirect or show success message here
             // window.location.href = '/success';
         } catch (error) {
             console.log('Submission error:', error);
-            if (error.status === 409)
-                alert('Registration failed. Already registered once from this account.');
-            else
-                alert('Registration failed. Please try again.');
+            if (error.status === 409) {
+                toastManager.add({
+                    title: "Registration failed.",
+                    description: "Already registered once from this account.",
+                    type: "error"
+                })
+            }
+            // alert('Registration failed. Already registered once from this account.');
+            else {
+                toastManager.add({
+                    title: "Registration failed.",
+                    description: "Please try again.",
+                    type: "error"
+                })
+            }
+            // alert('Registration failed. Please try again.');
         }
     };
 

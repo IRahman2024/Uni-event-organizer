@@ -100,7 +100,7 @@ export const EventRegistrationEmail = ({
                                     align="center"
                                     className="es-content"
                                     role="none"
-                                    style={{ msoTableLspace: "0pt", msoTableRspace: "0pt", borderCollapse: "collapse", borderSpacing: "0px", width: "100%", tableLayout: "fixed !important" }}
+                                    style={{ msoTableLspace: "0pt", msoTableRspace: "0pt", borderCollapse: "collapse", borderSpacing: "0px", width: "100%", tableLayout: "fixed !important", borderRadius: '20px' }}
                                 >
                                     <tbody>
                                         <tr>
