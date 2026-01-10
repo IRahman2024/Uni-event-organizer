@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MyEventsTable from './MyEventsTable';
 import { useRouter } from 'next/navigation';
+import { toastManager } from '@/shadcn-components/ui/toast';
 
 const page = () => {
 

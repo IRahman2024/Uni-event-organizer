@@ -9,7 +9,8 @@ import { useSnackbar } from 'notistack';
 interface imageUploadProps {
     onChange: (url: string) => void;
     value: string;
-    endpoint: "postImage"
+    // endpoint: "postImage"
+    endpoint: "imageUploader"
 }
 
 const ImageUploader = ({ endpoint, onChange, value }: imageUploadProps) => {
@@ -42,7 +43,7 @@ const ImageUploader = ({ endpoint, onChange, value }: imageUploadProps) => {
 
     return (
         <div className="mx-auto p-2">
-            <UploadDropzone<OurFileRouter, "postImage">
+            <UploadDropzone<OurFileRouter, "imageUploader">
                 endpoint={endpoint} // The name of the FileRouter you defined in your core.ts
                 onClientUploadComplete={(res) => {
                     // Do something with the response

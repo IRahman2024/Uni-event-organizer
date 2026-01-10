@@ -31,6 +31,7 @@ import { Helix } from 'ldrs/react'
 import 'ldrs/react/Helix.css'
 import { useRouter } from 'next/navigation';
 import { useSnackbar, SnackbarProvider } from 'notistack';
+import { toastManager } from '@/shadcn-components/ui/toast';
 
 const UpdateProfile = ({ status }) => {
 
@@ -96,7 +97,7 @@ const UpdateProfile = ({ status }) => {
                 setTimeout(() => router.refresh(), 3000);
             })
             .catch((error) => {
-                console.error('Error updating profile:', error);
+                console.log('Error updating profile:', error);
                 setLoading(false);
                 enqueueSnackbar('Something went wrong! Please try again.',
                     {
@@ -110,7 +111,7 @@ const UpdateProfile = ({ status }) => {
 
         // reset()
 
-        console.log('Data:', newData);
+        // console.log('Data:', newData);
     }
 
     if (loading) {

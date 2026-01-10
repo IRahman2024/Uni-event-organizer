@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/shadcn-components/ui/button';
 import { AlertCircle, ShieldAlert, CheckCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/shadcn-components/ui/alert';
+import { toastManager } from '@/shadcn-components/ui/toast';
 
 const DynamicForm = ({
     fields,
