@@ -160,7 +160,7 @@ export async function POST(request) {
         console.log('sending email for registration.');
         
 
-        RegistrationEmailHelper( name, email, eventTitle, eventType, location, eventDate, eventImage )
+        await RegistrationEmailHelper( name, email, eventTitle, eventType, location, eventDate, eventImage )
 
 
         // 4. Return success response
