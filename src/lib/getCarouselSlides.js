@@ -2,7 +2,7 @@ import { cache } from 'react';
 
 export const getCarouselSlides = cache(async () => {
     // If you already have an env variable for your base URL use it:
-    // const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+    const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://afterclass-kappa.vercel.app';
 
     const res = await fetch(`${base}/api/events`, {
         // tell Next.js to cache this request aggressively
