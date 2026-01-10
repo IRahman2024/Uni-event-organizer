@@ -87,11 +87,11 @@ export default function Home() {
             <p className="text-4xl font-bold  text-foreground text-center my-5">Stories from the insiders</p>
             <IndividualTestimonial></IndividualTestimonial>
           </div>
-          <div className="flex">
+          {/* <div className="flex">
             <TextGenerateEffect
               words={'Real-time RSVPs, live head-counts, and one-tap “I’m in.” No login needed to peek.'}
             ></TextGenerateEffect>
-          </div>
+          </div> */}
         </section>
       </main>
     </div>

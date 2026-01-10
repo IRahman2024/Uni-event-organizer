@@ -8,6 +8,8 @@ export async function GET(req) {
 
         const { searchParams } = new URL(req.url);
         const eventId = searchParams.get('eventId');
+        const homePage = searchParams.has('homepage');
+       
 
         if (eventId) {
             // await prisma.$connect();
@@ -27,6 +29,21 @@ export async function GET(req) {
                 success: true,
                 data: events,
                 message: "All Events fetched successfully"
+            });
+        }
+
+        if (homePage) {
+            const events = await prisma.event.findMany({
+                take: 15,                    // Limit to 15 events
+                orderBy: {
+                    createdAt: 'desc'        // Order by newest first
+                }
+            })
+
+            return NextResponse.json({
+                success: true,
+                data: events,
+                message: "Homepage Events fetched successfully"
             });
         }
 

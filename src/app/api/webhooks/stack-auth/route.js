@@ -30,6 +30,11 @@ export async function POST(request) {
         if (type === 'user.created') {
             console.log('New user created:', data);
 
+            const email = data.primary_email;
+            const name = data.display_name || email.split('@')[0];
+
+            console.log(`📧 Sending welcome email to: ${email}`);
+
             // Send welcome email (don't await to avoid blocking)
             sendWelcomeEmail(data.primary_email)
                 .catch(error => console.error('Failed to send welcome email:', error));

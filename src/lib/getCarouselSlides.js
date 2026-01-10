@@ -3,8 +3,9 @@ import { cache } from 'react';
 export const getCarouselSlides = cache(async () => {
     // If you already have an env variable for your base URL use it:
     const base = process.env.NEXT_PUBLIC_APP_URL ?? 'https://afterclass-kappa.vercel.app';
+    // const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
-    const res = await fetch(`${base}/api/events`, {
+    const res = await fetch(`${base}/api/events?homepage`, {
         // tell Next.js to cache this request aggressively
         // revalidate: 60 means the data will refresh after 60 seconds in background for recheck
         next: { revalidate: 60, tags: ['events'] }, // 60s TTL + tag for on-demand
@@ -16,6 +17,9 @@ export const getCarouselSlides = cache(async () => {
     }
 
     const json = await res.json();
+
+    // console.log('carosuel: ', json);
+    
 
     // json.map((slide) => console.log(slide.eventImage));
     
