@@ -12,7 +12,7 @@ const Page = () => {
         const fetchEvents = async () => {
             try {
                 setLoading(true);
-                const res = await axios.get('http://localhost:3000/api/events');
+                const res = await axios.get('/api/events');
                 setEvents(res.data.data || []);
                 setError(null);
             } catch (err) {
