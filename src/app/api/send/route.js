@@ -35,7 +35,7 @@ export async function POST(request) {
 
     // console.log('hit');
     // console.log('name: ', name);
-    // console.log('email: ', email);
+    console.log('email: ', email);
     // console.log('type: ', type);
     // console.log(name, eventTitle, eventType, location, eventDate, eventImage, ticketImage, cancelLink);
 
@@ -47,12 +47,12 @@ export async function POST(request) {
         },
     });
 
-    const welcomeEmail = await render(
-        WelcomeEmail()
-    );
-    const RegistrationEmail = await render(
-        EventRegistrationEmail({ name: name, eventTitle: eventTitle, eventType: eventType, location: location, eventDate: eventDate, eventImage: eventImage, ticketImage: ticketImage, cancelLink: cancelLink })
-    );
+    // const welcomeEmail = await render(
+    //     WelcomeEmail(email)
+    // );
+    // const RegistrationEmail = await render(
+    //     EventRegistrationEmail({ name: name, eventTitle: eventTitle, eventType: eventType, location: location, eventDate: eventDate, eventImage: eventImage, ticketImage: ticketImage, cancelLink: cancelLink })
+    // );
 
     try {
 
@@ -64,15 +64,31 @@ export async function POST(request) {
         }
 
         if (type == 'new') {
+            const welcomeEmail = await render(
+                WelcomeEmail({ email: email })
+            );
+            console.log('hit welcome email');
+
+            // const fs = require('fs');
+            // fs.writeFileSync('email-output.html', welcomeEmail);
+            // console.log('EMAIL SAVED TO: email-output.html');
+
+            // console.log('hit welcome email - BEFORE SEND');
+
             await transporter.sendMail({
                 from: process.env.AfterClassEmail,
                 to: email,
-                subject: 'One last step... 🔓 Activate your AfterClass account',
+                subject: `One last step... 🔓 Activate your AfterClass account`,
                 html: welcomeEmail,
             });
         }
 
         if (type == 'event') {
+            const RegistrationEmail = await render(
+                EventRegistrationEmail({ name: name, eventTitle: eventTitle, eventType: eventType, location: location, eventDate: eventDate, eventImage: eventImage, ticketImage: ticketImage, cancelLink: cancelLink })
+            );
+            console.log('hit event email');
+
             await transporter.sendMail({
                 from: process.env.AfterClassEmail,
                 to: email,

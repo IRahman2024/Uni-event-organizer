@@ -1,8 +1,9 @@
 import React from 'react';
 
-export const WelcomeEmail = () => {
+export const WelcomeEmail = ({ email }) => {
     return (
         <div
+            id="email-root-container"
             style={{
                 width: "100%",
                 height: "100%",
@@ -14,7 +15,7 @@ export const WelcomeEmail = () => {
                 fontFamily: "arial, 'helvetica neue', helvetica, sans-serif"
             }}
         >
-            <style
+            {/* <style
                 dangerouslySetInnerHTML={{
                     __html: `
             .rollover:hover .rollover-first { max-height: 0px !important; display: none !important; }
@@ -63,7 +64,7 @@ export const WelcomeEmail = () => {
             }
           `,
                 }}
-            />
+            /> */}
             <div dir="ltr" className="es-wrapper-color" lang="en" style={{ backgroundColor: "#FAFAFA" }}>
                 {/* Outlook Conditional Comment: 
             */}
@@ -377,7 +378,7 @@ export const WelcomeEmail = () => {
                                                                                                                 "700 !important",
                                                                                                         }}
                                                                                                     >
-                                                                                                        AfterclassName
+                                                                                                        AfterClass
                                                                                                     </strong>{" "}
                                                                                                     strictly for students and
                                                                                                     ensure every event stays safe
@@ -607,11 +608,11 @@ export const WelcomeEmail = () => {
                                                                                                                 }}
                                                                                                             >
                                                                                                                 What to say:
-                                                                                                            </strong>{" "}
-                                                                                                            "Hey, I'm {name} and I
+                                                                                                            </strong>
+                                                                                                            Hey, I've created account with {email}
                                                                                                             just joined
-                                                                                                            AfterclassName. Ready to
-                                                                                                            activate!"
+                                                                                                            AfterClass. Ready to
+                                                                                                            activate!
                                                                                                         </p>
                                                                                                     </li>
                                                                                                 </ul>
