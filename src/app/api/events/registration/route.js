@@ -157,6 +157,9 @@ export async function POST(request) {
             hour12: true,
         })
 
+        console.log('sending email for registration.');
+        
+
         RegistrationEmailHelper( name, email, eventTitle, eventType, location, eventDate, eventImage )
 
 

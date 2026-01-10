@@ -92,11 +92,11 @@ const Page = () => {
                 type: "success"
             })
             // alert('Registration successful!');
-            toastManager.add({
-                title: "Registration successful!",
-                description: "Check your email for further instructions.",
-                type: "success"
-            })
+            // toastManager.add({
+            //     title: "Registration successful!",
+            //     description: "Check your email for further instructions.",
+            //     type: "success"
+            // })
 
             // You can redirect or show success message here
             // window.location.href = '/success';
