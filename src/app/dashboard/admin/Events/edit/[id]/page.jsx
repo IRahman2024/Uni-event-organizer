@@ -72,7 +72,7 @@ const EditEvents = () => {
     // Fetch event data on component mount
     useEffect(() => {
         setLoading(true);
-        axios.get(`http://localhost:3000/api/events?eventId=${eventId}`)
+        axios.get(`/api/events?eventId=${eventId}`)
             .then((res) => {
                 const eventData = res.data.data;
                 console.log(eventData);

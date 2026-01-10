@@ -853,7 +853,7 @@ export default function EventTable({
                     </AlertDialog>
 
                     {/* Add event button */}
-                    <Link href={'http://localhost:3000/dashboard/Events/create'}>
+                    <Link href={'/dashboard/Events/create'}>
                         <Button>
                             <PlusIcon className="-ms-1 opacity-60" size={16} aria-hidden="true" />
                             Add Event
