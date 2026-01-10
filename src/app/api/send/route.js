@@ -33,10 +33,10 @@ export async function POST(request) {
     const type = query.get('type');
     // const email = query.get('email');
 
-    console.log('hit');
+    // console.log('hit');
     // console.log('name: ', name);
-    console.log('email: ', email);
-    console.log('type: ', type);
+    // console.log('email: ', email);
+    // console.log('type: ', type);
     // console.log(name, eventTitle, eventType, location, eventDate, eventImage, ticketImage, cancelLink);
 
     const transporter = nodemailer.createTransport({
@@ -47,12 +47,12 @@ export async function POST(request) {
         },
     });
 
-    // const welcomeEmail = await render(
-    //     WelcomeEmail()
-    // );
-    // const RegistrationEmail = await render(
-    //     EventRegistrationEmail({ name: name, eventTitle: eventTitle, eventType: eventType, location: location, eventDate: eventDate, eventImage: eventImage, ticketImage: ticketImage, cancelLink: cancelLink })
-    // );
+    const welcomeEmail = await render(
+        WelcomeEmail()
+    );
+    const RegistrationEmail = await render(
+        EventRegistrationEmail({ name: name, eventTitle: eventTitle, eventType: eventType, location: location, eventDate: eventDate, eventImage: eventImage, ticketImage: ticketImage, cancelLink: cancelLink })
+    );
 
     try {
 
@@ -63,23 +63,23 @@ export async function POST(request) {
             );
         }
 
-        // if (type == 'new') {
-        //     await transporter.sendMail({
-        //         from: process.env.AfterClassEmail,
-        //         to: email,
-        //         subject: 'One last step... 🔓 Activate your AfterClass account',
-        //         html: welcomeEmail,
-        //     });
-        // }
+        if (type == 'new') {
+            await transporter.sendMail({
+                from: process.env.AfterClassEmail,
+                to: email,
+                subject: 'One last step... 🔓 Activate your AfterClass account',
+                html: welcomeEmail,
+            });
+        }
 
-        // if (type == 'event') {
-        //     await transporter.sendMail({
-        //         from: process.env.AfterClassEmail,
-        //         to: email,
-        //         subject: `You’re in! 🎫 Your pass for ${eventTitle}`,
-        //         html: RegistrationEmail,
-        //     });
-        // }
+        if (type == 'event') {
+            await transporter.sendMail({
+                from: process.env.AfterClassEmail,
+                to: email,
+                subject: `You’re in! 🎫 Your pass for ${eventTitle}`,
+                html: RegistrationEmail,
+            });
+        }
 
         return Response.json({ success: true });
 
