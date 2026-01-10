@@ -8,7 +8,7 @@ export const EventRegistrationEmail = ({
     eventDate = "January 15, 2026 at 8:00 PM",
     eventImage = "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUYJlaZshuLdgqZbyfBY7mM0Opo1a5wQxl6nR3",
     ticketImage = "https://fzenbrc.stripocdn.email/content/guids/CABINET_efd73275a118af81169236f0a96cdd3cc573fa6b6e179a5c04a4f0f55ee77db7/images/event_ticket.jpg",
-    cancelLink = "http://localhost:3000/dashboard/student/my-events",
+    cancelLink = "http://afterclass-kappa.vercel.app/dashboard/student/my-events",
 } = {}) => {
 
     return (
