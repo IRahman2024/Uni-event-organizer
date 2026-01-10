@@ -52,15 +52,15 @@ export async function POST(request) {
             console.log('✅ This is a user.created event');
 
             const email = data.primary_email;
-            const name = data.display_name || email.split('@')[0];
+            // const name = data.display_name || email.split('@')[0];
 
             console.log(`📧 Email to send to: ${email}`);
-            console.log(`👤 Name to use: ${name}`);
+            // console.log(`👤 Name to use: ${name}`);
 
             // Send welcome email
             console.log('🚀 About to call sendWelcomeEmail function...');
 
-            sendWelcomeEmail(email, name)
+            sendWelcomeEmail(email)
                 .then(() => {
                     console.log('✅ sendWelcomeEmail promise resolved');
                 })
@@ -92,7 +92,7 @@ export async function POST(request) {
 }
 
 // Helper function to send welcome email
-async function sendWelcomeEmail(email, name) {
+async function sendWelcomeEmail(email) {
     console.log('========================================');
     console.log('📬 sendWelcomeEmail function started');
     console.log('========================================');
@@ -106,7 +106,7 @@ async function sendWelcomeEmail(email, name) {
         console.log(`📧 Email: ${email}`);
         console.log(`👤 Name: ${name}`);
 
-        const requestBody = { email, name };
+        const requestBody = { email };
         console.log('📦 Request body:', JSON.stringify(requestBody));
 
         console.log('🚀 Making fetch request...');
