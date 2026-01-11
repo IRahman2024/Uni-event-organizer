@@ -26,8 +26,8 @@ import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
-  { href: "#", label: "Features" },
-  { href: "#", label: "Pricing" },
+  { href: "/events", label: "Events" },
+  // { href: "#", label: "Profile" },
   { href: "#", label: "About" },
 ]
 
@@ -89,10 +89,18 @@ export default async function Navbar() {
           </Popover>
           {/* Logo */}
           <div className="flex items-center gap-6">
-            <a href="/" className="md:size-8 text-primary hover:text-primary/90">
-              <Logo />
+            <a href="/" className="md:size-10 text-primary hover:text-primary/90">
+              {/* <Logo /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 640 640"
+                className='text-black dark:text-white'
+                fill="currentColor" // This is the magic part
+              >
+                <path d="M482.4 221.9C517.7 213.6 544 181.9 544 144C544 99.8 508.2 64 464 64C420.6 64 385.3 98.5 384 141.5L200.2 215.1C185.7 200.8 165.9 192 144 192C99.8 192 64 227.8 64 272C64 316.2 99.8 352 144 352C156.2 352 167.8 349.3 178.1 344.4L323.7 471.8C321.3 479.4 320 487.6 320 496C320 540.2 355.8 576 400 576C444.2 576 480 540.2 480 496C480 468.3 466 443.9 444.6 429.6L482.4 221.9zM220.3 296.2C222.5 289.3 223.8 282 224 274.5L407.8 201C411.4 204.5 415.2 207.7 419.4 210.5L381.6 418.1C376.1 419.4 370.8 421.2 365.8 423.6L220.3 296.2z" />
+              </svg>
             </a>
-            <p className="text-xs md:text-sm font-black font-sans" style={{ fontFamily: '"Aclonica", sans-serif' }}>A Uni Project</p>
+            <p className="text-xs md:text-sm font-black font-sans" style={{ fontFamily: '"Aclonica", sans-serif' }}>AfterClass </p>
           </div>
         </div>
         {/* Middle area */}
@@ -122,7 +130,7 @@ export default async function Navbar() {
           {/* <ModeToggle></ModeToggle> */}
           <AnimatedThemeToggler></AnimatedThemeToggler>
           {/* Notification */}
-          <NotificationMenu />
+          {/* <NotificationMenu /> */}
           {/* User menu */}
           <UserMenu></UserMenu>
           {/* {user ? <UserMenu></UserMenu> : <UserButton></UserButton>} */}

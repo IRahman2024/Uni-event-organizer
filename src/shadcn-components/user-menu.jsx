@@ -33,16 +33,19 @@ export default async function UserMenu() {
   const user = await stackServerApp.getUser();
   const app = stackServerApp.urls;
 
-  // console.log(user);
+  console.log(user);
 
+  const userName = user?.displayName?.charAt(0)?.toUpperCase() || user?.primaryEmail?.charAt(0)?.toUpperCase() || 'User';
+  console.log('first character: ', userName);
+  
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-base">
           <Avatar>
-            <AvatarImage src={user?.profileImageUrl || "./avatar.jpg"} alt="Profile image" />
-            <AvatarFallback className='bg-background text-foreground'>KK</AvatarFallback>
+            <AvatarImage className='rounded-full' src={user?.profileImageUrl || "./avatar.jpg"} alt="Profile image" />
+            <AvatarFallback className='bg-cyan-400 text-black font-bold text-2xl'>{userName}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

@@ -62,6 +62,7 @@ const UpdateProfile = ({ status }) => {
     const [loading, setLoading] = useState(false);
 
     // console.log('student data under updater: ', student);
+    console.log('stackUserId: ', user?.id);
 
 
     const handleFormData = (data) => {
@@ -72,11 +73,15 @@ const UpdateProfile = ({ status }) => {
         setLoading(true);
         const newData = {
             ...data,
-            email: user.primaryEmail
+            email: user.primaryEmail,
+            stackUserId: user.id
         }
 
         if (imageUrl?.trim()) newData.profileImage = imageUrl.trim();
         if (data.studentId?.trim()) newData.studentId = data.studentId.trim();
+
+
+        console.log('data passed: ', newData);
 
 
         axios.patch(`/api/students/${user.primaryEmail}`, newData)
@@ -173,7 +178,7 @@ const UpdateProfile = ({ status }) => {
                             />
                         </Field>
 
-                        <p className="text-2xl font-bold">Add Profile Photo</p>
+                        <p className="text-2xl font-bold">Add Profile Photo(Max 100KB)</p>
                         <div className='flex justify-center my-2 max-w-full'>
                             <ImageUploader
                                 endpoint={'imageUploader'}

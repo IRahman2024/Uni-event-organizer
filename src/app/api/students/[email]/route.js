@@ -43,9 +43,11 @@ export async function PATCH(request, { params }) {
 
         const body = await request.json();
 
-        const { name, batch, department, studentId, profileImage } = body;
+        const { name, batch, department, studentId, profileImage, stackUserId } = body;
 
         // console.log('name: ', name);
+        console.log('stackUserId: ', stackUserId);
+        console.log('profileImage: ', profileImage);
 
         const data = {
             name,
@@ -74,7 +76,35 @@ export async function PATCH(request, { params }) {
             create: createData
         })
 
-        prisma.$disconnect();
+        // 1. UPDATE STACK AUTH USER PROFILE (if stackUserId is provided)
+        if (stackUserId && name && profileImage) {
+            try {
+                const stackResponse = await fetch(`https://api.stack-auth.com/api/v1/users/${stackUserId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-stack-access-type': 'server',
+                        'x-stack-project-id': process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
+                        'x-stack-secret-server-key': process.env.STACK_SECRET_SERVER_KEY,
+                    },
+                    body: JSON.stringify({
+                        display_name: name,
+                        profile_image_url: profileImage.trim()
+                    })
+                });
+
+                if (!stackResponse.ok) {
+                    const errorText = await stackResponse.text();
+                    console.error('Stack Auth update failed:', errorText);
+                    // Continue with database update even if Stack Auth fails
+                }
+            } catch (stackError) {
+                console.error('Error updating Stack Auth:', stackError);
+                // Continue with database update even if Stack Auth fails
+            }
+        }
+
+        // prisma.$disconnect();
 
         return NextResponse.json({
             success: true,
