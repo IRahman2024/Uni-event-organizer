@@ -284,6 +284,20 @@ export default function MyEventsTable({
                                 </TableCell>
                             </TableRow>
                         )}
+
+                        {table.getRowModel().rows.length === 0 && !loading && (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <p>No events found</p>
+                                    <Button
+                                        variant="default"
+                                        className="mt-2"
+                                        onClick={() => { window.location.href = '/events' }}
+                                    >Go to events</Button>
+                                </TableCell>
+                            </TableRow>
+                        )}
+
                     </TableBody>
                 </Table>
             </div>

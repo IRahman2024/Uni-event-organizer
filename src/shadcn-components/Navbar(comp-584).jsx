@@ -22,6 +22,7 @@ import { stackServerApp } from "@/stack/server"
 import { UserButton } from "@stackframe/stack"
 import Link from "next/link"
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler"
+import Searchbar from "@/components/Searchbar/Searchbar"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -32,7 +33,6 @@ const navigationLinks = [
 ]
 
 export default async function Navbar() {
-  const id = useId();
 
   const user = await stackServerApp.getUser();
   const app = stackServerApp.urls;
@@ -106,24 +106,7 @@ export default async function Navbar() {
         {/* Middle area */}
         <div className="grow hidden md:block">
           {/* Search form */}
-          <div className="relative mx-auto w-full max-w-xs">
-            <Input
-              id={id}
-              className="peer h-8 ps-8 pe-10"
-              placeholder="Search..."
-              type="search" />
-            <div
-              className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50">
-              <SearchIcon size={16} />
-            </div>
-            <div
-              className="text-muted-foreground pointer-events-none absolute inset-y-0 end-0 flex items-center justify-center pe-2">
-              <kbd
-                className="text-muted-foreground/70 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-                ⌘K
-              </kbd>
-            </div>
-          </div>
+          <Searchbar></Searchbar>
         </div>
         {/* Right side */}
         <div className="flex flex-1 items-center justify-end gap-2">

@@ -44,8 +44,8 @@ export default async function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-base">
           <Avatar>
-            <AvatarImage className='rounded-full' src={user?.profileImageUrl || "./avatar.jpg"} alt="Profile image" />
-            <AvatarFallback className='bg-cyan-400 text-black font-bold text-2xl'>{userName}</AvatarFallback>
+            <AvatarImage className='rounded-full' src={user?.profileImageUrl || "./avatar.png"} alt="Profile image" />
+            <AvatarFallback className='bg-cyan-400 text-black font-bold text-2xl'>{userName || 'U'}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
