@@ -41,7 +41,7 @@ const ManageEvents = () => {
     const toEditPage = (id) =>{
         console.log('edit eventId: ', id);
         // console.log(`/dashboard/Events/edit/${id}`);
-        router.push(`/dashboard/Events/edit/${id}`);
+        router.push(`/dashboard/admin/Events/edit/${id}`);
         
     }
 
@@ -101,7 +101,7 @@ const ManageEvents = () => {
 
     return (
         <div>
-            <p>total events: {events.length}</p>
+            <p>Total Events Listed: {events.length}</p>
             <div className='mt-10'>
                 {/* <TableDetailed></TableDetailed> */}
                 <EventTable

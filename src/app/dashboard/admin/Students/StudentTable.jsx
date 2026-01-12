@@ -398,224 +398,227 @@ export default function StudentTable({
             <div className="space-y-4">
                 {/* Filters */}
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                        {/* Filter by name, email, or student ID */}
-                        <div className="relative">
-                            <Input
-                                id={`${id}-input`}
-                                ref={inputRef}
-                                className={cn(
-                                    "peer min-w-60 ps-9",
-                                    Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
+
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <div className="relative">
+                                <Input
+                                    id={`${id}-input`}
+                                    ref={inputRef}
+                                    className={cn(
+                                        "peer min-w-60 ps-9",
+                                        Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
+                                    )}
+                                    value={
+                                        (table.getColumn("name")?.getFilterValue() ?? "")
+                                    }
+                                    onChange={(e) =>
+                                        table.getColumn("name")?.setFilterValue(e.target.value)
+                                    }
+                                    placeholder="Search by name, email, or ID..."
+                                    type="text"
+                                    aria-label="Filter by name, email, or student ID"
+                                />
+                                <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                                    <ListFilterIcon size={16} aria-hidden="true" />
+                                </div>
+                                {Boolean(table.getColumn("name")?.getFilterValue()) && (
+                                    <button
+                                        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                                        aria-label="Clear filter"
+                                        onClick={() => {
+                                            table.getColumn("name")?.setFilterValue("")
+                                            if (inputRef.current) {
+                                                inputRef.current.focus()
+                                            }
+                                        }}
+                                    >
+                                        <CircleXIcon size={16} aria-hidden="true" />
+                                    </button>
                                 )}
-                                value={
-                                    (table.getColumn("name")?.getFilterValue() ?? "")
-                                }
-                                onChange={(e) =>
-                                    table.getColumn("name")?.setFilterValue(e.target.value)
-                                }
-                                placeholder="Search by name, email, or ID..."
-                                type="text"
-                                aria-label="Filter by name, email, or student ID"
-                            />
-                            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                                <ListFilterIcon size={16} aria-hidden="true" />
                             </div>
-                            {Boolean(table.getColumn("name")?.getFilterValue()) && (
-                                <button
-                                    className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground focus:z-10 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-                                    aria-label="Clear filter"
-                                    onClick={() => {
-                                        table.getColumn("name")?.setFilterValue("")
-                                        if (inputRef.current) {
-                                            inputRef.current.focus()
-                                        }
-                                    }}
-                                >
-                                    <CircleXIcon size={16} aria-hidden="true" />
-                                </button>
-                            )}
+
+                            {/* Filter by department */}
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button variant="outline">
+                                        <FilterIcon
+                                            className="-ms-1 opacity-60"
+                                            size={16}
+                                            aria-hidden="true"
+                                        />
+                                        Department
+                                        {selectedDepartments.length > 0 && (
+                                            <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
+                                                {selectedDepartments.length}
+                                            </span>
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto min-w-36 p-3" align="start">
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-muted-foreground">
+                                            Filter by Department
+                                        </div>
+                                        <div className="space-y-3">
+                                            {uniqueDepartments.map((value, i) => (
+                                                <div key={value} className="flex items-center gap-2">
+                                                    <Checkbox
+                                                        id={`${id}-dept-${i}`}
+                                                        checked={selectedDepartments.includes(value)}
+                                                        onCheckedChange={(checked) =>
+                                                            handleDepartmentChange(checked, value)
+                                                        }
+                                                    />
+                                                    <Label
+                                                        htmlFor={`${id}-dept-${i}`}
+                                                        className="flex grow justify-between gap-2 font-normal"
+                                                    >
+                                                        {value}{" "}
+                                                        <span className="ms-2 text-xs text-muted-foreground">
+                                                            {departmentCounts.get(value)}
+                                                        </span>
+                                                    </Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+
+                            {/* Filter by batch */}
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button variant="outline">
+                                        <FilterIcon
+                                            className="-ms-1 opacity-60"
+                                            size={16}
+                                            aria-hidden="true"
+                                        />
+                                        Batch
+                                        {selectedBatches.length > 0 && (
+                                            <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
+                                                {selectedBatches.length}
+                                            </span>
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto min-w-36 p-3" align="start">
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-muted-foreground">
+                                            Filter by Batch
+                                        </div>
+                                        <div className="space-y-3">
+                                            {uniqueBatches.map((value, i) => (
+                                                <div key={value} className="flex items-center gap-2">
+                                                    <Checkbox
+                                                        id={`${id}-batch-${i}`}
+                                                        checked={selectedBatches.includes(value)}
+                                                        onCheckedChange={(checked) =>
+                                                            handleBatchChange(checked, value)
+                                                        }
+                                                    />
+                                                    <Label
+                                                        htmlFor={`${id}-batch-${i}`}
+                                                        className="flex grow justify-between gap-2 font-normal"
+                                                    >
+                                                        Batch {value}{" "}
+                                                        <span className="ms-2 text-xs text-muted-foreground">
+                                                            {batchCounts.get(value)}
+                                                        </span>
+                                                    </Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+
+                            {/* Filter by status */}
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button variant="outline">
+                                        <FilterIcon
+                                            className="-ms-1 opacity-60"
+                                            size={16}
+                                            aria-hidden="true"
+                                        />
+                                        Status
+                                        {selectedStatuses.length > 0 && (
+                                            <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
+                                                {selectedStatuses.length}
+                                            </span>
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto min-w-36 p-3" align="start">
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-medium text-muted-foreground">
+                                            Filter by Status
+                                        </div>
+                                        <div className="space-y-3">
+                                            {uniqueStatuses.map((value, i) => (
+                                                <div key={value} className="flex items-center gap-2">
+                                                    <Checkbox
+                                                        id={`${id}-status-${i}`}
+                                                        checked={selectedStatuses.includes(value)}
+                                                        onCheckedChange={(checked) =>
+                                                            handleStatusChange(checked, value)
+                                                        }
+                                                    />
+                                                    <Label
+                                                        htmlFor={`${id}-status-${i}`}
+                                                        className="flex grow justify-between gap-2 font-normal capitalize"
+                                                    >
+                                                        {value}{" "}
+                                                        <span className="ms-2 text-xs text-muted-foreground">
+                                                            {statusCounts.get(value)}
+                                                        </span>
+                                                    </Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+
+                            {/* Toggle columns visibility */}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline">
+                                        <Columns3Icon
+                                            className="-ms-1 opacity-60"
+                                            size={16}
+                                            aria-hidden="true"
+                                        />
+                                        View
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                                    {table
+                                        .getAllColumns()
+                                        .filter((column) => column.getCanHide())
+                                        .map((column) => {
+                                            return (
+                                                <DropdownMenuCheckboxItem
+                                                    key={column.id}
+                                                    className="capitalize"
+                                                    checked={column.getIsVisible()}
+                                                    onCheckedChange={(value) =>
+                                                        column.toggleVisibility(!!value)
+                                                    }
+                                                    onSelect={(event) => event.preventDefault()}
+                                                >
+                                                    {column.id}
+                                                </DropdownMenuCheckboxItem>
+                                            )
+                                        })}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
-
-                        {/* Filter by department */}
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="outline">
-                                    <FilterIcon
-                                        className="-ms-1 opacity-60"
-                                        size={16}
-                                        aria-hidden="true"
-                                    />
-                                    Department
-                                    {selectedDepartments.length > 0 && (
-                                        <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
-                                            {selectedDepartments.length}
-                                        </span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto min-w-36 p-3" align="start">
-                                <div className="space-y-3">
-                                    <div className="text-xs font-medium text-muted-foreground">
-                                        Filter by Department
-                                    </div>
-                                    <div className="space-y-3">
-                                        {uniqueDepartments.map((value, i) => (
-                                            <div key={value} className="flex items-center gap-2">
-                                                <Checkbox
-                                                    id={`${id}-dept-${i}`}
-                                                    checked={selectedDepartments.includes(value)}
-                                                    onCheckedChange={(checked) =>
-                                                        handleDepartmentChange(checked, value)
-                                                    }
-                                                />
-                                                <Label
-                                                    htmlFor={`${id}-dept-${i}`}
-                                                    className="flex grow justify-between gap-2 font-normal"
-                                                >
-                                                    {value}{" "}
-                                                    <span className="ms-2 text-xs text-muted-foreground">
-                                                        {departmentCounts.get(value)}
-                                                    </span>
-                                                </Label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
-
-                        {/* Filter by batch */}
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="outline">
-                                    <FilterIcon
-                                        className="-ms-1 opacity-60"
-                                        size={16}
-                                        aria-hidden="true"
-                                    />
-                                    Batch
-                                    {selectedBatches.length > 0 && (
-                                        <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
-                                            {selectedBatches.length}
-                                        </span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto min-w-36 p-3" align="start">
-                                <div className="space-y-3">
-                                    <div className="text-xs font-medium text-muted-foreground">
-                                        Filter by Batch
-                                    </div>
-                                    <div className="space-y-3">
-                                        {uniqueBatches.map((value, i) => (
-                                            <div key={value} className="flex items-center gap-2">
-                                                <Checkbox
-                                                    id={`${id}-batch-${i}`}
-                                                    checked={selectedBatches.includes(value)}
-                                                    onCheckedChange={(checked) =>
-                                                        handleBatchChange(checked, value)
-                                                    }
-                                                />
-                                                <Label
-                                                    htmlFor={`${id}-batch-${i}`}
-                                                    className="flex grow justify-between gap-2 font-normal"
-                                                >
-                                                    Batch {value}{" "}
-                                                    <span className="ms-2 text-xs text-muted-foreground">
-                                                        {batchCounts.get(value)}
-                                                    </span>
-                                                </Label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
-
-                        {/* Filter by status */}
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="outline">
-                                    <FilterIcon
-                                        className="-ms-1 opacity-60"
-                                        size={16}
-                                        aria-hidden="true"
-                                    />
-                                    Status
-                                    {selectedStatuses.length > 0 && (
-                                        <span className="-me-1 inline-flex h-5 max-h-full items-center rounded border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
-                                            {selectedStatuses.length}
-                                        </span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto min-w-36 p-3" align="start">
-                                <div className="space-y-3">
-                                    <div className="text-xs font-medium text-muted-foreground">
-                                        Filter by Status
-                                    </div>
-                                    <div className="space-y-3">
-                                        {uniqueStatuses.map((value, i) => (
-                                            <div key={value} className="flex items-center gap-2">
-                                                <Checkbox
-                                                    id={`${id}-status-${i}`}
-                                                    checked={selectedStatuses.includes(value)}
-                                                    onCheckedChange={(checked) =>
-                                                        handleStatusChange(checked, value)
-                                                    }
-                                                />
-                                                <Label
-                                                    htmlFor={`${id}-status-${i}`}
-                                                    className="flex grow justify-between gap-2 font-normal capitalize"
-                                                >
-                                                    {value}{" "}
-                                                    <span className="ms-2 text-xs text-muted-foreground">
-                                                        {statusCounts.get(value)}
-                                                    </span>
-                                                </Label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
-
-                        {/* Toggle columns visibility */}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">
-                                    <Columns3Icon
-                                        className="-ms-1 opacity-60"
-                                        size={16}
-                                        aria-hidden="true"
-                                    />
-                                    View
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                                {table
-                                    .getAllColumns()
-                                    .filter((column) => column.getCanHide())
-                                    .map((column) => {
-                                        return (
-                                            <DropdownMenuCheckboxItem
-                                                key={column.id}
-                                                className="capitalize"
-                                                checked={column.getIsVisible()}
-                                                onCheckedChange={(value) =>
-                                                    column.toggleVisibility(!!value)
-                                                }
-                                                onSelect={(event) => event.preventDefault()}
-                                            >
-                                                {column.id}
-                                            </DropdownMenuCheckboxItem>
-                                        )
-                                    })}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
                     </div>
+
                     <div className="flex items-center gap-3">
                         {/* Delete button */}
                         {table.getSelectedRowModel().rows.length > 0 && (

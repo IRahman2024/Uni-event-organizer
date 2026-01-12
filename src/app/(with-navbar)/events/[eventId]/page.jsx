@@ -144,33 +144,6 @@ const Page = () => {
         );
     }
 
-    // if (loading) {
-    //     return (
-    //         <div className="flex items-center justify-center min-h-screen">
-    //             <div className="text-center">
-    //                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-    //                 <p className="mt-4 text-muted-foreground">Loading event and form...</p>
-    //             </div>
-    //         </div>
-    //     );
-    // }
-
-    // if (error) {
-    //     return (
-    //         <div className="flex items-center justify-center min-h-screen">
-    //             <div className="text-center">
-    //                 <p className="text-destructive text-lg">{error}</p>
-    //                 <button
-    //                     onClick={() => window.location.reload()}
-    //                     className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-    //                 >
-    //                     Retry
-    //                 </button>
-    //             </div>
-    //         </div>
-    //     );
-    // }
-
     return (
         <div className='flex flex-col items-center min-h-screen p-5 md:p-16 w-full'>
             {/* event details */}

@@ -9,7 +9,7 @@ export function StepsForStudents() {
         {
             title: "Signup",
             content: (
-                <div>
+                <div key={1}>
                     <p
                         className="mb-8 text-xs font-normal text-neutral-800 md:text-2xl dark:text-neutral-200">
                         Just hit the signup from navbar.
@@ -30,7 +30,7 @@ export function StepsForStudents() {
         {
             title: "Complete User Profile",
             content: (
-                <div>
+                <div key={2}>
                     <p
                         className="mb-8 text-xs font-normal text-neutral-800 md:text-2xl dark:text-neutral-200">
                         Go to the user profile and complete your profile with your campus details.
@@ -51,7 +51,7 @@ export function StepsForStudents() {
         {
             title: "Find event",
             content: (
-                <div>
+                <div key={3}>
                     <p
                         className="mb-4 text-xs font-normal text-neutral-800 md:text-2xl dark:text-neutral-200">
                         Find your campus events in the events section.

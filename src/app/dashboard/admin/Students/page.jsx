@@ -43,7 +43,6 @@ const page = () => {
 
     return (
         <div>
-            This is participant page
             <StudentTable
                 students={students}
                 isLoading={isLoading}

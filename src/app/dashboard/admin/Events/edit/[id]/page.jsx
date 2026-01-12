@@ -197,7 +197,7 @@ const EditEvents = () => {
         <div>
             <div>
                 <p className="text-3xl font-sans text-center">Edit Event</p>
-                <form onSubmit={handleSubmit(onSubmit)} className='mx-auto w-2/3 border border-border rounded-lg shadow-sm p-5 flex flex-wrap gap-4 my-4'>
+                <form onSubmit={handleSubmit(onSubmit)} className='mx-auto w-full md:w-2/3 border border-border rounded-lg shadow-sm p-5 flex flex-wrap gap-4 my-4 overflow-hidden'>
                     <FieldSet className='w-full'>
                         <FieldGroup>
                             <Field>

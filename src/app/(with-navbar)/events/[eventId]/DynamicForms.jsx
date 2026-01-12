@@ -201,7 +201,7 @@ const DynamicForm = ({
                 <AlertDescription className="mt-2">
                     You must be logged in to register for this event. Please log in to continue.
                 </AlertDescription>
-                <Button className="mt-4" onClick={() => window.location.href = '/login'}>
+                <Button className="mt-4 p-5" onClick={() => window.location.href = '/login'}>
                     Log In
                 </Button>
             </Alert>
@@ -258,7 +258,7 @@ const DynamicForm = ({
         switch (field.fieldType) {
             case 'text':
                 return (
-                    <div key={field.id} className="space-y-2">
+                    <div key={field.id} className="space-y-2 min-w-0">
                         <Label htmlFor={field.fieldName}>
                             {field.label}
                             {field.isRequired && <span className="text-destructive ml-1">*</span>}
@@ -284,7 +284,7 @@ const DynamicForm = ({
 
             case 'email':
                 return (
-                    <div key={field.id} className="space-y-2">
+                    <div key={field.id} className="space-y-2 min-w-0">
                         <Label htmlFor={field.fieldName}>
                             {field.label}
                             {field.isRequired && <span className="text-destructive ml-1">*</span>}
@@ -310,7 +310,7 @@ const DynamicForm = ({
 
             case 'number':
                 return (
-                    <div key={field.id} className="space-y-2">
+                    <div key={field.id} className="space-y-2 min-w-0">
                         <Label htmlFor={field.fieldName}>
                             {field.label}
                             {field.isRequired && <span className="text-destructive ml-1">*</span>}
@@ -338,7 +338,7 @@ const DynamicForm = ({
                 const options = field.options ? field.options.split(',').map(opt => opt.trim()) : [];
 
                 return (
-                    <div key={field.id} className="space-y-2">
+                    <div key={field.id} className="space-y-2 min-w-0">
                         <Label htmlFor={field.fieldName}>
                             {field.label}
                             {field.isRequired && <span className="text-destructive ml-1">*</span>}
@@ -382,7 +382,7 @@ const DynamicForm = ({
             <Alert className="border-primary/50 bg-primary/5">
                 <CheckCircle className="h-5 w-5 text-primary" />
                 <AlertTitle className="text-sm font-semibold">Registering as:</AlertTitle>
-                <AlertDescription className="mt-1 text-sm">
+                <AlertDescription className="mt-1 text-sm break-all">
                     {userData.name} ({userData.studentId}) - {userData.email}
                 </AlertDescription>
             </Alert>

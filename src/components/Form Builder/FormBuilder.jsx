@@ -43,7 +43,7 @@ const FormBuilder = ({ onData, eventData }) => {
     return (
         <div className='my-5 border rounded-md p-5 shadow-md'>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='flex gap-2 items-center'>
+                <div className='flex flex-wrap gap-2 items-center'>
                     <div className="grid w-full max-w-sm items-center gap-3">
                         <Label htmlFor="fieldName">Field Name</Label>
                         <Controller
@@ -89,7 +89,7 @@ const FormBuilder = ({ onData, eventData }) => {
                                     onValueChange={field.onChange}
                                     value={field.value}
                                 >
-                                    <SelectTrigger className="w-[180px]">
+                                    <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Field Type" />
                                     </SelectTrigger>
                                     <SelectContent>
