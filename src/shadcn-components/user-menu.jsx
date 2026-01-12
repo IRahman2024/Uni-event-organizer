@@ -33,7 +33,7 @@ export default async function UserMenu() {
   const user = await stackServerApp.getUser();
   const app = stackServerApp.urls;
 
-  console.log(user);
+  // console.log(user);
 
   const userName = user?.displayName?.charAt(0)?.toUpperCase() || user?.primaryEmail?.charAt(0)?.toUpperCase() || 'User';
   console.log('first character: ', userName);

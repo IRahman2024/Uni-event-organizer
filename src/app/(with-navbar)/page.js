@@ -72,8 +72,8 @@ export default function Home() {
             </div>
             <CurvedText></CurvedText>
           </div>
-          <section className="h-screen">
-            <p className="text-6xl text-center font-bold mb-5">Our Features</p>
+          <section className="min-h-screen">
+            <p className="text-3xl md:text-6xl text-center font-bold mb-5">Our Features</p>
             <Features></Features>
           </section>
           <section className="min-h-screen">
@@ -81,10 +81,10 @@ export default function Home() {
           </section>
           <div className="container mx-auto gap-x-10 my-16">
             <div>
-              <p className="text-6xl font-bold text-foreground text-center">They’re Joining…and Loving It</p>
+              <p className="text-4xl md:text-6xl font-bold text-foreground text-center">They’re Joining…and Loving It</p>
             </div>
             <MovingMarquee></MovingMarquee>
-            <p className="text-4xl font-bold  text-foreground text-center my-5">Stories from the insiders</p>
+            <p className="text-4xl font-bold text-foreground text-center my-5">Stories from the insiders</p>
             <IndividualTestimonial></IndividualTestimonial>
           </div>
           {/* <div className="flex">

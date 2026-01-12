@@ -27,7 +27,7 @@ export const aclone = Aclonica({
 });
 
 export const metadata = {
-  title: "AfteClass",
+  title: "AfterClass",
   icons:{
     icon: '/afterClass.svg',
   },

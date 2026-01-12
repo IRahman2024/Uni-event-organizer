@@ -291,6 +291,11 @@ export const CircularTestimonials = ({
         .word {
           display: inline-block;
         }
+        @media (max-width: 767px) {
+          .testimonial-container {
+            padding: 1rem 0.75rem;
+          }
+        }
         @media (min-width: 768px) {
           .testimonial-grid {
             grid-template-columns: 1fr 1fr;
