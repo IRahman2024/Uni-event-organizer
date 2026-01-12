@@ -84,10 +84,13 @@ const ManageEvents = () => {
     // }
 
     const handleStatusChange = async (eventId, newStatus) => {
+        // console.log('new status: ', newStatus);
+        
         setUpdating(true);
         try {
             await axios.patch(`/api/events/updateEvent/${eventId}`, {
-                status: newStatus
+                status: newStatus,
+                eventId: eventId
             });
             await fetchEvents(); // Ensure this is async/await
         } catch (error) {

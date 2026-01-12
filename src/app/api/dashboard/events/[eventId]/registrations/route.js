@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export async function GET(request, { params }) {
     try {
-        const { eventId } = params;
+        const { eventId } = await params;
 
         // Get event details
         const event = await prisma.event.findUnique({
@@ -63,12 +63,14 @@ export async function GET(request, { params }) {
             })
         }));
 
-        // Calculate metrics
-        const totalRegistrations = registrations.length;
+        // Calculate metrics using event.audience for accurate totals
+        const audienceCount = event.audience || 0;
+        const registrationListCount = registrations.length; // Actual DB registrations for table display
+        const totalRegistrations = audienceCount; // Use audience field for metrics
         const fillRate = event.capacity > 0
-            ? ((totalRegistrations / event.capacity) * 100).toFixed(1)
+            ? ((audienceCount / event.capacity) * 100).toFixed(1)
             : 0;
-        const totalRevenue = parseFloat(event.price) * totalRegistrations;
+        const totalRevenue = parseFloat(event.price) * audienceCount;
 
         // Department breakdown
         const departmentBreakdown = registrations.reduce((acc, reg) => {
@@ -109,9 +111,10 @@ export async function GET(request, { params }) {
                 registrations: formattedRegistrations,
                 metrics: {
                     totalRegistrations,
+                    registrationListCount,
                     fillRate: parseFloat(fillRate),
                     totalRevenue: parseFloat(totalRevenue.toFixed(2)),
-                    availableSpots: event.capacity - totalRegistrations,
+                    availableSpots: event.capacity - audienceCount,
                     departmentBreakdown
                 }
             },

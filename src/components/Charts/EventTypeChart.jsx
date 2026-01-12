@@ -57,9 +57,9 @@ export default function EventTypeChart({ filters = {} }) {
     };
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat('en-BD', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'BDT',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         }).format(value);
@@ -98,10 +98,10 @@ export default function EventTypeChart({ filters = {} }) {
     return (
         <Card className="col-span-full">
             <CardHeader>
-                <div className="flex items-start justify-between">
-                    <div>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div className="min-w-0">
                         <CardTitle>Event Type Popularity</CardTitle>
-                        <CardDescription>
+                        <CardDescription className="break-words">
                             {viewMode === 'registrations'
                                 ? `Total: ${totalRegistrations} registrations across all event types`
                                 : `Total Revenue: ${formatCurrency(totalRevenue)}`

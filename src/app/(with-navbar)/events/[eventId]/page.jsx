@@ -26,8 +26,9 @@ const Page = () => {
 
     const user = useUser();
 
-    console.log('student data: ', studentData);
-    console.log('form fields: ', event?.formFields);
+    // console.log('student data: ', studentData);
+    // console.log('form fields: ', event?.formFields);
+    // console.log('event: ', event);
 
 
     useEffect(() => {
@@ -224,14 +225,20 @@ const Page = () => {
                                 <p className="text-muted-foreground mb-8">
                                     Please fill out the form below to register for this event.
                                 </p>
-
-                                <DynamicForms
-                                    fields={event?.formFields}
-                                    userData={studentData}
-                                    eventId={event.id}
-                                    onSubmit={handleFormSubmit}
-                                    submitButtonText="Register Now"
-                                />
+                                {
+                                    event?.status == 'active' ? (
+                                        <DynamicForms
+                                            fields={event?.formFields}
+                                            userData={studentData}
+                                            eventId={event.id}
+                                            onSubmit={handleFormSubmit}
+                                            submitButtonText="Register Now"
+                                        />
+                                    ) :
+                                        (
+                                            <p className="text-red-500">This event has been {event.status}</p>
+                                        )
+                                }
                             </div>
                         </div>
                 }

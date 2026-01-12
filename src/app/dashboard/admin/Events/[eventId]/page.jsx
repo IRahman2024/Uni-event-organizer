@@ -44,9 +44,9 @@ export default function EventDetailsPage() {
     };
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat('en-BD', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'BDT',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         }).format(value);
@@ -138,25 +138,25 @@ export default function EventDetailsPage() {
     });
 
     return (
-        <div className="container mx-auto p-6 space-y-6">
+        <div className="w-full max-w-full p-4 md:p-6 space-y-6 overflow-x-hidden">
             {/* Header */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-4">
                 <button
                     onClick={() => router.back()}
                     className="p-2 hover:bg-muted rounded-md transition-colors"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </button>
-                <div className="flex-1">
-                    <h1 className="text-3xl font-bold tracking-tight">{data.event.eventTitle}</h1>
-                    <p className="text-muted-foreground mt-1">{data.event.eventType} • {data.event.displayDate}</p>
+                <div className="flex-1 min-w-0">
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight truncate">{data.event.eventTitle}</h1>
+                    <p className="text-muted-foreground mt-1 text-sm md:text-base">{data.event.eventType} • {data.event.displayDate}</p>
                 </div>
                 <button
                     onClick={exportToCSV}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm"
                 >
                     <Download className="h-4 w-4" />
-                    Export CSV
+                    <span className="hidden sm:inline">Export CSV</span>
                 </button>
             </div>
 
@@ -221,7 +221,7 @@ export default function EventDetailsPage() {
                     <CardTitle>Department Breakdown</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         {Object.entries(data.metrics.departmentBreakdown).map(([dept, count]) => (
                             <div key={dept} className="text-center p-4 border rounded-lg">
                                 <div className="text-2xl font-bold">{count}</div>
@@ -238,7 +238,7 @@ export default function EventDetailsPage() {
             {/* Filters */}
             <Card>
                 <CardContent className="pt-6">
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <div className="flex-1">
                             <input
                                 type="text"
@@ -265,7 +265,7 @@ export default function EventDetailsPage() {
             {/* Registrations Table */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Registered Students ({filteredRegistrations.length})</CardTitle>
+                    <CardTitle>Registered Students ({data.metrics.registrationListCount})</CardTitle>
                     <CardDescription>Complete list of students with their form responses</CardDescription>
                 </CardHeader>
                 <CardContent>

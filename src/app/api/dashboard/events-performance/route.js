@@ -23,11 +23,6 @@ export async function GET(request) {
             registrationWhereClause.registeredAt = {};
             if (startDate) registrationWhereClause.registeredAt.gte = new Date(startDate);
             if (endDate) registrationWhereClause.registeredAt.lte = new Date(endDate);
-        } else {
-            // Default to current month
-            const now = new Date();
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-            registrationWhereClause.registeredAt = { gte: startOfMonth };
         }
 
         // Department filtering

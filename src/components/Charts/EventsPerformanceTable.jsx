@@ -66,9 +66,9 @@ export default function EventsPerformanceTable({ filters = {} }) {
     };
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat('en-BD', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'BDT',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         }).format(value);
@@ -174,13 +174,13 @@ export default function EventsPerformanceTable({ filters = {} }) {
     return (
         <Card className="col-span-full">
             <CardHeader>
-                <div className="flex items-start justify-between">
-                    <div>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <div className="min-w-0">
                         <CardTitle className="flex items-center gap-2">
                             <BarChart3 className="h-5 w-5" />
                             Events Performance
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="break-words">
                             {summary.totalEvents} events • {summary.totalRegistrations} registrations • {formatCurrency(summary.totalRevenue)} revenue • {summary.avgFillRate}% avg fill rate
                         </CardDescription>
                     </div>
@@ -285,9 +285,8 @@ export default function EventsPerformanceTable({ filters = {} }) {
                     </div>
                 </div>
 
-                {/* Pagination Controls */}
-                <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                         <div className="flex items-center gap-2">
                             <label className="text-sm text-muted-foreground">Show:</label>
                             <select

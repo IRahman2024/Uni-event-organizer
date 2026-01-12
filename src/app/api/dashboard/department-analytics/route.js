@@ -21,11 +21,6 @@ export async function GET(request) {
             whereClause.registeredAt = {};
             if (startDate) whereClause.registeredAt.gte = new Date(startDate);
             if (endDate) whereClause.registeredAt.lte = new Date(endDate);
-        } else {
-            // Default to current month
-            const now = new Date();
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-            whereClause.registeredAt = { gte: startOfMonth };
         }
 
         // Event type filtering

@@ -28,11 +28,6 @@ export async function GET(request) {
             registrationWhereClause.registeredAt = {};
             if (startDate) registrationWhereClause.registeredAt.gte = new Date(startDate);
             if (endDate) registrationWhereClause.registeredAt.lte = new Date(endDate);
-        } else {
-            // Default to current month for registrations
-            const now = new Date();
-            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-            registrationWhereClause.registeredAt = { gte: startOfMonth };
         }
 
         // Department filtering
@@ -59,15 +54,41 @@ export async function GET(request) {
             }
         });
 
-        // Aggregate data by event type
+        // Define all event types to ensure they all appear in the chart (when no filter)
+        const ALL_EVENT_TYPES = [
+            "conference",
+            "workshop",
+            "meetup",
+            "contests and competition",
+            "hackathon",
+            "tech fests",
+            "cultural",
+            "others"
+        ];
+
+        // Initialize event types - only pre-populate all types when no eventType filter is applied
         const eventTypeMap = {};
+        if (!eventType) {
+            // No filter: show all event types (including those with zero registrations)
+            ALL_EVENT_TYPES.forEach(type => {
+                eventTypeMap[type] = {
+                    eventType: type,
+                    registrationCount: 0,
+                    revenue: 0,
+                    eventCount: 0
+                };
+            });
+        }
 
+        // Aggregate data by event type
         events.forEach(event => {
-            // Only include events that have registrations matching our filters
-            if (event.registrations.length === 0) return;
-
             const type = event.eventType;
 
+            // Only count if there are registrations matching our filters
+            if (event.registrations.length === 0) return;
+
+            // If the event type exists in our predefined list, update it
+            // Otherwise create a new entry (for any custom types)
             if (!eventTypeMap[type]) {
                 eventTypeMap[type] = {
                     eventType: type,

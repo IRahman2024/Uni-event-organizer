@@ -9,9 +9,9 @@ import { success } from "zod";
 export async function PATCH(request, { params }) {
 
     try {
-        const eventId = params.eventId;
+        // const eventId = params.eventId;
 
-        const { status } = await request.json();
+        const { status, eventId } = await request.json();
 
         // console.log('eventId: ', eventId, 'status: ', status);
 

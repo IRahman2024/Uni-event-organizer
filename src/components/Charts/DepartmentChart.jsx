@@ -72,9 +72,9 @@ export default function DepartmentChart({ filters = {} }) {
     };
 
     const formatCurrency = (value) => {
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat('en-BD', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'BDT',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         }).format(value);
@@ -154,6 +154,7 @@ export default function DepartmentChart({ filters = {} }) {
                                 outerRadius={100}
                                 fill="#8884d8"
                                 dataKey="count"
+                                nameKey="department"
                             >
                                 {data.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[entry.department] || 'hsl(var(--chart-4))'} />
@@ -203,7 +204,7 @@ export default function DepartmentChart({ filters = {} }) {
                             <div key={dept.department} className="space-y-1">
                                 <div className="text-2xl font-bold">{dept.percentage}%</div>
                                 <div className="text-sm text-muted-foreground">{dept.department}</div>
-                                <div className="text-xs text-muted-foreground">{dept.count} students</div>
+                                <div className="text-xs text-muted-foreground">{dept.count} registrations</div>
                             </div>
                         ))}
                     </div>
