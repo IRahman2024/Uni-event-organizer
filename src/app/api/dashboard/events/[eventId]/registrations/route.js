@@ -41,7 +41,8 @@ export async function GET(request, { params }) {
                         batch: true,
                         image: true
                     }
-                }
+                },
+                payment: true
             },
             orderBy: {
                 registeredAt: 'desc'
@@ -53,6 +54,7 @@ export async function GET(request, { params }) {
             id: reg.id,
             student: reg.student,
             formData: reg.formData,
+            payment: reg.payment,
             registeredAt: reg.registeredAt,
             displayRegisteredAt: new Date(reg.registeredAt).toLocaleDateString('en-US', {
                 month: 'short',

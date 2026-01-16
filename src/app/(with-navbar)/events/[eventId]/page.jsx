@@ -28,7 +28,7 @@ const Page = () => {
 
     // console.log('student data: ', studentData);
     // console.log('form fields: ', event?.formFields);
-    // console.log('event: ', event);
+    console.log('event: ', event);
 
 
     useEffect(() => {

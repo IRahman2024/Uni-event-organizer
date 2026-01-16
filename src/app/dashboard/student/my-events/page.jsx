@@ -17,7 +17,7 @@ const page = () => {
 
     // console.log('loading from page:', loading);
     // console.log('studentData:', studentData);
-    // console.log('events:', events);
+    console.log('events:', events);
 
     const handleViewResponses = (eventId) => {
         onViewResponses(eventId)
@@ -30,10 +30,10 @@ const page = () => {
             if (response.status === 200) {
                 // alert('Registration cancelled successfully.');
                 toastManager.add({
-                title: "Registration canceled!",
-                description: "Registration has been canceled",
-                type: "success"
-            })
+                    title: "Registration canceled!",
+                    description: "Registration has been canceled",
+                    type: "success"
+                })
 
                 setEvents(events => events.filter(event => event.id !== eventId));
             }
@@ -43,6 +43,26 @@ const page = () => {
         }
         finally {
             setEvents(events => events.filter(event => event.id !== eventId));
+        }
+    }
+
+    const handlePayment = async (registrationId) => {
+        console.log('hit pay: ', registrationId);
+
+        const response = await axios.post(`/api/events/payments`, {
+            registrationId: registrationId,
+            studentId: studentData.studentId
+        })
+
+        console.log('response: ', response);
+
+        console.log('response from payment: ', response.data);
+
+        // const data = await response.json();
+
+        if (response.data.success && response.data.gatewayUrl) {
+            // Redirect to payment gateway
+            window.location.href = response.data.gatewayUrl;
         }
     }
 
@@ -88,6 +108,7 @@ const page = () => {
             <MyEventsTable registrations={events} loading={loading}
                 onViewResponses={handleViewResponses}
                 onCancelRegistration={handleCancelRegistration}
+                onPay={handlePayment}
             />
         </div>
     );

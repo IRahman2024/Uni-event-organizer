@@ -248,7 +248,10 @@ const CreateEvent = () => {
                                     <div className="flex flex-col gap-3">
                                         <Popover open={openDeadline} onOpenChange={setOpenDeadline}>
                                             <PopoverTrigger asChild>
-                                                <Button variant="outline" id="date-picker" className="w-full justify-between font-normal">
+                                                <Button 
+                                                variant="outline" 
+                                                id="date-picker" 
+                                                className="w-full justify-between font-normal">
                                                     {deadline ? deadline.toLocaleDateString() : "Select date"}
                                                     <ChevronDownIcon />
                                                 </Button>

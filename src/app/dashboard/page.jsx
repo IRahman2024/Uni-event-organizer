@@ -17,7 +17,8 @@ export default function DashboardPage() {
             if (role === ROLES.ADMIN) {
                 router.replace('/dashboard/admin');
             } else {
-                router.replace('/dashboard/student/my-profile');
+                // router.replace('/dashboard/student/my-profile');
+                router.replace('/dashboard/student/my-events');
             }
         }
     }, [user, router]);

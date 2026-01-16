@@ -61,8 +61,6 @@ import {
     DialogClose,
 } from "@/shadcn-components/ui/dialog"
 
-
-
 const EVENT_TYPES = [
     "conference",
     "workshop",
@@ -84,6 +82,7 @@ export default function MyEventsTable({
     registrations = [],
     onViewResponses,
     onCancelRegistration,
+    onPay,
     loading
 }) {
     const [sorting, setSorting] = useState([
@@ -146,6 +145,24 @@ export default function MyEventsTable({
                     >
                         View Responses
                     </Button>
+                    {
+                        row.original.status === "pending" ? (
+                            <Button
+                                variant="success"
+                                size="sm"
+                                onClick={() => onPay(row.original.id)}
+                            >
+                                Pay
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                            >
+                                Paid
+                            </Button>
+                        )
+                    }
                     <Button
                         variant="destructive"
                         size="sm"

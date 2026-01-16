@@ -142,7 +142,7 @@ export default function DashboardPage() {
                 <DepartmentChart filters={filters} />
                 <RevenueTrendChart filters={filters} />
             </div>
-            {/* Events Performance Table - ADD THIS */}
+            {/* Events Performance Table - all details of events  including registrations and responses*/}
             <EventsPerformanceTable filters={filters} />
         </div>
     );

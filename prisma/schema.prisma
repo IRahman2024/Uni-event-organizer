@@ -33,6 +33,7 @@ model Event {
   // Relations
   formFields    FormField[]
   registrations Registration[]
+  payments      Payment[]
 }
 
 model FormField {
@@ -68,9 +69,10 @@ model Student {
 
   // Relations
   registrations Registration[]
+  payments      Payment[]
 }
 
-model Registration {  
+model Registration {
   id String @id @default(cuid())
 
   studentId String
@@ -79,12 +81,39 @@ model Registration {
   eventId String
   event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
+  payment Payment?
+
   formData Json // Store all form responses as JSON
 
   registeredAt DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  status String? @default("pending")
+
   @@unique([studentId, eventId]) // A student can only register once per event
+  @@index([studentId])
+  @@index([eventId])
+}
+
+model Payment {
+  id String @id @default(cuid())
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  registrationId String       @unique
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  amount Decimal @db.Decimal(10, 2)
+  status String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, eventId]) // A student can only pay once per event
   @@index([studentId])
   @@index([eventId])
 }
