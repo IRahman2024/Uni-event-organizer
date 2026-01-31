@@ -1,0 +1,28 @@
+[
+  {
+    "eventTitle": "Career Guidance Meetup -Talk With CST Club",
+    "description": "Meetup focusing on career planning With Cyber security.",
+    "location": "SEC, Sylhet",
+    "eventType": "meetup",
+    "capacity": 150,
+    "price": 0.00,
+    "eventDate": "2026-01-25T15:00:00.000Z",
+    "eventDeadline": "2026-01-22T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUixdmB4VyDfEUc7IO6H843FtrkMWKP9RbAQLN",
+    "audience": 140,
+    "status": "upcoming"
+  },
+  {
+    "eventTitle": "Bangladesh Army After Bsc",
+    "description": "Awareness session about Bangladesh Army career opportunities, Session with Captain Jamil.",
+    "location": "Sylhet Cantonment",
+    "eventType": "meetup",
+    "capacity": 200,
+    "price": 0.00,
+    "eventDate": "2026-02-02T10:00:00.000Z",
+    "eventDeadline": "2026-01-30T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUPqmewx7cE6g0etpMzBA3Q5DIS2Zvw7GJHFdL",
+    "audience": 180,
+    "status": "upcoming"
+  }
+]

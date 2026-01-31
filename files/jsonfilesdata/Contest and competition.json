@@ -1,0 +1,67 @@
+[
+  {
+    "eventTitle": "Oxford Compsoc Competitive Programming Contest",
+    "description": "Competitive programming contest for university students across Bangladesh.",
+    "location": "Sylhet Engineering College",
+    "eventType": "contest and competitions",
+    "capacity": 200,
+    "price": 300.00,
+    "eventDate": "2026-02-12T09:00:00.000Z",
+    "eventDeadline": "2026-02-05T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMULaC7ljQ0JfViGowgeR2qlhNpZySH3QOPCUKT",
+    "audience": 190,
+    "status": "upcoming"
+  },
+  {
+    "eventTitle": "Inter University Competitive Programming Contest",
+    "description": "Algorithmic problem solving contest focusing on data structures and logic building.",
+    "location": "Sec ACM Lab ,SEC, Sylhet",
+    "eventType": "contest and competitions",
+    "capacity": 180,
+    "price": 300.00,
+    "eventDate": "2026-02-18T10:00:00.000Z",
+    "eventDeadline": "2026-02-10T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUY5PwywhuLdgqZbyfBY7mM0Opo1a5wQxl6nR3",
+    "audience": 170,
+    "status": "upcoming"
+  },
+  {
+    "eventTitle": "University Programming Contest",
+    "description": "Intra-university programming contest for CSE students.",
+    "location": "CUET, Chittagong",
+    "eventType": "contest and competitions",
+    "capacity": 160,
+    "price": 250.00,
+    "eventDate": "2026-03-05T09:00:00.000Z",
+    "eventDeadline": "2026-02-25T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUVjQJCxPTxwU5vJReags0DPuYZSHO2r8AqL1F",
+    "audience": 150,
+    "status": "upcoming"
+  },
+  {
+    "eventTitle": "Idea Presentation Competition By Sec Carrer Club",
+    "description": "Students present innovative startup and project ideas.",
+    "location": "Sylhet Engineering College, Dhaka",
+    "eventType": "contest and competitions",
+    "capacity": 120,
+    "price": 250.00,
+    "eventDate": "2026-03-12T10:00:00.000Z",
+    "eventDeadline": "2026-03-02T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUWqf2bCIMpcoRLFSVXbZyBveQJm1DrUgEIzxa",
+    "audience": 110,
+    "status": "upcoming"
+  },
+  {
+    "eventTitle": "Intra Campus Line Follower Robot Competition",
+    "description": "Autonomous robot competition following a predefined track.",
+    "location": "Sylhet Engineering College, Sylhet",
+    "eventType": "contest and competitions",
+    "capacity": 150,
+    "price": 500.00,
+    "eventDate": "2026-03-20T10:00:00.000Z",
+    "eventDeadline": "2026-03-10T23:59:59.000Z",
+    "eventImage": "https://1xdb815ool.ufs.sh/f/OoZvBo1YtVMUiDnGU6VyDfEUc7IO6H843FtrkMWKP9RbAQLN",
+    "audience": 140,
+    "status": "upcoming"
+  }
+]
