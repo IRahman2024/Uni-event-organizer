@@ -33,8 +33,17 @@ export async function POST(request) {
         const amount = event.price;
 
 
-        const paymentEntry = await prisma.payment.create({
-            data: {
+        const paymentEntry = await prisma.payment.upsert({
+            where: {
+                registrationId: registrationId
+            },
+            update: {
+                // If checking out again, likely retry. Update amount/status if needed, or just touch updated_at
+                amount: amount,
+                // Optional: reset status to pending if it was failed?
+                // status: 'pending' 
+            },
+            create: {
                 studentId: studentId,
                 eventId: event.id,
                 amount: amount,
@@ -122,7 +131,7 @@ export async function POST(request) {
 
     } catch (error) {
         console.log('error from payment api: ', error);
-        NextResponse.json({
+        return NextResponse.json({
             success: false,
             message: error
         })
