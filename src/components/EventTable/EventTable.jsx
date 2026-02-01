@@ -164,7 +164,7 @@ const formatDate = (dateString) => {
 }
 
 // Create columns function
-const createColumns = (onEdit, onDelete, onView, onStatusChange, isLoading) => [
+const createColumns = (onEdit, onDelete, onView, onStatusChange, isLoading, onCheckStats) => [
     {
         id: "select",
         header: ({ table }) => (
@@ -318,6 +318,7 @@ const createColumns = (onEdit, onDelete, onView, onStatusChange, isLoading) => [
             <RowActions
                 row={row}
                 onEdit={onEdit}
+                onCheckStats={onCheckStats}
                 onDelete={onDelete}
                 onView={onView}
                 onStatusChange={onStatusChange}
@@ -336,6 +337,7 @@ export default function EventTable({
     onView,
     onAddEvent,
     onStatusChange,
+    onCheckStats,
     isLoading = false,
     isUpdating = false,
     isDeleting = false
@@ -382,7 +384,7 @@ export default function EventTable({
         }
     }
 
-    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, handleStatusChangeInternal ), [onEdit, onDelete, onView, onStatusChange ])
+    const columns = useMemo(() => createColumns(onEdit, onDelete, onView, handleStatusChangeInternal, isLoading, onCheckStats), [onEdit, onDelete, onView, onStatusChange, isLoading, onCheckStats])
 
     const table = useReactTable({
         data,
@@ -1084,7 +1086,7 @@ export default function EventTable({
 }
 
 // Row Actions Component
-function RowActions({ row, onEdit, onDelete, onView, onStatusChange }) {
+function RowActions({ row, onEdit, onDelete, onView, onCheckStats, onStatusChange }) {
     const event = row.original
 
     return (
@@ -1109,7 +1111,7 @@ function RowActions({ row, onEdit, onDelete, onView, onStatusChange }) {
                     <DropdownMenuItem onClick={() => onEdit?.(event.id)}>
                         <span>Edit Event</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onCheckStats?.(event.id)}>
                         <span>Check Event Stats</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

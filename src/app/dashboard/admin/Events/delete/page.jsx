@@ -34,7 +34,7 @@ const ManageEvents = () => {
     }, [fetchEvents]);
 
     // console.log(events);
-    console.log(events.length);
+    // console.log(events.length);
 
     const router = useRouter();
 
@@ -83,6 +83,17 @@ const ManageEvents = () => {
     //         .finally(() => setUpdating(false))
     // }
 
+    const handleView = (id) =>{
+        console.log('on view id:', id);
+        router.push(`/events/${id}`)
+        
+    }
+
+    const handleStats = (id) =>{
+        console.log('check stats: ', id);
+        router.push(`/dashboard/admin/Events/${id}`)        
+    }
+
     const handleStatusChange = async (eventId, newStatus) => {
         // console.log('new status: ', newStatus);
         
@@ -111,9 +122,10 @@ const ManageEvents = () => {
                     data={events}
                     isLoading={isLoading}
                     // onAddEvent={handleAddEvent}
+                    onCheckStats={handleStats}
                     onEdit={toEditPage}
                     onStatusChange={handleStatusChange}
-                    // onView={handleView}
+                    onView={handleView}
                     onDelete={handleDelete}
                     isUpdating={isUpdating}
                     isDeleting={isDeleting}

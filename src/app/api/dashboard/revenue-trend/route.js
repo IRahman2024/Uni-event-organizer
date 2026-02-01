@@ -30,14 +30,7 @@ export async function GET(request) {
                 registrationWhereClause.registeredAt.lte = queryEndDate;
             }
         } else {
-            // Default to current month
-            const now = new Date();
-            queryStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
-            queryEndDate = now;
-            registrationWhereClause.registeredAt = {
-                gte: queryStartDate,
-                lte: queryEndDate
-            };
+            // No date filter - show all time
         }
 
         // Event type filtering
