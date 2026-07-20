@@ -1,63 +1,35 @@
-import { Geist, Geist_Mono, Aclonica } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "../stack/client";
 import "./globals.css";
-import Navbar from "@/shadcn-components/Navbar(comp-584)";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
-// import { SnackbarProvider } from "notistack";
 import SnackbarClientProvider from "@/components/SnackbarClientProvider/SnackbarClientProvider";
 import { AnchoredToastProvider, ToastProvider } from "@/shadcn-components/ui/toast";
-// import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const aclone = Aclonica({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: '400',
-  variable: '--font-aclonica',  // For Tailwind
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
 
 export const metadata = {
-  title: "AfterClass",
-  icons:{
-    icon: '/afterClass.svg',
-  },
-  description: "Campus Events Hub",
+  title: { default: "AfterClass", template: "%s · AfterClass" },
+  icons: { icon: "/afterClass.svg" },
+  description: "Discover, join, and organize the best events across campus.",
 };
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${aclone.variable} antialiased`}>
-        <StackProvider app={stackClientApp}><StackTheme>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {/* <div className="bg-white relative w-full">
-              </div> */}
-            <SnackbarClientProvider>
-              <ToastProvider>
-                <AnchoredToastProvider>
-                  {children}
-                </AnchoredToastProvider>
-              </ToastProvider>
-            </SnackbarClientProvider>
-          </ThemeProvider>
-        </StackTheme>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} antialiased`}>
+        <StackProvider app={stackClientApp}>
+          <StackTheme>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+              <SnackbarClientProvider>
+                <ToastProvider>
+                  <AnchoredToastProvider>{children}</AnchoredToastProvider>
+                </ToastProvider>
+              </SnackbarClientProvider>
+            </ThemeProvider>
+          </StackTheme>
         </StackProvider>
       </body>
     </html>

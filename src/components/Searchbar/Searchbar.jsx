@@ -1,232 +1,64 @@
-'use client';
+"use client";
 
-import { Input } from '@/shadcn-components/ui/input';
-import { SearchIcon, Clock, X } from 'lucide-react';
-import React, { useId, useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useId, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Clock, SearchIcon } from "lucide-react";
+import { Input } from "@/shadcn-components/ui/input";
 
-const Searchbar = () => {
-    const id = useId();
-    const router = useRouter();
-    const [query, setQuery] = useState('');
-    const [results, setResults] = useState([]);
-    const [recentSearches, setRecentSearches] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-    const searchRef = useRef(null);
-    const debounceTimer = useRef(null);
+export default function Searchbar() {
+  const id = useId();
+  const router = useRouter();
+  const rootRef = useRef(null);
+  const timerRef = useRef(null);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [recent, setRecent] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(-1);
 
-    // Load recent searches from localStorage on mount
-    useEffect(() => {
-        const saved = localStorage.getItem('recentEventSearches');
-        if (saved) {
-            setRecentSearches(JSON.parse(saved));
-        }
-    }, []);
+  useEffect(() => {
+    try { setRecent(JSON.parse(localStorage.getItem("recentEventSearches") || "[]")); } catch { setRecent([]); }
+    const close = (event) => { if (rootRef.current && !rootRef.current.contains(event.target)) setOpen(false); };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (searchRef.current && !searchRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
+  const search = async (value) => {
+    if (!value.trim()) { setResults([]); return; }
+    try { const response = await fetch(`/api/search/events?q=${encodeURIComponent(value)}`); const data = await response.json(); setResults(data.results || []); }
+    catch { setResults([]); }
+  };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+  const onChange = (event) => {
+    const value = event.target.value;
+    setQuery(value); setOpen(true); setSelected(-1);
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => search(value), 250);
+  };
 
-    // Debounced search function
-    const searchEvents = async (searchQuery) => {
-        if (!searchQuery.trim()) {
-            setResults([]);
-            return;
-        }
+  const choose = (event) => {
+    const next = [event.eventTitle, ...recent.filter((item) => item !== event.eventTitle)].slice(0, 5);
+    setRecent(next); localStorage.setItem("recentEventSearches", JSON.stringify(next));
+    setOpen(false); setQuery(""); router.push(`/events/${event.id}`);
+  };
 
-        try {
-            const response = await fetch(`/api/search/events?q=${encodeURIComponent(searchQuery)}`);
-            const data = await response.json();
-            setResults(data.results || []);
-        } catch (error) {
-            console.error('Search error:', error);
-            setResults([]);
-        }
-    };
+  const onKeyDown = (event) => {
+    if (!open) return;
+    if (event.key === "ArrowDown") { event.preventDefault(); setSelected((index) => Math.min(index + 1, results.length - 1)); }
+    if (event.key === "ArrowUp") { event.preventDefault(); setSelected((index) => Math.max(index - 1, -1)); }
+    if (event.key === "Enter" && selected >= 0) { event.preventDefault(); choose(results[selected]); }
+    if (event.key === "Escape") setOpen(false);
+  };
 
-    // Handle input change with debouncing
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setQuery(value);
-        setIsOpen(true);
-        setSelectedIndex(-1);
-
-        // Clear existing timer
-        if (debounceTimer.current) {
-            clearTimeout(debounceTimer.current);
-        }
-
-        // Set new timer for debounced search
-        debounceTimer.current = setTimeout(() => {
-            searchEvents(value);
-        }, 300); // 300ms debounce
-    };
-
-    // Save to recent searches
-    const saveToRecent = (eventTitle) => {
-        const updated = [eventTitle, ...recentSearches.filter(s => s !== eventTitle)].slice(0, 5);
-        setRecentSearches(updated);
-        localStorage.setItem('recentEventSearches', JSON.stringify(updated));
-    };
-
-    // Handle event selection
-    const handleSelectEvent = (event) => {
-        saveToRecent(event.eventTitle);
-        setQuery('');
-        setIsOpen(false);
-        router.push(`/events/${event.id}`);
-    };
-
-    // Handle recent search click
-    const handleRecentClick = (searchTerm) => {
-        setQuery(searchTerm);
-        searchEvents(searchTerm);
-    };
-
-    // Clear recent searches
-    const clearRecent = () => {
-        setRecentSearches([]);
-        localStorage.removeItem('recentEventSearches');
-    };
-
-    // Keyboard navigation
-    const handleKeyDown = (e) => {
-        if (!isOpen) return;
-
-        const totalItems = results.length;
-
-        switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                setSelectedIndex(prev => (prev < totalItems - 1 ? prev + 1 : prev));
-                break;
-            case 'ArrowUp':
-                e.preventDefault();
-                setSelectedIndex(prev => (prev > 0 ? prev - 1 : -1));
-                break;
-            case 'Enter':
-                e.preventDefault();
-                if (selectedIndex >= 0 && results[selectedIndex]) {
-                    handleSelectEvent(results[selectedIndex]);
-                }
-                break;
-            case 'Escape':
-                setIsOpen(false);
-                break;
-        }
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    };
-
-    const showDropdown = isOpen && (query.trim() !== '' || recentSearches.length > 0);
-
-    return (
-        <div ref={searchRef} className="relative mx-auto w-full max-w-xs">
-            <div className="relative">
-                <Input
-                    id={id}
-                    value={query}
-                    onChange={handleInputChange}
-                    onFocus={() => setIsOpen(true)}
-                    onKeyDown={handleKeyDown}
-                    className="peer h-8 ps-8 pe-10"
-                    placeholder="Search events..."
-                    type="search"
-                    autoComplete="off"
-                />
-                <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50">
-                    <SearchIcon size={16} />
-                </div>
-            </div>
-
-            {/* Glassmorphism Dropdown */}
-            {showDropdown && (
-                <div className="absolute mt-2 w-full z-50 rounded-lg border border-white/20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-2xl overflow-hidden">
-                    {/* Search Results */}
-                    {query.trim() !== '' && results.length > 0 && (
-                        <div className="max-h-80 overflow-y-auto">
-                            {results.map((event, index) => (
-                                <button
-                                    key={event.id}
-                                    onClick={() => handleSelectEvent(event)}
-                                    className={`w-full text-left px-4 py-3 flex items-start gap-3 transition-colors ${selectedIndex === index
-                                            ? 'bg-blue-500/20 dark:bg-blue-400/20'
-                                            : 'hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
-                                        }`}
-                                >
-                                    {event.eventImage && (
-                                        <img
-                                            src={event.eventImage}
-                                            alt={event.eventTitle}
-                                            className="w-12 h-12 rounded object-cover flex-shrink-0"
-                                        />
-                                    )}
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-medium text-sm text-gray-900 dark:text-gray-100 truncate">
-                                            {event.eventTitle}
-                                        </p>
-                                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                                            {formatDate(event.eventDate)} • {event.location}
-                                        </p>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* No Results */}
-                    {query.trim() !== '' && results.length === 0 && (
-                        <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                            No events found for "{query}"
-                        </div>
-                    )}
-
-                    {/* Recent Searches */}
-                    {query.trim() === '' && recentSearches.length > 0 && (
-                        <div>
-                            <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200/50 dark:border-gray-700/50">
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                                    Recent Searches
-                                </span>
-                                <button
-                                    onClick={clearRecent}
-                                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                                >
-                                    Clear
-                                </button>
-                            </div>
-                            <div className="max-h-60 overflow-y-auto">
-                                {recentSearches.map((search, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => handleRecentClick(search)}
-                                        className="w-full text-left px-4 py-2.5 flex items-center gap-3 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors"
-                                    >
-                                        <Clock size={14} className="text-gray-400 flex-shrink-0" />
-                                        <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
-                                            {search}
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    );
-};
-
-export default Searchbar;
+  const show = open && (query.trim() || recent.length);
+  return (
+    <div ref={rootRef} className="relative mx-auto w-full">
+      <div className="relative"><SearchIcon className="pointer-events-none absolute left-3 top-1/2 z-10 size-4 -translate-y-1/2 text-muted-foreground" /><Input id={id} value={query} onChange={onChange} onFocus={() => setOpen(true)} onKeyDown={onKeyDown} placeholder="Search events" type="search" autoComplete="off" className="h-10 bg-background/70 pl-9" aria-label="Search events" aria-expanded={Boolean(show)} /></div>
+      {show && <div className="glass-panel absolute mt-2 w-full overflow-hidden rounded-xl p-1">
+        {query.trim() && results.map((event, index) => <button key={event.id} onClick={() => choose(event)} className={`focus-ring flex w-full gap-3 rounded-lg p-2.5 text-left transition-colors ${selected === index ? "bg-accent" : "hover:bg-accent/60"}`}>{event.eventImage && <img src={event.eventImage} alt="" className="size-10 rounded-lg object-cover" />}<span className="min-w-0"><span className="block truncate text-sm font-semibold">{event.eventTitle}</span><span className="block truncate text-xs text-muted-foreground">{event.location || "Campus event"}</span></span></button>)}
+        {query.trim() && results.length === 0 && <div className="p-5 text-center text-sm text-muted-foreground">No matching events</div>}
+        {!query.trim() && recent.length > 0 && <div><div className="flex items-center justify-between px-2 py-1.5 text-xs font-semibold text-muted-foreground"><span>Recent searches</span><button onClick={() => { setRecent([]); localStorage.removeItem("recentEventSearches"); }} className="hover:text-primary">Clear</button></div>{recent.map((item) => <button key={item} onClick={() => { setQuery(item); search(item); }} className="focus-ring flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm hover:bg-accent/60"><Clock className="size-3.5 text-muted-foreground" />{item}</button>)}</div>}
+      </div>}
+    </div>
+  );
+}
