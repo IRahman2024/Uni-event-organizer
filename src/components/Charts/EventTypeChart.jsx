@@ -1,60 +1,31 @@
-// components/dashboard/EventTypeChart.jsx
-
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn-components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/shadcn-components/ui/chart';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Loader2 } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
+import { filterData, computeEventTypeAnalytics } from '@/lib/dashboard-utils';
 
 const chartConfig = {
     registrationCount: {
         label: "Registrations",
-        color: "#86a7c8", //bg-chart-1
+        color: "#86a7c8",
     },
     revenue: {
         label: "Revenue",
-        color: "#8589ff", // bg-chart-2
+        color: "#8589ff",
     },
 };
 
-export default function EventTypeChart({ filters = {} }) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [viewMode, setViewMode] = useState('registrations'); // 'registrations' or 'revenue'
+export default function EventTypeChart({ allData, filters = {} }) {
+    const [viewMode, setViewMode] = useState('registrations');
 
-    useEffect(() => {
-        fetchData();
-    }, [filters]);
-
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const params = new URLSearchParams();
-            if (filters.startDate) params.append('startDate', filters.startDate);
-            if (filters.endDate) params.append('endDate', filters.endDate);
-            if (filters.eventType) params.append('eventType', filters.eventType);
-            if (filters.department) params.append('department', filters.department);
-
-            const response = await fetch(`/api/dashboard/event-type-analytics?${params}`);
-            const result = await response.json();
-
-            if (result.success) {
-                setData(result.data);
-            } else {
-                setError(result.error);
-            }
-        } catch (err) {
-            setError('Failed to load data');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const data = useMemo(() => {
+        if (!allData?.events) return [];
+        const filtered = filterData(allData.events, filters);
+        return computeEventTypeAnalytics(filtered);
+    }, [allData, filters]);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-BD', {
@@ -68,28 +39,15 @@ export default function EventTypeChart({ filters = {} }) {
     const totalRegistrations = data.reduce((sum, item) => sum + item.registrationCount, 0);
     const totalRevenue = data.reduce((sum, item) => sum + item.revenue, 0);
 
-    if (loading) {
+    if (data.length === 0) {
         return (
             <Card className="col-span-full">
                 <CardHeader>
                     <CardTitle>Event Type Popularity</CardTitle>
-                    <CardDescription>Loading analytics...</CardDescription>
+                    <CardDescription>No data available</CardDescription>
                 </CardHeader>
                 <CardContent className="flex items-center justify-center h-[350px]">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card className="col-span-full">
-                <CardHeader>
-                    <CardTitle>Event Type Popularity</CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[350px]">
-                    <p className="text-sm text-muted-foreground">{error}</p>
+                    <p className="text-sm text-muted-foreground">No events found for the selected filters</p>
                 </CardContent>
             </Card>
         );

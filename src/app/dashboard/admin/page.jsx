@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   CalendarRange,
   Filter,
   LayoutDashboard,
+  Loader2,
   Plus,
   RotateCcw,
   Sparkles,
@@ -30,6 +31,29 @@ const fieldClassName =
 
 export default function DashboardPage() {
   const [filters, setFilters] = useState(defaultFilters);
+  const [allData, setAllData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("/api/dashboard/all-data");
+        const result = await response.json();
+        if (result.success) {
+          setAllData(result.data);
+        } else {
+          setError(result.error || "Failed to load dashboard data");
+        }
+      } catch (err) {
+        setError("Failed to load dashboard data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleFilterChange = (key, value) => {
     setFilters((previous) => ({ ...previous, [key]: value || null }));
@@ -41,6 +65,32 @@ export default function DashboardPage() {
     month: "long",
     year: "numeric",
   });
+
+  if (loading) {
+    return (
+      <main className="mx-auto flex w-full max-w-[1600px] items-center justify-center overflow-x-hidden p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <p className="text-sm">Loading dashboard data...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="mx-auto flex w-full max-w-[1600px] items-center justify-center overflow-x-hidden p-4 sm:p-6 lg:p-8">
+        <Card className="border-dashed border-destructive/30 bg-destructive/[0.03]">
+          <CardContent className="flex min-h-28 items-center justify-center p-6 text-center">
+            <div>
+              <p className="font-medium">Dashboard data unavailable.</p>
+              <p className="mt-1 text-sm text-muted-foreground">{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto w-full max-w-[1600px] space-y-7 overflow-x-hidden p-4 sm:p-6 lg:p-8">
@@ -76,7 +126,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <KPICards filters={filters} />
+      <KPICards allData={allData} filters={filters} />
 
       <Card className="overflow-hidden border-border/70 shadow-sm">
         <CardContent className="p-5 sm:p-6">
@@ -166,14 +216,14 @@ export default function DashboardPage() {
           <h2 className="mt-1 text-2xl font-semibold tracking-tight">What is moving your community</h2>
         </div>
 
-        <EventTypeChart filters={filters} />
+        <EventTypeChart allData={allData} filters={filters} />
 
         <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-          <DepartmentChart filters={filters} />
-          <RevenueTrendChart filters={filters} />
+          <DepartmentChart allData={allData} filters={filters} />
+          <RevenueTrendChart allData={allData} filters={filters} />
         </div>
 
-        <EventsPerformanceTable filters={filters} />
+        <EventsPerformanceTable allData={allData} filters={filters} />
       </section>
     </main>
   );

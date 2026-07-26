@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import {
   BarChart3,
   CalendarDays,
@@ -10,55 +10,14 @@ import {
   Users,
 } from "lucide-react";
 import { Card, CardContent } from "@/shadcn-components/ui/card";
+import { filterData, computeKPIs } from "@/lib/dashboard-utils";
 
-const initialData = {
-  totalEvents: 0,
-  totalRegistrations: 0,
-  totalRevenue: 0,
-  avgFillRate: 0,
-  trends: { registrations: 0 },
-};
-
-export default function KPICards({ filters = {} }) {
-  const [data, setData] = useState(initialData);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchData() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const params = new URLSearchParams();
-        if (filters.startDate) params.append("startDate", filters.startDate);
-        if (filters.endDate) params.append("endDate", filters.endDate);
-        if (filters.eventType) params.append("eventType", filters.eventType);
-        if (filters.department) params.append("department", filters.department);
-
-        const response = await fetch(`/api/dashboard/kpi-stats?${params}`, {
-          signal: controller.signal,
-        });
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-          throw new Error(result.error || "Unable to load dashboard statistics");
-        }
-        setData(result.data);
-      } catch (requestError) {
-        if (requestError.name !== "AbortError") {
-          setError(requestError.message || "Failed to load statistics");
-        }
-      } finally {
-        if (!controller.signal.aborted) setLoading(false);
-      }
-    }
-
-    fetchData();
-    return () => controller.abort();
-  }, [filters]);
+export default function KPICards({ allData, filters = {} }) {
+  const data = useMemo(() => {
+    if (!allData?.events) return null;
+    const filtered = filterData(allData.events, filters);
+    return computeKPIs(filtered);
+  }, [allData, filters]);
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("en-BD", {
@@ -69,11 +28,10 @@ export default function KPICards({ filters = {} }) {
     }).format(Number(value || 0));
 
   const formatNumber = (value) => new Intl.NumberFormat("en-US").format(Number(value || 0));
-  const registrationTrend = Number(data?.trends?.registrations || 0);
 
-  if (loading) {
+  if (!data) {
     return (
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Loading dashboard statistics">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[1, 2, 3, 4].map((item) => (
           <Card key={item} className="overflow-hidden border-border/70">
             <CardContent className="p-5 sm:p-6">
@@ -92,18 +50,7 @@ export default function KPICards({ filters = {} }) {
     );
   }
 
-  if (error) {
-    return (
-      <Card className="border-dashed border-destructive/30 bg-destructive/[0.03]">
-        <CardContent className="flex min-h-28 items-center justify-center p-6 text-center">
-          <div>
-            <p className="font-medium">Dashboard statistics are temporarily unavailable.</p>
-            <p className="mt-1 text-sm text-muted-foreground">{error}</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const registrationTrend = Number(data?.trends?.registrations || 0);
 
   const cards = [
     {

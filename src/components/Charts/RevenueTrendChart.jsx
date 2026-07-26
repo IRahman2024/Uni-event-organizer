@@ -1,12 +1,11 @@
-// components/Charts/RevenueTrendChart.jsx
-
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn-components/ui/card';
 import { ChartContainer, ChartTooltip } from '@/shadcn-components/ui/chart';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { DollarSign, Loader2, TrendingUp } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { DollarSign, TrendingUp } from 'lucide-react';
+import { filterData, computeRevenueTrend } from '@/lib/dashboard-utils';
 
 const chartConfig = {
     revenue: {
@@ -19,45 +18,21 @@ const chartConfig = {
     },
 };
 
-export default function RevenueTrendChart({ filters = {} }) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [summary, setSummary] = useState({ totalRevenue: 0, totalRegistrations: 0, dataPoints: 0, interval: 'daily' });
+export default function RevenueTrendChart({ allData, filters = {} }) {
     const [interval, setInterval] = useState('daily');
 
-    useEffect(() => {
-        fetchData();
-    }, [filters, interval]);
+    const data = useMemo(() => {
+        if (!allData?.events) return [];
+        const filtered = filterData(allData.events, filters);
+        return computeRevenueTrend(filtered, interval);
+    }, [allData, filters, interval]);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const params = new URLSearchParams();
-            if (filters.startDate) params.append('startDate', filters.startDate);
-            if (filters.endDate) params.append('endDate', filters.endDate);
-            if (filters.eventType) params.append('eventType', filters.eventType);
-            if (filters.department) params.append('department', filters.department);
-            params.append('interval', interval);
-
-            const response = await fetch(`/api/dashboard/revenue-trend?${params}`);
-            const result = await response.json();
-
-            if (result.success) {
-                setData(result.data);
-                setSummary(result.summary);
-            } else {
-                setError(result.error);
-            }
-        } catch (err) {
-            setError('Failed to load data');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const summary = useMemo(() => ({
+        totalRevenue: data.reduce((sum, item) => sum + item.revenue, 0),
+        totalRegistrations: data.reduce((sum, item) => sum + item.registrations, 0),
+        dataPoints: data.length,
+        interval,
+    }), [data, interval]);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-BD', {
@@ -67,39 +42,6 @@ export default function RevenueTrendChart({ filters = {} }) {
             maximumFractionDigits: 0,
         }).format(value);
     };
-
-    if (loading) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <DollarSign className="h-5 w-5" />
-                        Revenue Trends
-                    </CardTitle>
-                    <CardDescription>Loading analytics...</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[350px]">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <DollarSign className="h-5 w-5" />
-                        Revenue Trends
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[350px]">
-                    <p className="text-sm text-muted-foreground">{error}</p>
-                </CardContent>
-            </Card>
-        );
-    }
 
     if (data.length === 0) {
         return (
@@ -118,7 +60,6 @@ export default function RevenueTrendChart({ filters = {} }) {
         );
     }
 
-    // Calculate growth rate
     const firstRevenue = data[0]?.revenue || 0;
     const lastRevenue = data[data.length - 1]?.revenue || 0;
     const growthRate = firstRevenue > 0

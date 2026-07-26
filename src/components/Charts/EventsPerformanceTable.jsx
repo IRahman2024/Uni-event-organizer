@@ -1,53 +1,33 @@
-// components/Charts/EventsPerformanceTable.jsx
-
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn-components/ui/card';
-import { BarChart3, Loader2, ArrowUpDown, ArrowUp, ArrowDown, Download, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BarChart3, ArrowUpDown, ArrowUp, ArrowDown, Download, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { filterData, computeEventsPerformance, sortEventsPerformance } from '@/lib/dashboard-utils';
 
-export default function EventsPerformanceTable({ filters = {} }) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [summary, setSummary] = useState({ totalEvents: 0, totalRegistrations: 0, totalRevenue: 0, avgFillRate: 0 });
+export default function EventsPerformanceTable({ allData, filters = {} }) {
     const [sortConfig, setSortConfig] = useState({ key: 'eventDate', order: 'desc' });
     const [currentPage, setCurrentPage] = useState(1);
     const [eventsPerPage, setEventsPerPage] = useState(10);
 
-    useEffect(() => {
-        fetchData();
-    }, [filters, sortConfig]);
+    const rawData = useMemo(() => {
+        if (!allData?.events) return [];
+        const filtered = filterData(allData.events, filters);
+        return computeEventsPerformance(filtered);
+    }, [allData, filters]);
 
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
+    const data = useMemo(() => {
+        return sortEventsPerformance(rawData, sortConfig.key, sortConfig.order);
+    }, [rawData, sortConfig]);
 
-        try {
-            const params = new URLSearchParams();
-            if (filters.startDate) params.append('startDate', filters.startDate);
-            if (filters.endDate) params.append('endDate', filters.endDate);
-            if (filters.eventType) params.append('eventType', filters.eventType);
-            if (filters.department) params.append('department', filters.department);
-            params.append('sortBy', sortConfig.key);
-            params.append('sortOrder', sortConfig.order);
-
-            const response = await fetch(`/api/dashboard/events-performance?${params}`);
-            const result = await response.json();
-
-            if (result.success) {
-                setData(result.data);
-                setSummary(result.summary);
-            } else {
-                setError(result.error);
-            }
-        } catch (err) {
-            setError('Failed to load data');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const summary = useMemo(() => ({
+        totalEvents: rawData.length,
+        totalRegistrations: rawData.reduce((sum, e) => sum + e.registrations, 0),
+        totalRevenue: rawData.reduce((sum, e) => sum + e.revenue, 0),
+        avgFillRate: rawData.length > 0
+            ? (rawData.reduce((sum, e) => sum + e.fillRate, 0) / rawData.length).toFixed(1)
+            : 0
+    }), [rawData]);
 
     const handleSort = (key) => {
         setSortConfig(prev => ({
@@ -80,7 +60,6 @@ export default function EventsPerformanceTable({ filters = {} }) {
         return 'text-red-600 bg-red-50';
     };
 
-    // Pagination calculations
     const indexOfLastEvent = currentPage * eventsPerPage;
     const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
     const currentEvents = data.slice(indexOfFirstEvent, indexOfLastEvent);
@@ -92,7 +71,7 @@ export default function EventsPerformanceTable({ filters = {} }) {
 
     const handleEventsPerPageChange = (value) => {
         setEventsPerPage(parseInt(value));
-        setCurrentPage(1); // Reset to first page
+        setCurrentPage(1);
     };
 
     const exportToCSV = () => {
@@ -120,39 +99,6 @@ export default function EventsPerformanceTable({ filters = {} }) {
         a.download = `events-performance-${new Date().toISOString().split('T')[0]}.csv`;
         a.click();
     };
-
-    if (loading) {
-        return (
-            <Card className="col-span-full">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5" />
-                        Events Performance
-                    </CardTitle>
-                    <CardDescription>Loading events data...</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[400px]">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card className="col-span-full">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5" />
-                        Events Performance
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[400px]">
-                    <p className="text-sm text-muted-foreground">{error}</p>
-                </CardContent>
-            </Card>
-        );
-    }
 
     if (data.length === 0) {
         return (

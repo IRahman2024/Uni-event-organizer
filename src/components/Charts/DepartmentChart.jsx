@@ -1,16 +1,14 @@
-// components/Charts/DepartmentChart.jsx
-
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shadcn-components/ui/card';
 import { ChartContainer, ChartTooltip } from '@/shadcn-components/ui/chart';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
-import { Users, Loader2 } from 'lucide-react';
+import { Users } from 'lucide-react';
+import { filterData, computeDepartmentAnalytics } from '@/lib/dashboard-utils';
 
-// Color scheme for departments
 const COLORS = {
-    'CSE': '#2d8706ff', //2d8706ff
+    'CSE': '#2d8706ff',
     'CE': '#929591ff',
     'EEE': '#2a64c9ff',
 };
@@ -33,43 +31,17 @@ const chartConfig = {
     },
 };
 
-export default function DepartmentChart({ filters = {} }) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [summary, setSummary] = useState({ totalRegistrations: 0, departmentCount: 0 });
+export default function DepartmentChart({ allData, filters = {} }) {
+    const data = useMemo(() => {
+        if (!allData?.events) return [];
+        const filtered = filterData(allData.events, filters);
+        return computeDepartmentAnalytics(filtered);
+    }, [allData, filters]);
 
-    useEffect(() => {
-        fetchData();
-    }, [filters]);
-
-    const fetchData = async () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const params = new URLSearchParams();
-            if (filters.startDate) params.append('startDate', filters.startDate);
-            if (filters.endDate) params.append('endDate', filters.endDate);
-            if (filters.eventType) params.append('eventType', filters.eventType);
-            if (filters.department) params.append('department', filters.department);
-
-            const response = await fetch(`/api/dashboard/department-analytics?${params}`);
-            const result = await response.json();
-
-            if (result.success) {
-                setData(result.data);
-                setSummary(result.summary);
-            } else {
-                setError(result.error);
-            }
-        } catch (err) {
-            setError('Failed to load data');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const summary = useMemo(() => ({
+        totalRegistrations: data.reduce((sum, d) => sum + d.count, 0),
+        departmentCount: data.length,
+    }), [data]);
 
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-BD', {
@@ -79,39 +51,6 @@ export default function DepartmentChart({ filters = {} }) {
             maximumFractionDigits: 0,
         }).format(value);
     };
-
-    if (loading) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        Department Participation
-                    </CardTitle>
-                    <CardDescription>Loading analytics...</CardDescription>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[350px]">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </CardContent>
-            </Card>
-        );
-    }
-
-    if (error) {
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        Department Participation
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="flex items-center justify-center h-[350px]">
-                    <p className="text-sm text-muted-foreground">{error}</p>
-                </CardContent>
-            </Card>
-        );
-    }
 
     if (data.length === 0) {
         return (
