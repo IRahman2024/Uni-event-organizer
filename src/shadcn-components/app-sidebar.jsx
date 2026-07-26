@@ -29,12 +29,12 @@ export function AppSidebar({ role, ...props }) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="gap-2 border-b border-sidebar-border p-3">
         <SidebarMenuButton asChild size="lg" tooltip="AfterClass home" className="hover:bg-sidebar-accent">
-          <Link href="/"><span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground"><Sparkles className="size-4" /></span><span className="font-[family-name:var(--font-space-grotesk)] text-base font-bold">AfterClass</span></Link>
+          <Link href="/"><span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground"><Sparkles className="size-4" /></span><span className="font-[family-name:var(--font-space-grotesk)] text-base font-bold group-data-[collapsible=icon]:hidden">AfterClass</span></Link>
         </SidebarMenuButton>
-        <div className="flex items-center justify-between gap-2 rounded-lg bg-sidebar-accent/70 px-2 py-1.5"><span className="truncate text-xs font-semibold uppercase tracking-wider text-sidebar-accent-foreground">{role} workspace</span><AnimatedThemeToggler /></div>
+        <span className="truncate text-xs font-semibold uppercase tracking-wider text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">{role} workspace</span>
       </SidebarHeader>
       <SidebarContent className="p-2"><NavMain items={navigation} /></SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border p-2">{user && <NavUser user={user} />}</SidebarFooter>
+      <SidebarFooter className="border-t border-sidebar-border p-2">{user && <NavUser user={user} />}<div className="flex justify-center p-2"><AnimatedThemeToggler /></div></SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
