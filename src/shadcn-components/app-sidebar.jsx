@@ -27,14 +27,14 @@ export function AppSidebar({ role, ...props }) {
   const navigation = (role === "admin" ? adminNavigation : studentNavigation).map((group) => ({ ...group, isActive: pathname.startsWith(group.url) }));
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="gap-2 border-b border-sidebar-border p-3">
+      <SidebarHeader className="gap-2 border-b border-sidebar-border p-3 group-data-[collapsible=icon]:p-2">
         <SidebarMenuButton asChild size="lg" tooltip="AfterClass home" className="hover:bg-sidebar-accent">
           <Link href="/"><span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground"><Sparkles className="size-4" /></span><span className="font-[family-name:var(--font-space-grotesk)] text-base font-bold group-data-[collapsible=icon]:hidden">AfterClass</span></Link>
         </SidebarMenuButton>
-        <span className="truncate text-xs font-semibold uppercase tracking-wider text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">{role} workspace</span>
+        <div className="flex items-center justify-between gap-2 rounded-lg bg-sidebar-accent/70 px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"><span className="truncate text-xs font-semibold uppercase tracking-wider text-sidebar-accent-foreground group-data-[collapsible=icon]:hidden">{role} workspace</span><AnimatedThemeToggler className="group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:p-0" /></div>
       </SidebarHeader>
       <SidebarContent className="p-2"><NavMain items={navigation} /></SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border p-2">{user && <NavUser user={user} />}<div className="flex justify-center p-2"><AnimatedThemeToggler /></div></SidebarFooter>
+      <SidebarFooter className="border-t border-sidebar-border p-2">{user && <NavUser user={user} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
