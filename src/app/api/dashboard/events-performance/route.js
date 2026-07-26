@@ -96,6 +96,9 @@ export async function GET(request) {
             let comparison = 0;
 
             switch (sortBy) {
+                case 'eventTitle':
+                    comparison = a.eventTitle.localeCompare(b.eventTitle, undefined, { sensitivity: 'base' });
+                    break;
                 case 'registrations':
                     comparison = a.registrations - b.registrations;
                     break;

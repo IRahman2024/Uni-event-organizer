@@ -40,7 +40,7 @@ export async function POST(request) {
             }
         }
 
-        // console.log('Transformed Data: ', transformedData);
+        console.log('Transformed Data: ', transformedData);
 
         const event = await prisma.event.create({
             data: transformedData,
@@ -49,7 +49,7 @@ export async function POST(request) {
             }
         });
 
-        // console.log(event);
+        console.log(event);
 
         // await prisma.$disconnect();
         revalidateTag('events');

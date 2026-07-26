@@ -39,7 +39,7 @@ const Page = () => {
                 setError(null);
                 const res = await axios.get(`/api/events?eventId=${eventId}`);
                 setEvent(res.data.data);
-                axios.get(`/api/students/${user.primaryEmail}`)
+                axios.get(`/api/students/${user?.primaryEmail}`)
                     .then((res) => {
                         setStudentData(res.data.data)
 

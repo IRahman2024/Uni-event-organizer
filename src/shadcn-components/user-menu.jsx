@@ -104,7 +104,7 @@ export default async function UserMenu() {
         !user && <DropdownMenuContent className="max-w-64" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem>
-              <Link className="flex items-center gap-2" href='/SignIn'>
+              <Link className="flex items-center gap-2" href='/login'>
                 <LogInIcon size={16} className="opacity-60" aria-hidden="true" />
                 <span>Sign In</span>
               </Link>
