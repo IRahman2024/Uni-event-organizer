@@ -27,7 +27,7 @@ export function AppSidebar({ role, ...props }) {
   const navigation = (role === "admin" ? adminNavigation : studentNavigation).map((group) => ({ ...group, isActive: pathname.startsWith(group.url) }));
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="gap-2 border-b border-sidebar-border p-3">
+      <SidebarHeader className="gap-2 border-b border-sidebar-border p-3 group-data-[collapsible=icon]:hidden">
         <SidebarMenuButton asChild size="lg" tooltip="AfterClass home" className="hover:bg-sidebar-accent">
           <Link href="/"><span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground"><Sparkles className="size-4" /></span><span className="font-[family-name:var(--font-space-grotesk)] text-base font-bold">AfterClass</span></Link>
         </SidebarMenuButton>
